@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Domain.Enums;
+using eStore_Admin.Domain.Enums;
 
-namespace Domain.Entities
+namespace eStore_Admin.Domain.Entities
 {
     public class Order : Entity
     {

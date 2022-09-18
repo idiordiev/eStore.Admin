@@ -1,8 +1,8 @@
-﻿using Domain.Entities;
+﻿using eStore_Admin.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Domain.Configurations
+namespace eStore_Admin.Infrastructure.Configurations
 {
     public class KeyRolloverConfiguration : IEntityTypeConfiguration<KeyRollover>
     {

@@ -6,11 +6,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{795DB178-996
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4E6F30CD-7BD5-4A95-A2CC-574D1251B303}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{0F5CA6B0-5D8D-46DE-8605-8B57D8B39D27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0F5CA6B0-5D8D-46DE-8605-8B57D8B39D27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{D010B29B-0FD6-47EC-AA9C-177AD1BDA879}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{C8E4C473-AB2A-4221-8493-4ECC766E0861}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{C8E4C473-AB2A-4221-8493-4ECC766E0861}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

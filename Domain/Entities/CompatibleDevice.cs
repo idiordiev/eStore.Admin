@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Domain.Entities
+namespace eStore_Admin.Domain.Entities
 {
     public class CompatibleDevice : Entity
     {

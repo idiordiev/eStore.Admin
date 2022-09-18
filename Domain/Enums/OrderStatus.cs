@@ -1,4 +1,4 @@
-﻿namespace Domain.Enums
+﻿namespace eStore_Admin.Domain.Enums
 {
     public enum OrderStatus
     {

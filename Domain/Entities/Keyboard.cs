@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain.Entities
+namespace eStore_Admin.Domain.Entities
 {
     public class Keyboard : Goods
     {
