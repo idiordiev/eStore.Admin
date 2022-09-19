@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace eStore_Admin.Infrastructure.Configurations
+namespace eStore_Admin.Infrastructure.Persistence.Configurations
 {
     public class MouseConfiguration : IEntityTypeConfiguration<Mouse>
     {
