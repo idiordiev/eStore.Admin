@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using eStore_Admin.Application.Interfaces.DataTransferObjects;
-using eStore_Admin.Application.Interfaces.FilterModels;
+using eStore_Admin.Application.DataTransferObjects;
+using eStore_Admin.Application.FilterModels;
 
 namespace eStore_Admin.Application.Interfaces.Services
 {
     public interface IGamepadService
     {
-        Task<IEnumerable<IGamepadDto>> GetAllGamepadsAsync();
-        Task<IEnumerable<IGamepadDto>> GetGamepadsByFilterAsync(IGamepadFilterModel filter);
-        Task<IGamepadDto> GetGamepadByIdAsync(int gamepadId);
-        Task AddGamepadAsync(IGamepadDto gamepad);
-        Task UpdateGamepadAsync(int gamepadId, IGamepadDto gamepad);
+        Task<IEnumerable<GamepadDto>> GetAllGamepadsAsync();
+        Task<IEnumerable<GamepadDto>> GetGamepadsByFilterAsync(GamepadFilterModel filter);
+        Task<GamepadDto> GetGamepadByIdAsync(int gamepadId);
+        Task AddGamepadAsync(GamepadDto gamepad);
+        Task UpdateGamepadAsync(int gamepadId, GamepadDto gamepad);
         Task DeleteGamepadAsync(int gamepadId);
     }
 }

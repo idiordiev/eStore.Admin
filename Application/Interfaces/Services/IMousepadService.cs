@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using eStore_Admin.Application.Interfaces.DataTransferObjects;
-using eStore_Admin.Application.Interfaces.FilterModels;
+using eStore_Admin.Application.DataTransferObjects;
+using eStore_Admin.Application.FilterModels;
 
 namespace eStore_Admin.Application.Interfaces.Services
 {
     public interface IMousepadService
     {
-        Task<IEnumerable<IMousepadDto>> GetAllMousepadsAsync();
-        Task<IEnumerable<IMousepadDto>> GetMousepadsByFilterAsync(IMousepadFilterModel filter);
-        Task<IMousepadDto> GetMousepadByIdAsync(int mousepadId);
-        Task AddMousepadAsync(IMousepadDto mousepad);
-        Task UpdateMousepadAsync(int mousepadId, IMousepadDto mousepad);
+        Task<IEnumerable<MousepadDto>> GetAllMousepadsAsync();
+        Task<IEnumerable<MousepadDto>> GetMousepadsByFilterAsync(MousepadFilterModel filter);
+        Task<MousepadDto> GetMousepadByIdAsync(int mousepadId);
+        Task AddMousepadAsync(MousepadDto mousepad);
+        Task UpdateMousepadAsync(int mousepadId, MousepadDto mousepad);
         Task DeleteMousepadAsync(int mousepadId);
     }
 }

@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using eStore_Admin.Application.Interfaces.DataTransferObjects;
-using eStore_Admin.Application.Interfaces.FilterModels;
+using eStore_Admin.Application.DataTransferObjects;
+using eStore_Admin.Application.FilterModels;
 
 namespace eStore_Admin.Application.Interfaces.Services
 {
     public interface IOrderService
     {
-        Task<IEnumerable<IOrderDto>> GetAllOrdersAsync();
-        Task<IEnumerable<IOrderDto>> GetOrdersByFilterAsync(IOrderFilterModel filter);
-        Task<IOrderDto> GetOrderByIdAsync(int orderId);
-        Task AddOrderAsync(IOrderDto order);
-        Task UpdateOrderAsync(int orderId, IOrderDto order);
+        Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
+        Task<IEnumerable<OrderDto>> GetOrdersByFilterAsync(OrderFilterModel filter);
+        Task<OrderDto> GetOrderByIdAsync(int orderId);
+        Task AddOrderAsync(OrderDto order);
+        Task UpdateOrderAsync(int orderId, OrderDto order);
         Task DeleteOrderAsync(int orderId);
     }
 }
