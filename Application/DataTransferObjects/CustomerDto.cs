@@ -1,4 +1,6 @@
-﻿namespace eStore_Admin.Application.DataTransferObjects
+﻿using System.Collections.Generic;
+
+namespace eStore_Admin.Application.DataTransferObjects
 {
     public class CustomerDto
     {
@@ -12,6 +14,6 @@
         public string City { get; set; }
         public string Address { get; set; }
         public string PostalCode { get; set; }
-        public int ShoppingCartId { get; set; }
+        public ICollection<int> GoodsInCart { get; set; }
     }
 }
