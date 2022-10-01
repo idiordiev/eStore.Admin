@@ -19,10 +19,12 @@ namespace eStore_Admin.Infrastructure.Persistence
         private IGamepadRepository _gamepadRepository;
         private IGoodsRepository _goodsRepository;
         private IKeyboardRepository _keyboardRepository;
+        private IKeyboardSwitchRepository _keyboardSwitchRepository;
         private IMouseRepository _mouseRepository;
         private IMousepadRepository _mousepadRepository;
         private IOrderRepository _orderRepository;
         private IOrderItemRepository _orderItemRepository;
+        private IShoppingCartRepository _shoppingCartRepository;
 
         public ICustomerRepository CustomerRepository
         {
@@ -64,6 +66,15 @@ namespace eStore_Admin.Infrastructure.Persistence
             }
         }
 
+        public IKeyboardSwitchRepository KeyboardSwitchRepository {
+            get
+            {
+                if (_keyboardSwitchRepository is null)
+                    _keyboardSwitchRepository = new KeyboardSwitchRepository(_context);
+                return _keyboardSwitchRepository;
+            }
+        }
+
         public IMousepadRepository MousepadRepository
         {
             get
@@ -101,6 +112,16 @@ namespace eStore_Admin.Infrastructure.Persistence
                 if (_orderItemRepository is null)
                     _orderItemRepository = new OrderItemRepository(_context);
                 return _orderItemRepository;
+            }
+        }
+
+        public IShoppingCartRepository ShoppingCartRepository
+        {
+            get
+            {
+                if (_shoppingCartRepository is null)
+                    _shoppingCartRepository = new ShoppingCartRepository(_context);
+                return _shoppingCartRepository;
             }
         }
 
