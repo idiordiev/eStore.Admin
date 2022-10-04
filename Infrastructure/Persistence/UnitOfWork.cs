@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Infrastructure.Persistence.Repositories;
 
@@ -130,9 +131,9 @@ namespace eStore_Admin.Infrastructure.Persistence
             _context.SaveChanges();
         }
 
-        public async Task SaveAsync()
+        public async Task SaveAsync(CancellationToken cancellationToken)
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
         public void Dispose()

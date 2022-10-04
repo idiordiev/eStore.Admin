@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace eStore_Admin.Application.Interfaces.Persistence
@@ -17,6 +18,6 @@ namespace eStore_Admin.Application.Interfaces.Persistence
         IShoppingCartRepository ShoppingCartRepository { get; }
 
         void Save();
-        Task SaveAsync();
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }
