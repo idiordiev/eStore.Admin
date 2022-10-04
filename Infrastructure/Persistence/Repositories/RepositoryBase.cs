@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence.Shared;
 using eStore_Admin.Domain.Entities;
@@ -20,36 +21,36 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
             DbSet = context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(bool trackChanges)
+        public async Task<IEnumerable<T>> GetAllAsync(bool trackChanges, CancellationToken cancellationToken)
         { 
             return trackChanges 
                 ? await DbSet
-                    .ToListAsync() 
+                    .ToListAsync(cancellationToken) 
                 : await DbSet
                     .AsNoTracking()
-                    .ToListAsync();
+                    .ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<T>> GetAllByConditionAsync(Expression<Func<T, bool>> condition, bool trackChanges)
+        public async Task<IEnumerable<T>> GetAllByConditionAsync(Expression<Func<T, bool>> condition, bool trackChanges, CancellationToken cancellationToken)
         {
             return trackChanges 
                 ? await DbSet
                     .Where(condition)
-                    .ToListAsync() 
+                    .ToListAsync(cancellationToken) 
                 : await DbSet
                     .Where(condition)
                     .AsNoTracking()
-                    .ToListAsync();
+                    .ToListAsync(cancellationToken);
         }
 
-        public async Task<T> GetByIdAsync(int id, bool trackChanges)
+        public async Task<T> GetByIdAsync(int id, bool trackChanges, CancellationToken cancellationToken)
         {
             return trackChanges 
                 ? await DbSet
-                    .FirstOrDefaultAsync(c => c.Id == id) 
+                    .FirstOrDefaultAsync(c => c.Id == id, cancellationToken) 
                 : await DbSet
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(c => c.Id == id);
+                    .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
         }
 
         public void Add(T entity)
