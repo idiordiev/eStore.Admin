@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace eStore_Admin.Application.DataTransferObjects
+﻿namespace eStore_Admin.Application.Responses
 {
-    public class CustomerDto
+    public class CustomerResponse
     {
         public int Id { get; set; }
         public bool IsDeleted { get; set; }
@@ -14,6 +12,5 @@ namespace eStore_Admin.Application.DataTransferObjects
         public string City { get; set; }
         public string Address { get; set; }
         public string PostalCode { get; set; }
-        public ICollection<int> GoodsInCart { get; set; }
     }
 }

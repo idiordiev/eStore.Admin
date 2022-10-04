@@ -1,6 +1,6 @@
-﻿namespace eStore_Admin.Application.DataTransferObjects
+﻿namespace eStore_Admin.Application.Responses
 {
-    public class OrderItemDto
+    public class OrderItemResponse
     {
         public int Id { get; set; }
         public bool IsDeleted { get; set; }

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace eStore_Admin.Application.DataTransferObjects
+namespace eStore_Admin.Application.Responses
 {
-    public class OrderDto
+    public class OrderResponse
     {
         public int Id { get; set; }
         public bool IsDeleted { get; set; }

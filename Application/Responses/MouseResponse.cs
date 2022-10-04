@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace eStore_Admin.Application.DataTransferObjects
+namespace eStore_Admin.Application.Responses
 {
-    public class MousepadDto
+    public class MouseResponse
     {
         public int Id { get; set; }
         public bool IsDeleted { get; set; }
@@ -14,12 +14,15 @@ namespace eStore_Admin.Application.DataTransferObjects
         public string BigImageUrl { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastModified { get; set; }
-        public bool IsStitched { get; set; }
-        public int TopMaterialId { get; set; }
-        public int BottomMaterialId { get; set; }
+        public int ButtonsQuantity { get; set; }
+        public string SensorName { get; set; }
+        public int MinSensorDPI { get; set; }
+        public int MaxSensorDPI { get; set; }
+        public int ConnectionTypeId { get; set; }
         public int BacklightId { get; set; }
         public float Length { get; set; }
         public float Width { get; set; }
         public float Height { get; set; }
+        public float Weight { get; set; }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace eStore_Admin.Application.DataTransferObjects
+﻿namespace eStore_Admin.Application.Responses
 {
-    public class KeyboardSwitchDto
+    public class KeyboardSwitchResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }
