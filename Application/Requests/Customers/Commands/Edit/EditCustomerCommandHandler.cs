@@ -10,19 +10,18 @@ namespace eStore_Admin.Application.Requests.Customers.Commands.Edit
 {
     public class EditCustomerCommandHandler : IRequestHandler<EditCustomerCommand, CustomerResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public EditCustomerCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
-        
+
         public async Task<CustomerResponse> Handle(EditCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer =
-                await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true, cancellationToken);
+            var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true, cancellationToken);
             if (customer is null)
                 throw new KeyNotFoundException($"The customer with id {request.CustomerId} has not been found.");
 

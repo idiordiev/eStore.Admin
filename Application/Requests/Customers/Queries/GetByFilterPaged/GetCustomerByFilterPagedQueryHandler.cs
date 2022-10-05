@@ -13,23 +13,26 @@ namespace eStore_Admin.Application.Requests.Customers.Queries.GetByFilterPaged
 {
     public class GetCustomerByFilterPagedQueryHandler : IRequestHandler<GetCustomerByFilterPagedQuery, IEnumerable<CustomerResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly ICustomerFilterExpressionFactory _filterExpressionFactory;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetCustomerByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, ICustomerFilterExpressionFactory filterExpressionFactory)
+        public GetCustomerByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper,
+            ICustomerFilterExpressionFactory filterExpressionFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _filterExpressionFactory = filterExpressionFactory;
         }
 
-        public async Task<IEnumerable<CustomerResponse>> Handle(GetCustomerByFilterPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CustomerResponse>> Handle(GetCustomerByFilterPagedQuery request,
+            CancellationToken cancellationToken)
         {
             var pagingParameters = new PagingParameters(request.PageSize, request.PageNumber);
             var filterModel = _mapper.Map<CustomerFilterModel>(request);
             var predicate = _filterExpressionFactory.CreateExpression(filterModel);
-            var customers = await _unitOfWork.CustomerRepository.GetByConditionPagedAsync(predicate, pagingParameters, false, cancellationToken);
+            var customers = await _unitOfWork.CustomerRepository.GetByConditionPagedAsync(predicate, pagingParameters, false,
+                cancellationToken);
 
             return _mapper.Map<IEnumerable<CustomerResponse>>(customers);
         }

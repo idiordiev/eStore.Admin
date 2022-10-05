@@ -23,10 +23,10 @@ namespace eStore_Admin.Application.Requests.Customers.Commands.Delete
 
             if (cancellationToken.IsCancellationRequested)
                 throw new OperationCanceledException("The operation of deleting customer has been cancelled.");
-            
+
             _unitOfWork.CustomerRepository.Delete(customer);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             return true;
         }
     }

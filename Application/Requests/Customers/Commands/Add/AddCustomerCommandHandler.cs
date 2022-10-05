@@ -11,8 +11,8 @@ namespace eStore_Admin.Application.Requests.Customers.Commands.Add
 {
     public class AddCustomerCommandHandler : IRequestHandler<AddCustomerCommand, CustomerResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AddCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -25,10 +25,10 @@ namespace eStore_Admin.Application.Requests.Customers.Commands.Add
             var customer = _mapper.Map<Customer>(request.Customer);
             if (cancellationToken.IsCancellationRequested)
                 throw new OperationCanceledException("The operation of adding new customer has been cancelled.");
-            
+
             _unitOfWork.CustomerRepository.Add(customer);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             return _mapper.Map<CustomerResponse>(customer);
         }
     }

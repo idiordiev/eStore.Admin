@@ -9,10 +9,11 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.Customers.Queries.GetAllPaged
 {
-    public class GetAllCustomersPagedQueryHandler : IRequestHandler<GetAllCustomersPagedQuery, IEnumerable<CustomerResponse>>
+    public class
+        GetAllCustomersPagedQueryHandler : IRequestHandler<GetAllCustomersPagedQuery, IEnumerable<CustomerResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GetAllCustomersPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -20,7 +21,8 @@ namespace eStore_Admin.Application.Requests.Customers.Queries.GetAllPaged
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CustomerResponse>> Handle(GetAllCustomersPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CustomerResponse>> Handle(GetAllCustomersPagedQuery request,
+            CancellationToken cancellationToken)
         {
             var pagingParameters = new PagingParameters(request.PageSize, request.PageNumber);
             var customers = await _unitOfWork.CustomerRepository.GetAllPagedAsync(pagingParameters, false, cancellationToken);

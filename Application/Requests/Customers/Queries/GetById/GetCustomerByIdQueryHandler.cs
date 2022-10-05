@@ -9,8 +9,8 @@ namespace eStore_Admin.Application.Requests.Customers.Queries.GetById
 {
     public class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, CustomerResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GetCustomerByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
