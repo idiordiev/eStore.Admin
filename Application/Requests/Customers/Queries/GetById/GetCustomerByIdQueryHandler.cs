@@ -1,0 +1,27 @@
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using eStore_Admin.Application.Interfaces.Persistence;
+using eStore_Admin.Application.Responses;
+using MediatR;
+
+namespace eStore_Admin.Application.Requests.Customers.Queries.GetById
+{
+    public class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, CustomerResponse>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public GetCustomerByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        public async Task<CustomerResponse> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
+        {
+            var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, false, cancellationToken);
+            return _mapper.Map<CustomerResponse>(customer);
+        }
+    }
+}
