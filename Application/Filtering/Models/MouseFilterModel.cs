@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace eStore_Admin.Application.FilterModels
+namespace eStore_Admin.Application.Filtering.Models
 {
     public class MouseFilterModel
     {

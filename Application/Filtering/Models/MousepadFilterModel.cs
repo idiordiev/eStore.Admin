@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace eStore_Admin.Application.FilterModels
+namespace eStore_Admin.Application.Filtering.Models
 {
-    public class KeyboardFilterModel
+    public class MousepadFilterModel
     {
         public ICollection<bool?> IsDeletedValues { get; set; }
         public string NameSearchString { get; set; }
@@ -12,11 +12,9 @@ namespace eStore_Admin.Application.FilterModels
         public decimal? MaxPrice { get; set; }
         public DateTime CreatedStartDate { get; set; }
         public DateTime CreatedEndDate { get; set; }
-        public ICollection<int> KeyboardTypeIds { get; set; }
-        public ICollection<int> KeyboardSizeIds { get; set; }
-        public ICollection<int> ConnectionTypeIds { get; set; }
-        public ICollection<int?> SwitchIds { get; set; }
-        public ICollection<int> KeyRolloverIds { get; set; }
+        public ICollection<bool> IsStitchedValues { get; set; }
+        public ICollection<int> BottomMaterialIds { get; set; }
+        public ICollection<int> TopMaterialIds { get; set; }
         public ICollection<int> BacklightIds { get; set; }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace eStore_Admin.Application.FilterModels
+namespace eStore_Admin.Application.Filtering.Models
 {
-    public class CustomerFilterModel
+    public class OrderFilterModel
     {
         public ICollection<bool?> IsDeletedValues { get; set; }
-        public string FirstNameSearchQuery { get; set; }
-        public string LastNameSearchQuery { get; set; }
-        public string EmailSearchQuery { get; set; }
-        public string PhoneNumberSearchQuery { get; set; }
+        public ICollection<int> CustomerIds { get; set; }
+        public ICollection<int> StatusValues { get; set; }
+        public decimal? MinTotal { get; set; }
+        public decimal? MaxTotal { get; set; }
         public string CountrySearchQuery { get; set; }
         public string CitySearchQuery { get; set; }
         public string AddressSearchQuery { get; set; }
