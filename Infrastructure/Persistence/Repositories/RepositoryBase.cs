@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence.Shared;
+using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,24 +22,31 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
             DbSet = context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(bool trackChanges, CancellationToken cancellationToken)
-        { 
+        public async Task<IEnumerable<T>> GetAllPagedAsync(PagingParameters pagingParameters, bool trackChanges,
+            CancellationToken cancellationToken)
+        {
+            var entities = DbSet
+                .Skip((pagingParameters.PageNumber - 1) * pagingParameters.PageSize)
+                .Take(pagingParameters.PageSize);
             return trackChanges 
-                ? await DbSet
+                ? await entities
                     .ToListAsync(cancellationToken) 
-                : await DbSet
+                : await entities
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<T>> GetAllByConditionAsync(Expression<Func<T, bool>> condition, bool trackChanges, CancellationToken cancellationToken)
+        public async Task<IEnumerable<T>> GetByConditionPagedAsync(Expression<Func<T, bool>> condition,
+            PagingParameters pagingParameters, bool trackChanges, CancellationToken cancellationToken)
         {
+            var entities = DbSet
+                .Where(condition)
+                .Skip((pagingParameters.PageNumber - 1) * pagingParameters.PageSize)
+                .Take(pagingParameters.PageSize);
             return trackChanges 
-                ? await DbSet
-                    .Where(condition)
+                ? await entities
                     .ToListAsync(cancellationToken) 
-                : await DbSet
-                    .Where(condition)
+                : await entities
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
         }
