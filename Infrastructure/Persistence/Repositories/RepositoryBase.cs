@@ -26,6 +26,7 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
             CancellationToken cancellationToken)
         {
             var entities = DbSet
+                .OrderBy(e => e.Id)
                 .Skip((pagingParameters.PageNumber - 1) * pagingParameters.PageSize)
                 .Take(pagingParameters.PageSize);
             return trackChanges 
@@ -41,6 +42,7 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
         {
             var entities = DbSet
                 .Where(condition)
+                .OrderBy(e => e.Id)
                 .Skip((pagingParameters.PageNumber - 1) * pagingParameters.PageSize)
                 .Take(pagingParameters.PageSize);
             return trackChanges 
