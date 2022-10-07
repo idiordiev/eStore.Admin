@@ -22,8 +22,7 @@ namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetAllPaged
 
         public async Task<IEnumerable<KeyboardResponse>> Handle(GetAllKeyboardsPagedQuery request, CancellationToken cancellationToken)
         {
-            var pagingParams = new PagingParameters(request.PageSize, request.PageNumber);
-            var keyboards = await _unitOfWork.KeyboardRepository.GetAllPagedAsync(pagingParams, false, cancellationToken);
+            var keyboards = await _unitOfWork.KeyboardRepository.GetAllPagedAsync(request.PagingParameters, false, cancellationToken);
             return _mapper.Map<IEnumerable<KeyboardResponse>>(keyboards);
         }
     }

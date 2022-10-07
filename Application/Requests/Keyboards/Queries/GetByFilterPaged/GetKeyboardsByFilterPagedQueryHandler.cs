@@ -26,11 +26,9 @@ namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetByFilterPaged
 
         public async Task<IEnumerable<KeyboardResponse>> Handle(GetKeyboardsByFilterPagedQuery request, CancellationToken cancellationToken)
         {
-            var pagingParams = new PagingParameters(request.PageSize, request.PageNumber);
-            var filter = _mapper.Map<KeyboardFilterModel>(request);
-            var predicate = _filterExpressionFactory.CreateExpression(filter);
+            var predicate = _filterExpressionFactory.CreateExpression(request.FilterModel);
             var keyboards =
-                await _unitOfWork.KeyboardRepository.GetByConditionPagedAsync(predicate, pagingParams, false, cancellationToken);
+                await _unitOfWork.KeyboardRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false, cancellationToken);
             return _mapper.Map<IEnumerable<KeyboardResponse>>(keyboards);
         }
     }
