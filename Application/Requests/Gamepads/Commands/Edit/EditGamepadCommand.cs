@@ -6,7 +6,12 @@ namespace eStore_Admin.Application.Requests.Gamepads.Commands.Edit
 {
     public class EditGamepadCommand : IRequest<GamepadResponse>
     {
-        public int GamepadId { get; set; }
+        public EditGamepadCommand(int gamepadId)
+        {
+            GamepadId = gamepadId;
+        }
+
+        public int GamepadId { get; }
         public GamepadRequest Gamepad { get; set; }
     }
 }

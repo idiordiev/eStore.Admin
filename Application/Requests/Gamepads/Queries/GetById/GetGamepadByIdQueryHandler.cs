@@ -7,18 +7,18 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.Gamepads.Queries.GetById
 {
-    public class GetGamepadByIdAsyncQueryHandler : IRequestHandler<GetGamepadByIdAsyncQuery, GamepadResponse>
+    public class GetGamepadByIdQueryHandler : IRequestHandler<GetGamepadByIdQuery, GamepadResponse>
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetGamepadByIdAsyncQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetGamepadByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<GamepadResponse> Handle(GetGamepadByIdAsyncQuery request, CancellationToken cancellationToken)
+        public async Task<GamepadResponse> Handle(GetGamepadByIdQuery request, CancellationToken cancellationToken)
         {
             var gamepad = await _unitOfWork.GamepadRepository.GetByIdAsync(request.GamepadId, false, cancellationToken);
             return _mapper.Map<GamepadResponse>(gamepad);

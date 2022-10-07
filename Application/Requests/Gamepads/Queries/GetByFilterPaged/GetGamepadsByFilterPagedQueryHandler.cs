@@ -28,13 +28,8 @@ namespace eStore_Admin.Application.Requests.Gamepads.Queries.GetByFilterPaged
 
         public async Task<IEnumerable<GamepadResponse>> Handle(GetGamepadsByFilterPagedQuery request, CancellationToken cancellationToken)
         {
-            var pagingParams = new PagingParameters(request.PageSize, request.PageNumber);
-            var filterModel = _mapper.Map<GamepadFilterModel>(request);
-            if (cancellationToken.IsCancellationRequested)
-                throw new OperationCanceledException("The query has been cancelled.");
-
-            var predicate = _filterExpressionFactory.CreateExpression(filterModel);
-            var gamepads = await _unitOfWork.GamepadRepository.GetByConditionPagedAsync(predicate, pagingParams, false, cancellationToken);
+            var predicate = _filterExpressionFactory.CreateExpression(request.FilterModel);
+            var gamepads = await _unitOfWork.GamepadRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false, cancellationToken);
             return _mapper.Map<IEnumerable<GamepadResponse>>(gamepads);
         }
     }

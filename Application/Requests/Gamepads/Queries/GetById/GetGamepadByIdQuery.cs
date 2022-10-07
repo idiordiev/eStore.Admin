@@ -3,9 +3,9 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.Gamepads.Queries.GetById
 {
-    public class GetGamepadByIdAsyncQuery : IRequest<GamepadResponse>
+    public class GetGamepadByIdQuery : IRequest<GamepadResponse>
     {
-        public GetGamepadByIdAsyncQuery(int gamepadId)
+        public GetGamepadByIdQuery(int gamepadId)
         {
             GamepadId = gamepadId;
         }

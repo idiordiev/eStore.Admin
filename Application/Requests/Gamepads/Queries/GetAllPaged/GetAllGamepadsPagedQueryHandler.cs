@@ -22,8 +22,7 @@ namespace eStore_Admin.Application.Requests.Gamepads.Queries.GetAllPaged
 
         public async Task<IEnumerable<GamepadResponse>> Handle(GetAllGamepadsPagedQuery request, CancellationToken cancellationToken)
         {
-            var pagingParams = new PagingParameters(request.PageSize, request.PageNumber);
-            var gamepads = await _unitOfWork.GamepadRepository.GetAllPagedAsync(pagingParams, false, cancellationToken);
+            var gamepads = await _unitOfWork.GamepadRepository.GetAllPagedAsync(request.PagingParameters, false, cancellationToken);
             return _mapper.Map<IEnumerable<GamepadResponse>>(gamepads);
         }
     }

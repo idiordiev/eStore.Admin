@@ -4,6 +4,11 @@ namespace eStore_Admin.Application.Requests.Gamepads.Commands.Delete
 {
     public class DeleteGamepadCommand : IRequest<bool>
     {
-        public int GamepadId { get; set; }
+        public DeleteGamepadCommand(int gamepadId)
+        {
+            GamepadId = gamepadId;
+        }
+
+        public int GamepadId { get; }
     }
 }
