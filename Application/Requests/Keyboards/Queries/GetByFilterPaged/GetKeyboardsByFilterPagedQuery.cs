@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using eStore_Admin.Application.Responses;
+using MediatR;
 
-namespace eStore_Admin.Application.Filtering.Models
+namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetByFilterPaged
 {
-    public class KeyboardFilterModel
+    public class GetKeyboardsByFilterPagedQuery : IRequest<IEnumerable<KeyboardResponse>>
     {
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        
         public ICollection<bool> IsDeletedValues { get; set; }
         public string Name { get; set; }
         public ICollection<string> Manufacturers { get; set; }
