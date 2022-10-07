@@ -28,10 +28,8 @@ namespace eStore_Admin.Application.Requests.Customers.Queries.GetByFilterPaged
         public async Task<IEnumerable<CustomerResponse>> Handle(GetCustomerByFilterPagedQuery request,
             CancellationToken cancellationToken)
         {
-            var pagingParameters = new PagingParameters(request.PageSize, request.PageNumber);
-            var filterModel = _mapper.Map<CustomerFilterModel>(request);
-            var predicate = _filterExpressionFactory.CreateExpression(filterModel);
-            var customers = await _unitOfWork.CustomerRepository.GetByConditionPagedAsync(predicate, pagingParameters, false,
+            var predicate = _filterExpressionFactory.CreateExpression(request.FilterModel);
+            var customers = await _unitOfWork.CustomerRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false,
                 cancellationToken);
 
             return _mapper.Map<IEnumerable<CustomerResponse>>(customers);

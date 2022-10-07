@@ -6,7 +6,12 @@ namespace eStore_Admin.Application.Requests.Customers.Commands.Edit
 {
     public class EditCustomerCommand : IRequest<CustomerResponse>
     {
-        public int CustomerId { get; set; }
+        public EditCustomerCommand(int customerId)
+        {
+            CustomerId = customerId;
+        }
+
+        public int CustomerId { get; }
         public CustomerRequest Customer { get; set; }
     }
 }

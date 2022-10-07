@@ -24,8 +24,7 @@ namespace eStore_Admin.Application.Requests.Customers.Queries.GetAllPaged
         public async Task<IEnumerable<CustomerResponse>> Handle(GetAllCustomersPagedQuery request,
             CancellationToken cancellationToken)
         {
-            var pagingParameters = new PagingParameters(request.PageSize, request.PageNumber);
-            var customers = await _unitOfWork.CustomerRepository.GetAllPagedAsync(pagingParameters, false, cancellationToken);
+            var customers = await _unitOfWork.CustomerRepository.GetAllPagedAsync(request.PagingParameters, false, cancellationToken);
             var response = _mapper.Map<IEnumerable<CustomerResponse>>(customers);
             return response;
         }

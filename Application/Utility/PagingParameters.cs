@@ -4,6 +4,9 @@
     {
         private const int MaxPageSize = 100;
 
+        private const int DefaultPageSize = 10;
+        private const int DefaultPageNumber = 1;
+
         private int _pageNumber;
         private int _pageSize;
 
@@ -22,13 +25,21 @@
         public int PageNumber
         {
             get => _pageNumber;
-            set => _pageNumber = value > 0 ? value : 1;
+            set => _pageNumber = value < 1 ? DefaultPageNumber : value;
         }
 
         public int PageSize
         {
             get => _pageSize;
-            set => _pageSize = value < MaxPageSize ? value : MaxPageSize;
+            set
+            {
+                if (value < 1)
+                    _pageSize = DefaultPageSize;
+                else if (value > MaxPageSize)
+                    _pageSize = MaxPageSize;
+                else
+                    _pageSize = value;
+            }
         }
     }
 }
