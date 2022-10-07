@@ -8,7 +8,13 @@ namespace eStore_Admin.Infrastructure.Extensions
 {
     public static class ConfigureServicesExtensions
     {
-        public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
+        public static void AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddApplicationDbContext(configuration);
+            services.AddUnitOfWork();
+        }
+        
+        private static void AddApplicationDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationContext>(options =>
             {
@@ -16,7 +22,7 @@ namespace eStore_Admin.Infrastructure.Extensions
             });
         }
         
-        public static void AddUnitOfWork(this IServiceCollection services)
+        private static void AddUnitOfWork(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
