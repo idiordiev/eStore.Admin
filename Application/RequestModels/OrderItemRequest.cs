@@ -2,6 +2,7 @@
 {
     public class OrderItemRequest
     {
+        public bool IsDeleted { get; set; }
         public int OrderId { get; set; }
         public decimal UnitPrice { get; set; }
         public int GoodsId { get; set; }

@@ -2,6 +2,7 @@
 {
     public class KeyboardSwitchRequest
     {
+        public bool IsDeleted { get; set; }
         public string Name { get; set; }
         public int ManufacturerId { get; set; }
         public bool IsTactile { get; set; }
