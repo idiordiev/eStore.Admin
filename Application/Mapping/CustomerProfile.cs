@@ -12,7 +12,6 @@ namespace eStore_Admin.Application.Mapping
         {
             CreateMap<Customer, CustomerResponse>();
             CreateMap<CustomerRequest, Customer>();
-            CreateMap<CustomerRequest, CustomerFilterModel>();
         }
     }
 }

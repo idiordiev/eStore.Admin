@@ -12,7 +12,6 @@ namespace eStore_Admin.Application.Mapping
         {
             CreateMap<Keyboard, KeyboardResponse>();
             CreateMap<KeyboardRequest, Keyboard>();
-            CreateMap<KeyboardRequest, KeyboardFilterModel>();
         }
     }
 }
