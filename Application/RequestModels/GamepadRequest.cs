@@ -4,13 +4,13 @@
     {
         public bool IsDeleted { get; set; }
         public string Name { get; set; }
-        public int ManufacturerId { get; set; }
+        public string Manufacturer { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public string ThumbnailImageUrl { get; set; }
         public string BigImageUrl { get; set; }
-        public int ConnectionTypeId { get; set; }
-        public int FeedbackId { get; set; }
+        public string ConnectionType { get; set; }
+        public string Feedback { get; set; }
         public float Weight { get; set; }
     }
 }
