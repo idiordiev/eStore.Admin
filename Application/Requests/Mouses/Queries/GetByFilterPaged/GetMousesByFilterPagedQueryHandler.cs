@@ -2,9 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using eStore_Admin.Application.Filtering.Models;
 using eStore_Admin.Application.Interfaces.Filtering;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Mouses.Queries.GetByFilterPaged
@@ -13,18 +15,18 @@ namespace eStore_Admin.Application.Requests.Mouses.Queries.GetByFilterPaged
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IMouseFilterExpressionFactory _filterExpressionFactory;
+        private readonly IPredicateFactory<Mouse, MouseFilterModel> _predicateFactory;
 
-        public GetMousesByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IMouseFilterExpressionFactory filterExpressionFactory)
+        public GetMousesByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IPredicateFactory<Mouse, MouseFilterModel> predicateFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _filterExpressionFactory = filterExpressionFactory;
+            _predicateFactory = predicateFactory;
         }
 
         public async Task<IEnumerable<MouseResponse>> Handle(GetMousesByFilterPagedQuery request, CancellationToken cancellationToken)
         {
-            var predicate = _filterExpressionFactory.CreateExpression(request.FilterModel);
+            var predicate = _predicateFactory.CreateExpression(request.FilterModel);
             var mouses = await _unitOfWork.MouseRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false,
                 cancellationToken);
             return _mapper.Map<IEnumerable<MouseResponse>>(mouses);

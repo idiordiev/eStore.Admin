@@ -7,6 +7,7 @@ using eStore_Admin.Application.Interfaces.Filtering;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Responses;
 using eStore_Admin.Application.Utility;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetByFilterPaged
@@ -15,18 +16,18 @@ namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetByFilterPaged
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IKeyboardFilterExpressionFactory _filterExpressionFactory;
+        private readonly IPredicateFactory<Keyboard, KeyboardFilterModel> _predicateFactory;
 
-        public GetKeyboardsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IKeyboardFilterExpressionFactory filterExpressionFactory)
+        public GetKeyboardsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IPredicateFactory<Keyboard, KeyboardFilterModel> predicateFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _filterExpressionFactory = filterExpressionFactory;
+            _predicateFactory = predicateFactory;
         }
 
         public async Task<IEnumerable<KeyboardResponse>> Handle(GetKeyboardsByFilterPagedQuery request, CancellationToken cancellationToken)
         {
-            var predicate = _filterExpressionFactory.CreateExpression(request.FilterModel);
+            var predicate = _predicateFactory.CreateExpression(request.FilterModel);
             var keyboards =
                 await _unitOfWork.KeyboardRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false, cancellationToken);
             return _mapper.Map<IEnumerable<KeyboardResponse>>(keyboards);

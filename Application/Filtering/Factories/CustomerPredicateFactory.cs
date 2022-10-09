@@ -9,7 +9,7 @@ using eStore_Admin.Domain.Entities;
 
 namespace eStore_Admin.Application.Filtering.Factories
 {
-    public class CustomerFilterExpressionFactory : ICustomerFilterExpressionFactory
+    public class CustomerPredicateFactory : IPredicateFactory<Customer, CustomerFilterModel>
     {
         public Expression<Func<Customer, bool>> CreateExpression(CustomerFilterModel filterModel)
         {

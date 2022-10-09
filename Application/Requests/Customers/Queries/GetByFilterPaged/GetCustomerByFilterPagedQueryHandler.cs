@@ -7,28 +7,28 @@ using eStore_Admin.Application.Interfaces.Filtering;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Responses;
 using eStore_Admin.Application.Utility;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Customers.Queries.GetByFilterPaged
 {
     public class GetCustomerByFilterPagedQueryHandler : IRequestHandler<GetCustomerByFilterPagedQuery, IEnumerable<CustomerResponse>>
     {
-        private readonly ICustomerFilterExpressionFactory _filterExpressionFactory;
+        private readonly IPredicateFactory<Customer, CustomerFilterModel> _predicateFactory;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetCustomerByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper,
-            ICustomerFilterExpressionFactory filterExpressionFactory)
+        public GetCustomerByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IPredicateFactory<Customer, CustomerFilterModel> predicateFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _filterExpressionFactory = filterExpressionFactory;
+            _predicateFactory = predicateFactory;
         }
 
         public async Task<IEnumerable<CustomerResponse>> Handle(GetCustomerByFilterPagedQuery request,
             CancellationToken cancellationToken)
         {
-            var predicate = _filterExpressionFactory.CreateExpression(request.FilterModel);
+            var predicate = _predicateFactory.CreateExpression(request.FilterModel);
             var customers = await _unitOfWork.CustomerRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false,
                 cancellationToken);
 

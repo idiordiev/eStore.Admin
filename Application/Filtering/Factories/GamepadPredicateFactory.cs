@@ -9,7 +9,7 @@ using eStore_Admin.Domain.Entities;
 
 namespace eStore_Admin.Application.Filtering.Factories
 {
-    public class GamepadFilterExpressionFactory : IGamepadFilterExpressionFactory
+    public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterModel>
     {
         public Expression<Func<Gamepad, bool>> CreateExpression(GamepadFilterModel filterModel)
         {

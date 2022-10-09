@@ -9,7 +9,7 @@ using eStore_Admin.Domain.Entities;
 
 namespace eStore_Admin.Application.Filtering.Factories
 {
-    public class MousepadFilterExpressionFactory : IMousepadFilterExpressionFactory
+    public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilterModel>
     {
         public Expression<Func<Mousepad, bool>> CreateExpression(MousepadFilterModel filterModel)
         {

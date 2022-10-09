@@ -9,7 +9,7 @@ using eStore_Admin.Domain.Entities;
 
 namespace eStore_Admin.Application.Filtering.Factories
 {
-    public class KeyboardFilterExpressionFactory : IKeyboardFilterExpressionFactory
+    public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilterModel>
     {
         public Expression<Func<Keyboard, bool>> CreateExpression(KeyboardFilterModel filterModel)
         {

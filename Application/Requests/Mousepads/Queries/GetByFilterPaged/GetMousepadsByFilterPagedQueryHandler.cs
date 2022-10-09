@@ -2,9 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using eStore_Admin.Application.Filtering.Models;
 using eStore_Admin.Application.Interfaces.Filtering;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Mousepads.Queries.GetByFilterPaged
@@ -13,18 +15,18 @@ namespace eStore_Admin.Application.Requests.Mousepads.Queries.GetByFilterPaged
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IMousepadFilterExpressionFactory _filterExpressionFactory;
+        private readonly IPredicateFactory<Mousepad, MousepadFilterModel> _predicateFactory;
 
-        public GetMousepadsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IMousepadFilterExpressionFactory filterExpressionFactory)
+        public GetMousepadsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IPredicateFactory<Mousepad, MousepadFilterModel> predicateFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _filterExpressionFactory = filterExpressionFactory;
+            _predicateFactory = predicateFactory;
         }
 
         public async Task<IEnumerable<MousepadResponse>> Handle(GetMousepadsByFilterPagedQuery request, CancellationToken cancellationToken)
         {
-            var predicate = _filterExpressionFactory.CreateExpression(request.FilterModel);
+            var predicate = _predicateFactory.CreateExpression(request.FilterModel);
             var mousepads =
                 await _unitOfWork.MousepadRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false,
                     cancellationToken);
