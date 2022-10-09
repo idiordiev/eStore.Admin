@@ -1,11 +1,11 @@
 ﻿using eStore_Admin.Application.RequestModels;
 using FluentValidation;
 
-namespace eStore_Admin.Application.Validation.Keyboards
+namespace eStore_Admin.Application.Validation.Mouses
 {
-    public class KeyboardRequestValidator : AbstractValidator<KeyboardRequest>
+    public class MouseRequestValidator : AbstractValidator<MouseRequest>
     {
-        public KeyboardRequestValidator()
+        public MouseRequestValidator()
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
@@ -16,29 +16,23 @@ namespace eStore_Admin.Application.Validation.Keyboards
             RuleFor(x => x.Manufacturer)
                 .NotEmpty()
                 .MaximumLength(150);
-            RuleFor(x => x.Type)
-                .NotEmpty()
-                .MaximumLength(50);
-            RuleFor(x => x.Size)
-                .NotEmpty()
-                .MaximumLength(50);
-            RuleFor(x => x.KeycapMaterial)
-                .MaximumLength(100);
-            RuleFor(x => x.FrameMaterial)
-                .MaximumLength(50);
-            RuleFor(x => x.KeyRollover)
-                .MaximumLength(20);
             RuleFor(x => x.Backlight)
                 .MaximumLength(50);
             RuleFor(x => x.ConnectionType)
                 .MaximumLength(50);
+            RuleFor(x => x.Weight)
+                .GreaterThanOrEqualTo(0);
+            RuleFor(x => x.MinSensorDPI)
+                .GreaterThanOrEqualTo(0);
+            RuleFor(x => x.MaxSensorDPI)
+                .GreaterThanOrEqualTo(0);
+            RuleFor(x => x.ButtonsQuantity)
+                .GreaterThanOrEqualTo(0);
             RuleFor(x => x.Length)
                 .GreaterThanOrEqualTo(0);
             RuleFor(x => x.Width)
                 .GreaterThanOrEqualTo(0);
             RuleFor(x => x.Height)
-                .GreaterThanOrEqualTo(0);
-            RuleFor(x => x.Weight)
                 .GreaterThanOrEqualTo(0);
         }
     }
