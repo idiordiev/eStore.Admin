@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
+using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Application.Responses;
 using eStore_Admin.Domain.Entities;
 using MediatR;
@@ -13,21 +14,25 @@ namespace eStore_Admin.Application.Requests.Customers.Commands.Add
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILoggingService _logger;
 
-        public AddCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public AddCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<CustomerResponse> Handle(AddCustomerCommand request, CancellationToken cancellationToken)
         {
             var customer = _mapper.Map<Customer>(request.Customer);
-            if (cancellationToken.IsCancellationRequested)
-                throw new OperationCanceledException("The operation of adding new customer has been cancelled.");
+            
+            cancellationToken.ThrowIfCancellationRequested();
 
             _unitOfWork.CustomerRepository.Add(customer);
             await _unitOfWork.SaveAsync(cancellationToken);
+            
+            _logger.LogInformation("The new customer with id {0} has been added.", customer.Id);
 
             return _mapper.Map<CustomerResponse>(customer);
         }

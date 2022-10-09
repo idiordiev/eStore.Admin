@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
+using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Application.Responses;
 using MediatR;
 
@@ -13,11 +14,15 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Edit
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILoggingService _logger;
+        private readonly IDateTimeService _dateTimeService;
 
-        public EditKeyboardCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        public EditKeyboardCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ILoggingService logger, IDateTimeService dateTimeService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _logger = logger;
+            _dateTimeService = dateTimeService;
         }
 
         public async Task<KeyboardResponse> Handle(EditKeyboardCommand request, CancellationToken cancellationToken)
@@ -26,11 +31,13 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Edit
             if (keyboard is null)
                 throw new KeyNotFoundException($"The keyboard with the id {request.KeyboardId} has not been found.");
 
-            if (cancellationToken.IsCancellationRequested)
-                throw new OperationCanceledException("The operation has been cancelled.");
+            cancellationToken.ThrowIfCancellationRequested();
 
             _mapper.Map(request.Keyboard, keyboard);
+            keyboard.LastModified = _dateTimeService.Now();
             await _unitOfWork.SaveAsync(cancellationToken);
+            
+            _logger.LogInformation("The keyboard with id {0} has been deleted.", keyboard.Id);
 
             return _mapper.Map<KeyboardResponse>(keyboard);
         }
