@@ -7,7 +7,7 @@ namespace eStore_Admin.Application.Responses
         public int Id { get; set; }
         public bool IsDeleted { get; set; }
         public string Name { get; set; }
-        public int ManufacturerId { get; set; }
+        public string ManufacturerId { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public string ThumbnailImageUrl { get; set; }
@@ -18,8 +18,8 @@ namespace eStore_Admin.Application.Responses
         public string SensorName { get; set; }
         public int MinSensorDPI { get; set; }
         public int MaxSensorDPI { get; set; }
-        public int ConnectionTypeId { get; set; }
-        public int BacklightId { get; set; }
+        public string ConnectionType { get; set; }
+        public string Backlight { get; set; }
         public float Length { get; set; }
         public float Width { get; set; }
         public float Height { get; set; }
