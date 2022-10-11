@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/csharp,visualstudio,rider,visualstudiocode
-# Edit at https://www.toptal.com/developers/gitignore?templates=csharp,visualstudio,rider,visualstudiocode
+# Created by https://www.toptal.com/developers/gitignore/api/csharp,visualstudio,rider,visualstudiocode,angular
+# Edit at https://www.toptal.com/developers/gitignore?templates=csharp,visualstudio,rider,visualstudiocode,angular
 
 ### Csharp ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -684,5 +684,37 @@ fabric.properties
 
 # Ignore code-workspaces
 *.code-workspace
+
+### Angular ###
+## Angular ##
+# compiled output
+dist/
+tmp/
+app/**/*.js
+app/**/*.js.map
+
+# dependencies
+node_modules/
+bower_components/
+
+# IDEs and editors
+.idea/
+
+# misc
+.sass-cache/
+connect.lock/
+coverage/
+libpeerconnection.log/
+npm-debug.log
+testem.log
+typings/
+.angular/
+
+# e2e
+e2e/*.js
+e2e/*.map
+
+# System Files
+.DS_Store/
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,visualstudio,rider
