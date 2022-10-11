@@ -38,6 +38,7 @@ namespace eStore_Admin.Application.Extensions
             services.AddScoped<IPredicateFactory<Keyboard, KeyboardFilterModel>, KeyboardPredicateFactory>();
             services.AddScoped<IPredicateFactory<Mouse, MouseFilterModel>, MousePredicateFactory>();
             services.AddScoped<IPredicateFactory<Mousepad, MousepadFilterModel>, MousepadPredicateFactory>();
+            services.AddScoped<IPredicateFactory<Order, OrderFilterModel>, OrderPredicateFactory>();
         }
 
         private static void AddValidation(this IServiceCollection services)
