@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Filtering.Models;
-using eStore_Admin.Application.RequestModels;
+using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Requests.Mousepads.Commands.Add;
 using eStore_Admin.Application.Requests.Mousepads.Commands.Delete;
 using eStore_Admin.Application.Requests.Mousepads.Commands.Edit;
@@ -52,7 +52,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] MousepadRequest mousepad, CancellationToken cancellationToken)
+        public async Task<IActionResult> Add([FromBody] MousepadDto mousepad, CancellationToken cancellationToken)
         {
             var request = new AddMousepadCommand() { Mousepad = mousepad };
             var response = await _mediator.Send(request, cancellationToken);
@@ -61,7 +61,7 @@ namespace eStore_Admin.WebApi.Controllers
         
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] MousepadRequest mousepad, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id, [FromBody] MousepadDto mousepad, CancellationToken cancellationToken)
         {
             var request = new EditMousepadCommand(id) { Mousepad = mousepad };
             var response = await _mediator.Send(request, cancellationToken);

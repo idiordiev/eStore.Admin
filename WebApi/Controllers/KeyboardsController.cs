@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Filtering.Models;
-using eStore_Admin.Application.RequestModels;
+using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Requests.Keyboards.Commands.Add;
 using eStore_Admin.Application.Requests.Keyboards.Commands.Delete;
 using eStore_Admin.Application.Requests.Keyboards.Commands.Edit;
@@ -48,7 +48,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] KeyboardRequest keyboard, CancellationToken cancellationToken)
+        public async Task<IActionResult> Add([FromBody] KeyboardDto keyboard, CancellationToken cancellationToken)
         {
             var request = new AddKeyboardCommand() { Keyboard = keyboard };
             var response = await _mediator.Send(request, cancellationToken);
@@ -57,7 +57,7 @@ namespace eStore_Admin.WebApi.Controllers
         
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] KeyboardRequest keyboard, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id, [FromBody] KeyboardDto keyboard, CancellationToken cancellationToken)
         {
             var request = new EditKeyboardCommand(id) { Keyboard = keyboard };
             var response = await _mediator.Send(request, cancellationToken);

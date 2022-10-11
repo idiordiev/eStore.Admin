@@ -1,6 +1,6 @@
-﻿namespace eStore_Admin.Application.RequestModels
+﻿namespace eStore_Admin.Application.RequestDTOs
 {
-    public class OrderRequest
+    public class OrderDto
     {
         public bool IsDeleted { get; set; }
         public int CustomerId { get; set; }

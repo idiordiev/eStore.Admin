@@ -1,4 +1,4 @@
-﻿using eStore_Admin.Application.RequestModels;
+﻿using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Responses;
 using MediatR;
 
@@ -12,6 +12,6 @@ namespace eStore_Admin.Application.Requests.Customers.Commands.Edit
         }
 
         public int CustomerId { get; }
-        public CustomerRequest Customer { get; set; }
+        public CustomerDto Customer { get; set; }
     }
 }

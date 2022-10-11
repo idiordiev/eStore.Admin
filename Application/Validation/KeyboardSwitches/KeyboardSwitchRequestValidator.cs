@@ -1,9 +1,9 @@
-﻿using eStore_Admin.Application.RequestModels;
+﻿using eStore_Admin.Application.RequestDTOs;
 using FluentValidation;
 
 namespace eStore_Admin.Application.Validation.KeyboardSwitches
 {
-    public class KeyboardSwitchRequestValidator : AbstractValidator<KeyboardSwitchRequest>
+    public class KeyboardSwitchRequestValidator : AbstractValidator<KeyboardSwitchDto>
     {
         public KeyboardSwitchRequestValidator()
         {

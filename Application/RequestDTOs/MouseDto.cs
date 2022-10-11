@@ -1,6 +1,6 @@
-﻿namespace eStore_Admin.Application.RequestModels
+﻿namespace eStore_Admin.Application.RequestDTOs
 {
-    public class KeyboardRequest
+    public class MouseDto
     {
         public bool IsDeleted { get; set; }
         public string Name { get; set; }
@@ -9,14 +9,12 @@
         public decimal Price { get; set; }
         public string ThumbnailImageUrl { get; set; }
         public string BigImageUrl { get; set; }
-        public string Type { get; set; }
-        public string Size { get; set; }
-        public int? SwitchId { get; set; }
-        public string KeycapMaterial { get; set; }
-        public string FrameMaterial { get; set; }
-        public string KeyRollover { get; set; }
-        public string Backlight { get; set; }
+        public int ButtonsQuantity { get; set; }
+        public string SensorName { get; set; }
+        public int MinSensorDPI { get; set; }
+        public int MaxSensorDPI { get; set; }
         public string ConnectionType { get; set; }
+        public string Backlight { get; set; }
         public float Length { get; set; }
         public float Width { get; set; }
         public float Height { get; set; }

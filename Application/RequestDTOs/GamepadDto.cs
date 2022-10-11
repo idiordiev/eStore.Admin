@@ -1,6 +1,6 @@
-﻿namespace eStore_Admin.Application.RequestModels
+﻿namespace eStore_Admin.Application.RequestDTOs
 {
-    public class GamepadRequest
+    public class GamepadDto
     {
         public bool IsDeleted { get; set; }
         public string Name { get; set; }

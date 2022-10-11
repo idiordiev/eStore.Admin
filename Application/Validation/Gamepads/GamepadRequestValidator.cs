@@ -1,9 +1,9 @@
-﻿using eStore_Admin.Application.RequestModels;
+﻿using eStore_Admin.Application.RequestDTOs;
 using FluentValidation;
 
 namespace eStore_Admin.Application.Validation.Gamepads
 {
-    public class GamepadRequestValidator : AbstractValidator<GamepadRequest>
+    public class GamepadRequestValidator : AbstractValidator<GamepadDto>
     {
         public GamepadRequestValidator()
         {

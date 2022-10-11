@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Filtering.Models;
-using eStore_Admin.Application.RequestModels;
+using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Requests.Gamepads.Commands.Add;
 using eStore_Admin.Application.Requests.Gamepads.Commands.Delete;
 using eStore_Admin.Application.Requests.Gamepads.Commands.Edit;
@@ -48,7 +48,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] GamepadRequest gamepad, CancellationToken cancellationToken)
+        public async Task<IActionResult> Add([FromBody] GamepadDto gamepad, CancellationToken cancellationToken)
         {
             var request = new AddGamepadCommand() { Gamepad = gamepad };
             var response = await _mediator.Send(request, cancellationToken);
@@ -57,7 +57,7 @@ namespace eStore_Admin.WebApi.Controllers
         
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] GamepadRequest gamepad, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id, [FromBody] GamepadDto gamepad, CancellationToken cancellationToken)
         {
             var request = new EditGamepadCommand(id) { Gamepad = gamepad };
             var response = await _mediator.Send(request, cancellationToken);

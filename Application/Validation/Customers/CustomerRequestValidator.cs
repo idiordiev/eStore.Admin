@@ -1,10 +1,10 @@
 ﻿using System.Text.RegularExpressions;
-using eStore_Admin.Application.RequestModels;
+using eStore_Admin.Application.RequestDTOs;
 using FluentValidation;
 
 namespace eStore_Admin.Application.Validation.Customers
 {
-    public class CustomerRequestValidator : AbstractValidator<CustomerRequest>
+    public class CustomerRequestValidator : AbstractValidator<CustomerDto>
     {
         public CustomerRequestValidator()
         {

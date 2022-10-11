@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Filtering.Models;
-using eStore_Admin.Application.RequestModels;
+using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Requests.Customers.Commands.Add;
 using eStore_Admin.Application.Requests.Customers.Commands.Delete;
 using eStore_Admin.Application.Requests.Customers.Commands.Edit;
@@ -48,7 +48,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CustomerRequest customer, CancellationToken cancellationToken)
+        public async Task<IActionResult> Add([FromBody] CustomerDto customer, CancellationToken cancellationToken)
         {
             var request = new AddCustomerCommand() { Customer = customer };
             var response = await _mediator.Send(request, cancellationToken);
@@ -57,7 +57,7 @@ namespace eStore_Admin.WebApi.Controllers
         
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] CustomerRequest customer, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id, [FromBody] CustomerDto customer, CancellationToken cancellationToken)
         {
             var request = new EditCustomerCommand(id) { Customer = customer };
             var response = await _mediator.Send(request, cancellationToken);

@@ -1,4 +1,4 @@
-﻿using eStore_Admin.Application.RequestModels;
+﻿using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Responses;
 using MediatR;
 
@@ -12,6 +12,6 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Edit
         }
 
         public int OrderId { get; }
-        public OrderRequest Order { get; set; }
+        public OrderDto Order { get; set; }
     }
 }

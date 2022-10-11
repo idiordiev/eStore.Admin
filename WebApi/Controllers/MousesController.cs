@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Filtering.Models;
-using eStore_Admin.Application.RequestModels;
+using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Requests.Mouses.Commands.Add;
 using eStore_Admin.Application.Requests.Mouses.Commands.Delete;
 using eStore_Admin.Application.Requests.Mouses.Commands.Edit;
@@ -52,7 +52,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] MouseRequest mouse, CancellationToken cancellationToken)
+        public async Task<IActionResult> Add([FromBody] MouseDto mouse, CancellationToken cancellationToken)
         {
             var request = new AddMouseCommand() { Mouse = mouse };
             var response = await _mediator.Send(request, cancellationToken);
@@ -61,7 +61,7 @@ namespace eStore_Admin.WebApi.Controllers
         
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] MouseRequest mouse, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id, [FromBody] MouseDto mouse, CancellationToken cancellationToken)
         {
             var request = new EditMouseCommand(id) { Mouse = mouse };
             var response = await _mediator.Send(request, cancellationToken);

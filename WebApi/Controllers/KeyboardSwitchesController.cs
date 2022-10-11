@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using eStore_Admin.Application.RequestModels;
+using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Add;
 using eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Delete;
 using eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Edit;
@@ -46,7 +46,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] KeyboardSwitchRequest keyboardSwitch, CancellationToken cancellationToken)
+        public async Task<IActionResult> Add([FromBody] KeyboardSwitchDto keyboardSwitch, CancellationToken cancellationToken)
         {
             var request = new AddKeyboardSwitchCommand() { KeyboardSwitch = keyboardSwitch };
             var response = await _mediator.Send(request, cancellationToken);
@@ -55,7 +55,7 @@ namespace eStore_Admin.WebApi.Controllers
         
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] KeyboardSwitchRequest keyboardSwitch, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id, [FromBody] KeyboardSwitchDto keyboardSwitch, CancellationToken cancellationToken)
         {
             var request = new EditKeyboardSwitchCommand(id) { KeyboardSwitch = keyboardSwitch };
             var response = await _mediator.Send(request, cancellationToken);

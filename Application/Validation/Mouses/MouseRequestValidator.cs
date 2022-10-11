@@ -1,9 +1,9 @@
-﻿using eStore_Admin.Application.RequestModels;
+﻿using eStore_Admin.Application.RequestDTOs;
 using FluentValidation;
 
 namespace eStore_Admin.Application.Validation.Mouses
 {
-    public class MouseRequestValidator : AbstractValidator<MouseRequest>
+    public class MouseRequestValidator : AbstractValidator<MouseDto>
     {
         public MouseRequestValidator()
         {
