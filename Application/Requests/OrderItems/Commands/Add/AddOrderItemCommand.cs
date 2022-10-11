@@ -6,6 +6,12 @@ namespace eStore_Admin.Application.Requests.OrderItems.Commands.Add
 {
     public class AddOrderItemCommand : IRequest<OrderResponse>
     {
+        public AddOrderItemCommand(int orderId)
+        {
+            OrderId = orderId;
+        }
+
+        public int OrderId { get; }
         public OrderItemDto OrderItem { get; set; }
     }
 }

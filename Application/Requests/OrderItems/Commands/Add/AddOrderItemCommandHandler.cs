@@ -26,9 +26,9 @@ namespace eStore_Admin.Application.Requests.OrderItems.Commands.Add
 
         public async Task<OrderResponse> Handle(AddOrderItemCommand request, CancellationToken cancellationToken)
         {
-            var order = await _unitOfWork.OrderRepository.GetByIdWithOrderItemsAsync(request.OrderItem.OrderId, true, cancellationToken);
+            var order = await _unitOfWork.OrderRepository.GetByIdWithOrderItemsAsync(request.OrderId, true, cancellationToken);
             if (order is null) 
-                throw new KeyNotFoundException($"The order with the id {request.OrderItem.OrderId} has not been found.");
+                throw new KeyNotFoundException($"The order with the id {request.OrderId} has not been found.");
 
             var goods = await _unitOfWork.GoodsRepository.GetByIdAsync(request.OrderItem.GoodsId, false, cancellationToken);
             if (goods is null) 

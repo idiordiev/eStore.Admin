@@ -10,7 +10,7 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.OrderItems.Commands.Delete
 {
-    public class DeleteOrderItemCommandHandler : IRequestHandler<DeleteOrderItemCommand, OrderResponse>
+    public class DeleteOrderItemCommandHandler : IRequestHandler<DeleteOrderItemCommand, bool>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -23,11 +23,11 @@ namespace eStore_Admin.Application.Requests.OrderItems.Commands.Delete
             _logger = logger;
         }
 
-        public async Task<OrderResponse> Handle(DeleteOrderItemCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteOrderItemCommand request, CancellationToken cancellationToken)
         {
             var orderItem = await _unitOfWork.OrderItemRepository.GetByIdAsync(request.OrderItemId, true, cancellationToken);
             if (orderItem is null)
-                throw new KeyNotFoundException($"The order item with the id {request.OrderItemId} has not been found.");
+                return false;
 
             var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderItem.OrderId, true, cancellationToken);
             if (order is null) 
@@ -39,7 +39,7 @@ namespace eStore_Admin.Application.Requests.OrderItems.Commands.Delete
             
             _logger.LogInformation("The order with id {0} has been updated, item deleted. New total is {1}.", order.Id, order.Total);
 
-            return _mapper.Map<OrderResponse>(order);
+            return true;
         }
     }
 }
