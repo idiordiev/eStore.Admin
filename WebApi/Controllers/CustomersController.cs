@@ -25,36 +25,36 @@ namespace eStore_Admin.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] CustomerFilterModel filterModel, 
-            [FromQuery] PagingParameters pagingParameters, 
+        public async Task<IActionResult> GetAll([FromQuery] CustomerFilterModel filterModel,
+            [FromQuery] PagingParameters pagingParameters,
             CancellationToken cancellationToken)
         {
             var request = new GetCustomerByFilterPagedQuery { FilterModel = filterModel, PagingParameters = pagingParameters };
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
         }
-        
+
         [HttpGet]
         [Route("{id}", Name = "GetCustomerById")]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
             var request = new GetCustomerByIdQuery(id);
             var response = await _mediator.Send(request, cancellationToken);
-            
+
             if (response is null)
                 return NotFound();
 
             return Ok(response);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CustomerDto customer, CancellationToken cancellationToken)
         {
-            var request = new AddCustomerCommand() { Customer = customer };
+            var request = new AddCustomerCommand { Customer = customer };
             var response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetCustomerById", new { response.Id }, response);
         }
-        
+
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CustomerDto customer, CancellationToken cancellationToken)
@@ -63,7 +63,7 @@ namespace eStore_Admin.WebApi.Controllers
             var response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetCustomerById", new { response.Id }, response);
         }
-        
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)

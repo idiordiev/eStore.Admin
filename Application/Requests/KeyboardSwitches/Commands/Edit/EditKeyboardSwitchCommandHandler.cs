@@ -11,9 +11,9 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Edit
 {
     public class EditKeyboardSwitchCommandHandler : IRequestHandler<EditKeyboardSwitchCommand, KeyboardSwitchResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly ILoggingService _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public EditKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
         {
@@ -32,7 +32,7 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Edit
 
             _mapper.Map(request.KeyboardSwitch, keyboardSwitch);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The keyboard switch with id {0} has been deleted.", keyboardSwitch.Id);
 
             return _mapper.Map<KeyboardSwitchResponse>(keyboardSwitch);

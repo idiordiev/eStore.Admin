@@ -27,7 +27,7 @@ namespace eStore_Admin.Application.Filtering.Factories
 
             return expression;
         }
-        
+
         private void AddIsDeletedConstraint(ref Expression<Func<Mouse, bool>> expression, ICollection<bool> values)
         {
             if (values is not null && values.Any())
@@ -48,7 +48,7 @@ namespace eStore_Admin.Application.Filtering.Factories
             if (manufacturers is not null && manufacturers.Any())
                 expression = expression.And(mouse => manufacturers.Any(manufacturer => mouse.Manufacturer.Equals(manufacturer)));
         }
-        
+
         private void AddMinPriceConstraint(ref Expression<Func<Mouse, bool>> expression, decimal? price)
         {
             if (price is not null)
@@ -78,7 +78,7 @@ namespace eStore_Admin.Application.Filtering.Factories
             if (connectionTypes is not null && connectionTypes.Any())
                 expression = expression.And(m => connectionTypes.Any(ct => ct.Equals(m.ConnectionType)));
         }
-        
+
         private void AddBacklightConstraint(ref Expression<Func<Mouse, bool>> expression, ICollection<string> backlights)
         {
             if (backlights is not null && backlights.Any())

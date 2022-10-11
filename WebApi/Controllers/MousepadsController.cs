@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Filtering.Models;
@@ -12,7 +9,6 @@ using eStore_Admin.Application.Requests.Mousepads.Queries.GetByFilterPaged;
 using eStore_Admin.Application.Requests.Mousepads.Queries.GetById;
 using eStore_Admin.Application.Utility;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eStore_Admin.WebApi.Controllers
@@ -29,36 +25,36 @@ namespace eStore_Admin.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] MousepadFilterModel filterModel, 
-            [FromQuery] PagingParameters pagingParameters, 
+        public async Task<IActionResult> GetAll([FromQuery] MousepadFilterModel filterModel,
+            [FromQuery] PagingParameters pagingParameters,
             CancellationToken cancellationToken)
         {
             var request = new GetMousepadsByFilterPagedQuery { FilterModel = filterModel, PagingParameters = pagingParameters };
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
         }
-        
+
         [HttpGet]
         [Route("{id}", Name = "GetMousepadById")]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
             var request = new GetMousepadByIdQuery(id);
             var response = await _mediator.Send(request, cancellationToken);
-            
+
             if (response is null)
                 return NotFound();
 
             return Ok(response);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] MousepadDto mousepad, CancellationToken cancellationToken)
         {
-            var request = new AddMousepadCommand() { Mousepad = mousepad };
+            var request = new AddMousepadCommand { Mousepad = mousepad };
             var response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetMousepadById", new { response.Id }, response);
         }
-        
+
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] MousepadDto mousepad, CancellationToken cancellationToken)
@@ -67,7 +63,7 @@ namespace eStore_Admin.WebApi.Controllers
             var response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetMousepadById", new { response.Id }, response);
         }
-        
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)

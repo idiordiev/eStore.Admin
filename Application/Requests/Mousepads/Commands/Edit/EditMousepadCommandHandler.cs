@@ -11,10 +11,10 @@ namespace eStore_Admin.Application.Requests.Mousepads.Commands.Edit
 {
     public class EditMousepadCommandHandler : IRequestHandler<EditMousepadCommand, MousepadResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly ILoggingService _logger;
         private readonly IDateTimeService _dateTimeService;
+        private readonly ILoggingService _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public EditMousepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
         {
@@ -35,7 +35,7 @@ namespace eStore_Admin.Application.Requests.Mousepads.Commands.Edit
             _mapper.Map(request.Mousepad, mousepad);
             mousepad.LastModified = _dateTimeService.Now();
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The mousepad with id {0} has been deleted.", mousepad.Id);
 
             return _mapper.Map<MousepadResponse>(mousepad);

@@ -13,9 +13,9 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Edit
 {
     public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, OrderResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly ILoggingService _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public EditOrderCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
         {
@@ -33,14 +33,14 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Edit
             cancellationToken.ThrowIfCancellationRequested();
 
             _mapper.Map(request.Order, order);
-            
+
             foreach (var item in request.Order.ItemsToAdd)
             {
                 var goods = await _unitOfWork.GoodsRepository.GetByIdAsync(item.GoodsId, false, cancellationToken);
                 if (goods is null)
                     throw new KeyNotFoundException($"The goods with id {item.GoodsId} has not been found.");
-                
-                order.OrderItems.Add(new OrderItem()
+
+                order.OrderItems.Add(new OrderItem
                 {
                     IsDeleted = item.IsDeleted,
                     Goods = goods,
@@ -48,10 +48,11 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Edit
                     UnitPrice = goods.Price
                 });
             }
+
             order.Total = order.OrderItems.Where(oi => !oi.IsDeleted).Sum(oi => oi.UnitPrice * oi.Quantity);
-            
+
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The order with id {0} has been edited.", order.Id);
 
             return _mapper.Map<OrderResponse>(order);

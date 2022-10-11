@@ -13,6 +13,7 @@ namespace eStore_Admin.Application.Interfaces.Persistence
     {
         Task<IEnumerable<Order>> GetAllWithOrderItemsPagedAsync(PagingParameters pagingParameters, bool trackChanges,
             CancellationToken cancellationToken);
+
         Task<IEnumerable<Order>> GetByConditionWithOrderItemsPagedAsync(Expression<Func<Order, bool>> condition,
             PagingParameters pagingParameters, bool trackChanges, CancellationToken cancellationToken);
 

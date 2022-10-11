@@ -14,7 +14,7 @@ namespace eStore_Admin.Domain.Entities
         public float Width { get; set; }
         public float Height { get; set; }
         public float Weight { get; set; }
-        
+
         public override bool Equals(object obj)
         {
             if (obj is Mouse other)
@@ -43,9 +43,9 @@ namespace eStore_Admin.Domain.Entities
         {
             unchecked
             {
-                return Id.GetHashCode() * IsDeleted.GetHashCode() * Name.GetHashCode() * Description.GetHashCode() 
-                       * Price.GetHashCode() * ThumbnailImageUrl.GetHashCode() * BigImageUrl.GetHashCode() 
-                       * Created.GetHashCode() * LastModified.GetHashCode() * ButtonsQuantity.GetHashCode() 
+                return Id.GetHashCode() * IsDeleted.GetHashCode() * Name.GetHashCode() * Description.GetHashCode()
+                       * Price.GetHashCode() * ThumbnailImageUrl.GetHashCode() * BigImageUrl.GetHashCode()
+                       * Created.GetHashCode() * LastModified.GetHashCode() * ButtonsQuantity.GetHashCode()
                        * SensorName.GetHashCode() * MaxSensorDPI.GetHashCode() * MinSensorDPI.GetHashCode()
                        * Length.GetHashCode() * Width.GetHashCode() * Height.GetHashCode() * Weight.GetHashCode();
             }

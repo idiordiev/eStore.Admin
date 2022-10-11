@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -12,10 +11,10 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Edit
 {
     public class EditKeyboardCommandHandler : IRequestHandler<EditKeyboardCommand, KeyboardResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly ILoggingService _logger;
         private readonly IDateTimeService _dateTimeService;
+        private readonly ILoggingService _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public EditKeyboardCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ILoggingService logger, IDateTimeService dateTimeService)
         {
@@ -36,7 +35,7 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Edit
             _mapper.Map(request.Keyboard, keyboard);
             keyboard.LastModified = _dateTimeService.Now();
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The keyboard with id {0} has been deleted.", keyboard.Id);
 
             return _mapper.Map<KeyboardResponse>(keyboard);

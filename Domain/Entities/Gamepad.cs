@@ -25,7 +25,7 @@ namespace eStore_Admin.Domain.Entities
                        && BigImageUrl == other.BigImageUrl
                        && Created == other.Created
                        && LastModified == other.LastModified
-                       && Feedback== other.Feedback
+                       && Feedback == other.Feedback
                        && Math.Abs(Weight - other.Weight) < 0.01;
 
             return false;

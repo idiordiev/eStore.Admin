@@ -1,5 +1,4 @@
-﻿using eStore_Admin.Application.Responses;
-using MediatR;
+﻿using MediatR;
 
 namespace eStore_Admin.Application.Requests.OrderItems.Commands.Delete
 {

@@ -8,8 +8,8 @@ namespace eStore_Admin.Application.Requests.Mouses.Commands.Delete
 {
     public class DeleteMouseCommandHandler : IRequestHandler<DeleteMouseCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ILoggingService _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
         public DeleteMouseCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
         {
@@ -30,7 +30,7 @@ namespace eStore_Admin.Application.Requests.Mouses.Commands.Delete
 
             _unitOfWork.MouseRepository.Delete(mouse);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The mouse with id {0} has been deleted.", mouse.Id);
 
             return true;

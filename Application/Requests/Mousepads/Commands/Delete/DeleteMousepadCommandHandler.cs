@@ -8,8 +8,8 @@ namespace eStore_Admin.Application.Requests.Mousepads.Commands.Delete
 {
     public class DeleteMousepadCommandHandler : IRequestHandler<DeleteMousepadCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ILoggingService _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
         public DeleteMousepadCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
         {
@@ -30,7 +30,7 @@ namespace eStore_Admin.Application.Requests.Mousepads.Commands.Delete
 
             _unitOfWork.MousepadRepository.Delete(mousepad);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The mousepad with id {0} has been deleted.", mousepad.Id);
 
             return true;

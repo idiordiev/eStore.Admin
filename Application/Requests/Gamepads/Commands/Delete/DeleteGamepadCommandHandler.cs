@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
@@ -9,8 +8,8 @@ namespace eStore_Admin.Application.Requests.Gamepads.Commands.Delete
 {
     public class DeleteGamepadCommandHandler : IRequestHandler<DeleteGamepadCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ILoggingService _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
         public DeleteGamepadCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
         {
@@ -31,8 +30,8 @@ namespace eStore_Admin.Application.Requests.Gamepads.Commands.Delete
 
             _unitOfWork.GamepadRepository.Delete(gamepad);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
-            _logger.LogInformation("The gamepad with id {0} has been deleted.",gamepad.Id);
+
+            _logger.LogInformation("The gamepad with id {0} has been deleted.", gamepad.Id);
 
             return true;
         }

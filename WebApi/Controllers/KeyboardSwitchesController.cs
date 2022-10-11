@@ -22,37 +22,36 @@ namespace eStore_Admin.WebApi.Controllers
         {
             _mediator = mediator;
         }
-        
-        
+
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] PagingParameters pagingParameters, CancellationToken cancellationToken)
         {
-            var request = new GetAllKeyboardSwitchesPagedQuery() { PagingParameters = pagingParameters };
+            var request = new GetAllKeyboardSwitchesPagedQuery { PagingParameters = pagingParameters };
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
         }
-        
+
         [HttpGet]
         [Route("{id}", Name = "GetKeyboardSwitchById")]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
             var request = new GetKeyboardSwitchByIdQuery(id);
             var response = await _mediator.Send(request, cancellationToken);
-            
+
             if (response is null)
                 return NotFound();
 
             return Ok(response);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] KeyboardSwitchDto keyboardSwitch, CancellationToken cancellationToken)
         {
-            var request = new AddKeyboardSwitchCommand() { KeyboardSwitch = keyboardSwitch };
+            var request = new AddKeyboardSwitchCommand { KeyboardSwitch = keyboardSwitch };
             var response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetKeyboardSwitchById", new { response.Id }, response);
         }
-        
+
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] KeyboardSwitchDto keyboardSwitch, CancellationToken cancellationToken)
@@ -61,7 +60,7 @@ namespace eStore_Admin.WebApi.Controllers
             var response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetKeyboardSwitchById", new { response.Id }, response);
         }
-        
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)

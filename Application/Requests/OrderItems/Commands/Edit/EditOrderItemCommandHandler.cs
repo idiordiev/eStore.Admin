@@ -12,9 +12,9 @@ namespace eStore_Admin.Application.Requests.OrderItems.Commands.Edit
 {
     public class EditOrderItemCommandHandler : IRequestHandler<EditOrderItemCommand, OrderResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly ILoggingService _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public EditOrderItemCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
         {
@@ -30,7 +30,7 @@ namespace eStore_Admin.Application.Requests.OrderItems.Commands.Edit
                 throw new KeyNotFoundException($"The order item with the id {request.OrderItemId} has not been found.");
 
             var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderItem.OrderId, true, cancellationToken);
-            if (order is null) 
+            if (order is null)
                 throw new KeyNotFoundException($"The order with the id {orderItem.OrderId} has not been found.");
 
             if (orderItem.GoodsId != request.OrderItem.GoodsId)
@@ -45,12 +45,12 @@ namespace eStore_Admin.Application.Requests.OrderItems.Commands.Edit
             }
 
             orderItem.Quantity = request.OrderItem.Quantity;
-            
+
             cancellationToken.ThrowIfCancellationRequested();
 
             order.Total = order.OrderItems.Where(oi => !oi.IsDeleted).Sum(oi => oi.UnitPrice * oi.Quantity);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The order with id {0} has been updated, item deleted. New total is {1}.", order.Id, order.Total);
 
             return _mapper.Map<OrderResponse>(order);

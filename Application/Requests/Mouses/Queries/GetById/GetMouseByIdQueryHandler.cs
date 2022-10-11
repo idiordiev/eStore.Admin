@@ -9,8 +9,8 @@ namespace eStore_Admin.Application.Requests.Mouses.Queries.GetById
 {
     public class GetMouseByIdQueryHandler : IRequestHandler<GetMouseByIdQuery, MouseResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GetMouseByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {

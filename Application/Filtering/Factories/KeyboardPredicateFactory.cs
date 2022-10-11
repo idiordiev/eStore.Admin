@@ -50,9 +50,10 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddManufacturerConstraint(ref Expression<Func<Keyboard, bool>> expression, ICollection<string> manufacturers)
         {
             if (manufacturers is not null && manufacturers.Any())
-                expression = expression.And(k => manufacturers.Any(m => m.Equals(k.Manufacturer, StringComparison.InvariantCultureIgnoreCase)));
+                expression = expression.And(k =>
+                    manufacturers.Any(m => m.Equals(k.Manufacturer, StringComparison.InvariantCultureIgnoreCase)));
         }
-        
+
         private void AddMinPriceConstraint(ref Expression<Func<Keyboard, bool>> expression, decimal? price)
         {
             if (price is not null)
@@ -80,9 +81,10 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddConnectionTypeConstraint(ref Expression<Func<Keyboard, bool>> expression, ICollection<string> connectionTypes)
         {
             if (connectionTypes is not null && connectionTypes.Any())
-                expression = expression.And(k => connectionTypes.Any(ct => ct.Equals(k.ConnectionType, StringComparison.InvariantCultureIgnoreCase)));
+                expression = expression.And(k =>
+                    connectionTypes.Any(ct => ct.Equals(k.ConnectionType, StringComparison.InvariantCultureIgnoreCase)));
         }
-        
+
         private void AddTypeConstraint(ref Expression<Func<Keyboard, bool>> expression, ICollection<string> types)
         {
             if (types is not null && types.Any())

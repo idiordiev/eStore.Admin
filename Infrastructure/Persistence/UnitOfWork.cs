@@ -11,21 +11,21 @@ namespace eStore_Admin.Infrastructure.Persistence
 
         private bool _disposed;
         
-        public UnitOfWork(ApplicationContext context)
-        {
-            _context = context;
-        }
-
         private ICustomerRepository _customerRepository;
         private IGamepadRepository _gamepadRepository;
         private IGoodsRepository _goodsRepository;
         private IKeyboardRepository _keyboardRepository;
         private IKeyboardSwitchRepository _keyboardSwitchRepository;
-        private IMouseRepository _mouseRepository;
         private IMousepadRepository _mousepadRepository;
-        private IOrderRepository _orderRepository;
+        private IMouseRepository _mouseRepository;
         private IOrderItemRepository _orderItemRepository;
+        private IOrderRepository _orderRepository;
         private IShoppingCartRepository _shoppingCartRepository;
+
+        public UnitOfWork(ApplicationContext context)
+        {
+            _context = context;
+        }
 
         public ICustomerRepository CustomerRepository
         {
@@ -67,7 +67,8 @@ namespace eStore_Admin.Infrastructure.Persistence
             }
         }
 
-        public IKeyboardSwitchRepository KeyboardSwitchRepository {
+        public IKeyboardSwitchRepository KeyboardSwitchRepository
+        {
             get
             {
                 if (_keyboardSwitchRepository is null)
@@ -143,12 +144,10 @@ namespace eStore_Admin.Infrastructure.Persistence
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
-                {
                     _context.Dispose();
-                }
 
                 _disposed = true;
             }

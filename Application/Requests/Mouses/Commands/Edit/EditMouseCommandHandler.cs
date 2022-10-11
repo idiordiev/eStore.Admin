@@ -11,10 +11,10 @@ namespace eStore_Admin.Application.Requests.Mouses.Commands.Edit
 {
     public class EditMouseCommandHandler : IRequestHandler<EditMouseCommand, MouseResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly ILoggingService _logger;
         private readonly IDateTimeService _dateTimeService;
+        private readonly ILoggingService _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public EditMouseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
         {
@@ -35,7 +35,7 @@ namespace eStore_Admin.Application.Requests.Mouses.Commands.Edit
             _mapper.Map(request.Mouse, mouse);
             mouse.LastModified = _dateTimeService.Now();
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The mouse with id {0} has been deleted.", mouse.Id);
 
             return _mapper.Map<MouseResponse>(mouse);

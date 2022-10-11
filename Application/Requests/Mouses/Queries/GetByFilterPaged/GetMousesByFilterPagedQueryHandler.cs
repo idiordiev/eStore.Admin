@@ -13,11 +13,12 @@ namespace eStore_Admin.Application.Requests.Mouses.Queries.GetByFilterPaged
 {
     public class GetMousesByFilterPagedQueryHandler : IRequestHandler<GetMousesByFilterPagedQuery, IEnumerable<MouseResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPredicateFactory<Mouse, MouseFilterModel> _predicateFactory;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetMousesByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IPredicateFactory<Mouse, MouseFilterModel> predicateFactory)
+        public GetMousesByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper,
+            IPredicateFactory<Mouse, MouseFilterModel> predicateFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
@@ -12,10 +11,10 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Add
 {
     public class AddKeyboardCommandHandler : IRequestHandler<AddKeyboardCommand, KeyboardResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly ILoggingService _logger;
         private readonly IDateTimeService _dateTimeService;
+        private readonly ILoggingService _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AddKeyboardCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
         {
@@ -30,12 +29,12 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Add
             var keyboard = _mapper.Map<Keyboard>(request.Keyboard);
             keyboard.Created = _dateTimeService.Now();
             keyboard.LastModified = _dateTimeService.Now();
-            
+
             cancellationToken.ThrowIfCancellationRequested();
 
             _unitOfWork.KeyboardRepository.Add(keyboard);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The keyboard with id {0} has been added.", keyboard.Id);
 
             return _mapper.Map<KeyboardResponse>(keyboard);

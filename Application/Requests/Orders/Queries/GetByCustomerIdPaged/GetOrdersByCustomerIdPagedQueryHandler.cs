@@ -10,8 +10,8 @@ namespace eStore_Admin.Application.Requests.Orders.Queries.GetByCustomerIdPaged
 {
     public class GetOrdersByCustomerIdPagedQueryHandler : IRequestHandler<GetOrdersByCustomerIdPagedQuery, IEnumerable<OrderResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GetOrdersByCustomerIdPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {

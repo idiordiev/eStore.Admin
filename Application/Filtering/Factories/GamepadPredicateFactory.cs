@@ -31,11 +31,10 @@ namespace eStore_Admin.Application.Filtering.Factories
             return expression;
         }
 
-        private void AddIsDeletedConstraint(ref Expression<Func<Gamepad, bool>> expression, IEnumerable<bool> values)
+        private void AddIsDeletedConstraint(ref Expression<Func<Gamepad, bool>> expression, ICollection<bool> values)
         {
-            IEnumerable<bool> valuesArray = values as bool[] ?? values.ToArray();
-            if (valuesArray.Any())
-                expression = expression.And(g => valuesArray.Contains(g.IsDeleted));
+            if (values is not null && values.Any())
+                expression = expression.And(g => values.Contains(g.IsDeleted));
         }
 
         private void AddNameConstraint(ref Expression<Func<Gamepad, bool>> expression, string name)
@@ -47,18 +46,16 @@ namespace eStore_Admin.Application.Filtering.Factories
             expression = expression.And(g => g.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        private void AddManufacturerConstraint(ref Expression<Func<Gamepad, bool>> expression, IEnumerable<string> manufacturers)
+        private void AddManufacturerConstraint(ref Expression<Func<Gamepad, bool>> expression, ICollection<string> manufacturers)
         {
-            IEnumerable<string> values = manufacturers as string[] ?? manufacturers.ToArray();
-            if (values.Any())
-                expression = expression.And(g => values.Any(m => m.Equals(g.Manufacturer, StringComparison.InvariantCultureIgnoreCase)));
+            if (manufacturers is not null && manufacturers.Any())
+                expression = expression.And(g => manufacturers.Any(m => m.Equals(g.Manufacturer, StringComparison.InvariantCultureIgnoreCase)));
         }
 
-        private void AddFeedbackConstraint(ref Expression<Func<Gamepad, bool>> expression, IEnumerable<string> feedbacks)
+        private void AddFeedbackConstraint(ref Expression<Func<Gamepad, bool>> expression, ICollection<string> feedbacks)
         {
-            IEnumerable<string> values = feedbacks as string[] ?? feedbacks.ToArray();
-            if (values.Any())
-                expression = expression.And(g => values.Any(f => f.Equals(g.Feedback, StringComparison.InvariantCultureIgnoreCase)));
+            if (feedbacks is not null && feedbacks.Any())
+                expression = expression.And(g => feedbacks.Any(f => f.Equals(g.Feedback, StringComparison.InvariantCultureIgnoreCase)));
         }
 
         private void AddMinPriceConstraint(ref Expression<Func<Gamepad, bool>> expression, decimal? price)
@@ -85,20 +82,18 @@ namespace eStore_Admin.Application.Filtering.Factories
                 expression = expression.And(g => g.Created <= date);
         }
 
-        private void AddConnectionTypeConstraint(ref Expression<Func<Gamepad, bool>> expression, IEnumerable<string> connectionTypes)
+        private void AddConnectionTypeConstraint(ref Expression<Func<Gamepad, bool>> expression, ICollection<string> connectionTypes)
         {
-            IEnumerable<string> values = connectionTypes as string[] ?? connectionTypes.ToArray();
-            if (values.Any())
+            if (connectionTypes is not null && connectionTypes.Any())
                 expression = expression.And(g =>
-                    values.Any(ct => ct.Equals(g.ConnectionType, StringComparison.InvariantCultureIgnoreCase)));
+                    connectionTypes.Any(ct => ct.Equals(g.ConnectionType, StringComparison.InvariantCultureIgnoreCase)));
         }
 
-        private void AddCompatibleDeviceConstraint(ref Expression<Func<Gamepad, bool>> expression, IEnumerable<string> compatibleDevices)
+        private void AddCompatibleDeviceConstraint(ref Expression<Func<Gamepad, bool>> expression, ICollection<string> compatibleDevices)
         {
-            IEnumerable<string> values = compatibleDevices as string[] ?? compatibleDevices.ToArray();
-            if (values.Any())
+            if (compatibleDevices is not null && compatibleDevices.Any())
                 expression = expression.And(g =>
-                    g.CompatibleDevices.Any(cd => values.Any(value => value.Equals(cd, StringComparison.InvariantCultureIgnoreCase))));
+                    g.CompatibleDevices.Any(cd => compatibleDevices.Any(value => value.Equals(cd, StringComparison.InvariantCultureIgnoreCase))));
         }
 
         private void AddMinWeightConstraint(ref Expression<Func<Gamepad, bool>> expression, float? weight)

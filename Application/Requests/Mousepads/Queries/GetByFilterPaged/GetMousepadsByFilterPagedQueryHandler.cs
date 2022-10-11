@@ -13,11 +13,12 @@ namespace eStore_Admin.Application.Requests.Mousepads.Queries.GetByFilterPaged
 {
     public class GetMousepadsByFilterPagedQueryHandler : IRequestHandler<GetMousepadsByFilterPagedQuery, IEnumerable<MousepadResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPredicateFactory<Mousepad, MousepadFilterModel> _predicateFactory;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetMousepadsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IPredicateFactory<Mousepad, MousepadFilterModel> predicateFactory)
+        public GetMousepadsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper,
+            IPredicateFactory<Mousepad, MousepadFilterModel> predicateFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

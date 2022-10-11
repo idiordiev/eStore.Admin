@@ -31,7 +31,7 @@ namespace eStore_Admin.Application.Validation.Customers
             RuleFor(x => x.PostalCode)
                 .MaximumLength(10);
         }
-        
+
         private bool BeAValidPhoneNumber(string arg)
         {
             var regex = new Regex(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$");

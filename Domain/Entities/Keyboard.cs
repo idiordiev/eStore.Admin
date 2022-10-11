@@ -51,10 +51,10 @@ namespace eStore_Admin.Domain.Entities
         {
             unchecked
             {
-                return Id.GetHashCode() * IsDeleted.GetHashCode() * Name.GetHashCode() * Description.GetHashCode() 
-                       * Price.GetHashCode() * ThumbnailImageUrl.GetHashCode() * BigImageUrl.GetHashCode() 
+                return Id.GetHashCode() * IsDeleted.GetHashCode() * Name.GetHashCode() * Description.GetHashCode()
+                       * Price.GetHashCode() * ThumbnailImageUrl.GetHashCode() * BigImageUrl.GetHashCode()
                        * Created.GetHashCode() * LastModified.GetHashCode() * SwitchId.GetHashCode()
-                       *  Length.GetHashCode() * Width.GetHashCode() * Height.GetHashCode() * Weight.GetHashCode();
+                       * Length.GetHashCode() * Width.GetHashCode() * Height.GetHashCode() * Weight.GetHashCode();
             }
         }
     }

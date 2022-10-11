@@ -23,17 +23,17 @@ namespace eStore_Admin.WebApi.Controllers
         {
             _mediator = mediator;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] OrderFilterModel filterModel,
             [FromQuery] PagingParameters pagingParams,
             CancellationToken cancellationToken)
         {
-            var request = new GetOrdersByFilterPagedQuery() { PagingParameters = pagingParams, FilterModel = filterModel };
+            var request = new GetOrdersByFilterPagedQuery { PagingParameters = pagingParams, FilterModel = filterModel };
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
         }
-        
+
         [HttpGet]
         [Route("{id}", Name = "GetOrderById")]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
@@ -46,15 +46,15 @@ namespace eStore_Admin.WebApi.Controllers
 
             return Ok(response);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] OrderDto order, CancellationToken cancellationToken)
         {
-            var request = new AddOrderCommand() { Order = order };
+            var request = new AddOrderCommand { Order = order };
             var response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetOrderById", new { response.Id }, response);
         }
-        
+
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] OrderDto order, CancellationToken cancellationToken)
@@ -63,7 +63,7 @@ namespace eStore_Admin.WebApi.Controllers
             var response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetOrderById", new { response.Id }, response);
         }
-        
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)

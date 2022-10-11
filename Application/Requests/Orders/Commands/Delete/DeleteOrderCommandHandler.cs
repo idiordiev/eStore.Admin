@@ -8,8 +8,8 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Delete
 {
     public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ILoggingService _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
         public DeleteOrderCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
         {
@@ -30,7 +30,7 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Delete
 
             _unitOfWork.OrderRepository.Delete(order);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The order with id {0} has been deleted.", order.Id);
 
             return true;

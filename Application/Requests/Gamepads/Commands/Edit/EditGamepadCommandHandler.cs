@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -12,10 +11,10 @@ namespace eStore_Admin.Application.Requests.Gamepads.Commands.Edit
 {
     public class EditGamepadCommandHandler : IRequestHandler<EditGamepadCommand, GamepadResponse>
     {
+        private readonly IDateTimeService _dateTimeService;
+        private readonly ILoggingService _logger;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILoggingService _logger;
-        private readonly IDateTimeService _dateTimeService;
 
         public EditGamepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
         {
@@ -36,8 +35,8 @@ namespace eStore_Admin.Application.Requests.Gamepads.Commands.Edit
             _mapper.Map(gamepad, request.Gamepad);
             gamepad.LastModified = _dateTimeService.Now();
             await _unitOfWork.SaveAsync(cancellationToken);
-            
-            _logger.LogInformation("The gamepad with id {0} has been updated.",gamepad.Id);
+
+            _logger.LogInformation("The gamepad with id {0} has been updated.", gamepad.Id);
 
             return _mapper.Map<GamepadResponse>(gamepad);
         }

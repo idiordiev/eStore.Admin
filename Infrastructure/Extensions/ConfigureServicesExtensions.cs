@@ -20,7 +20,7 @@ namespace eStore_Admin.Infrastructure.Extensions
             services.AddLoggingService();
             services.AddDateTimeService();
         }
-        
+
         private static void AddApplicationDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationContext>(options =>
@@ -28,7 +28,7 @@ namespace eStore_Admin.Infrastructure.Extensions
                 options.UseSqlServer(configuration.GetConnectionString("ApplicationContext"));
             });
         }
-        
+
         private static void AddUnitOfWork(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();

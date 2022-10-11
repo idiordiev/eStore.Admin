@@ -50,7 +50,7 @@ namespace eStore_Admin.Application.Filtering.Factories
             if (manufacturers is not null && manufacturers.Any())
                 expression = expression.And(mouse => manufacturers.Any(manufacturer => mouse.Manufacturer.Equals(manufacturer)));
         }
-        
+
         private void AddMinPriceConstraint(ref Expression<Func<Mousepad, bool>> expression, decimal? price)
         {
             if (price is not null)
@@ -92,7 +92,7 @@ namespace eStore_Admin.Application.Filtering.Factories
             if (topMaterials is not null && topMaterials.Any())
                 expression = expression.And(m => topMaterials.Any(b => b.Equals(m.TopMaterial)));
         }
-        
+
         private void AddBacklightConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<string> backlights)
         {
             if (backlights is not null && backlights.Any())

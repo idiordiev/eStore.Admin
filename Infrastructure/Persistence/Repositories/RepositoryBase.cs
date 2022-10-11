@@ -29,9 +29,9 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
                 .OrderBy(e => e.Id)
                 .Skip((pagingParameters.PageNumber - 1) * pagingParameters.PageSize)
                 .Take(pagingParameters.PageSize);
-            return trackChanges 
+            return trackChanges
                 ? await entities
-                    .ToListAsync(cancellationToken) 
+                    .ToListAsync(cancellationToken)
                 : await entities
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
@@ -45,9 +45,9 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
                 .OrderBy(e => e.Id)
                 .Skip((pagingParameters.PageNumber - 1) * pagingParameters.PageSize)
                 .Take(pagingParameters.PageSize);
-            return trackChanges 
+            return trackChanges
                 ? await entities
-                    .ToListAsync(cancellationToken) 
+                    .ToListAsync(cancellationToken)
                 : await entities
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
@@ -55,9 +55,9 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
 
         public async Task<T> GetByIdAsync(int id, bool trackChanges, CancellationToken cancellationToken)
         {
-            return trackChanges 
+            return trackChanges
                 ? await DbSet
-                    .FirstOrDefaultAsync(c => c.Id == id, cancellationToken) 
+                    .FirstOrDefaultAsync(c => c.Id == id, cancellationToken)
                 : await DbSet
                     .AsNoTracking()
                     .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);

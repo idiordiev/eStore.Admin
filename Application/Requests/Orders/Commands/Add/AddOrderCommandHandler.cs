@@ -13,10 +13,10 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Add
 {
     public class AddOrderCommandHandler : IRequestHandler<AddOrderCommand, OrderResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly ILoggingService _logger;
         private readonly IDateTimeService _dateTimeService;
+        private readonly ILoggingService _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AddOrderCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
         {
@@ -36,8 +36,8 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Add
                 var goods = await _unitOfWork.GoodsRepository.GetByIdAsync(item.GoodsId, false, cancellationToken);
                 if (goods is null)
                     throw new KeyNotFoundException($"The goods with id {item.GoodsId} has not been found.");
-                
-                order.OrderItems.Add(new OrderItem()
+
+                order.OrderItems.Add(new OrderItem
                 {
                     IsDeleted = item.IsDeleted,
                     Goods = goods,
@@ -45,13 +45,14 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Add
                     UnitPrice = goods.Price
                 });
             }
+
             order.Total = order.OrderItems.Where(oi => !oi.IsDeleted).Sum(oi => oi.UnitPrice * oi.Quantity);
-            
+
             cancellationToken.ThrowIfCancellationRequested();
-            
+
             _unitOfWork.OrderRepository.Add(order);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The new order with id {0} has been added.", order.Id);
 
             return _mapper.Map<OrderResponse>(order);

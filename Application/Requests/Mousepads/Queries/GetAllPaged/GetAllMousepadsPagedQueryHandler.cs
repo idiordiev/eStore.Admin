@@ -10,8 +10,8 @@ namespace eStore_Admin.Application.Requests.Mousepads.Queries.GetAllPaged
 {
     public class GetAllMousepadsPagedQueryHandler : IRequestHandler<GetAllMousepadPagedQuery, IEnumerable<MousepadResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GetAllMousepadsPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {

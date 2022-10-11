@@ -4,15 +4,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Responses;
-using eStore_Admin.Application.Utility;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetAllPaged
 {
     public class GetAllKeyboardsPagedQueryHandler : IRequestHandler<GetAllKeyboardsPagedQuery, IEnumerable<KeyboardResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GetAllKeyboardsPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {

@@ -10,8 +10,8 @@ namespace eStore_Admin.Application.Requests.Orders.Queries.GetAllPaged
 {
     public class GetAllOrdersPagedQueryHandler : IRequestHandler<GetAllOrdersPagedQuery, IEnumerable<OrderResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GetAllOrdersPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {

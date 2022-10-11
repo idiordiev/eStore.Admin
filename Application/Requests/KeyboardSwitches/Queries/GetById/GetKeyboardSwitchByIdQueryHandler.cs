@@ -9,8 +9,8 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Queries.GetById
 {
     public class GetKeyboardSwitchByIdQueryHandler : IRequestHandler<GetKeyboardSwitchByIdQuery, KeyboardSwitchResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GetKeyboardSwitchByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {

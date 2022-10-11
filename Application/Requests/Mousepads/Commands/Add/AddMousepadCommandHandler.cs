@@ -11,10 +11,10 @@ namespace eStore_Admin.Application.Requests.Mousepads.Commands.Add
 {
     public class AddMousepadCommandHandler : IRequestHandler<AddMousepadCommand, MousepadResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly ILoggingService _logger;
         private readonly IDateTimeService _dateTimeService;
+        private readonly ILoggingService _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AddMousepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
         {
@@ -29,12 +29,12 @@ namespace eStore_Admin.Application.Requests.Mousepads.Commands.Add
             var mousepad = _mapper.Map<Mousepad>(request.Mousepad);
             mousepad.Created = _dateTimeService.Now();
             mousepad.LastModified = _dateTimeService.Now();
-            
+
             cancellationToken.ThrowIfCancellationRequested();
 
             _unitOfWork.MousepadRepository.Add(mousepad);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The mousepad with id {0} has been added.", mousepad.Id);
 
             return _mapper.Map<MousepadResponse>(mousepad);

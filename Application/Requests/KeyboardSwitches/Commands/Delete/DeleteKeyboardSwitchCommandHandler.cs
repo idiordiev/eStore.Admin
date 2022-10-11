@@ -9,14 +9,12 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Delete
 {
     public class DeleteKeyboardSwitchCommandHandler : IRequestHandler<DeleteKeyboardSwitchCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly ILoggingService _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
+        public DeleteKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _logger = logger;
         }
 
@@ -33,7 +31,7 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Delete
 
             _unitOfWork.KeyboardSwitchRepository.Delete(keyboardSwitch);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The keyboard switch with id {0} has been deleted.", keyboardSwitch.Id);
 
             return true;

@@ -22,7 +22,7 @@ namespace eStore_Admin.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
+
             services.AddApplicationLayer();
             services.AddInfrastructureLayer(Configuration);
 

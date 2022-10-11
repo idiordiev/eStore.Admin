@@ -9,8 +9,8 @@ namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetById
 {
     public class GetKeyboardByIdQueryHandler : IRequestHandler<GetKeyboardByIdQuery, KeyboardResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GetKeyboardByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {

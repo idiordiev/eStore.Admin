@@ -2,7 +2,6 @@
 using eStore_Admin.Application.Filtering.Factories;
 using eStore_Admin.Application.Filtering.Models;
 using eStore_Admin.Application.Interfaces.Filtering;
-using eStore_Admin.Application.Mapping;
 using eStore_Admin.Application.PipelineBehaviors;
 using eStore_Admin.Domain.Entities;
 using FluentValidation;

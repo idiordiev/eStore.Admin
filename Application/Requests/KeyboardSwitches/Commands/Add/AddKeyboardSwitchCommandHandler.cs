@@ -11,9 +11,9 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Add
 {
     public class AddKeyboardSwitchCommandHandler : IRequestHandler<AddKeyboardSwitchCommand, KeyboardSwitchResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly ILoggingService _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AddKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
         {
@@ -25,12 +25,12 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Add
         public async Task<KeyboardSwitchResponse> Handle(AddKeyboardSwitchCommand request, CancellationToken cancellationToken)
         {
             var keyboardSwitch = _mapper.Map<KeyboardSwitch>(request.KeyboardSwitch);
-            
+
             cancellationToken.ThrowIfCancellationRequested();
 
             _unitOfWork.KeyboardSwitchRepository.Add(keyboardSwitch);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The keyboard switch with id {0} has been added.", keyboardSwitch.Id);
 
             return _mapper.Map<KeyboardSwitchResponse>(keyboardSwitch);

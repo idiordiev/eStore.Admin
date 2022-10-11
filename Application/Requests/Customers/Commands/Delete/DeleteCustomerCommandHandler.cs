@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
@@ -9,8 +8,8 @@ namespace eStore_Admin.Application.Requests.Customers.Commands.Delete
 {
     public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ILoggingService _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
         public DeleteCustomerCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
         {
@@ -31,7 +30,7 @@ namespace eStore_Admin.Application.Requests.Customers.Commands.Delete
 
             _unitOfWork.CustomerRepository.Delete(customer);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The customer with id {0} has been deleted.", customer.Id);
 
             return true;

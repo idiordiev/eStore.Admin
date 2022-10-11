@@ -35,7 +35,7 @@ namespace eStore_Admin.Application.Filtering.Factories
             if (values is not null && values.Any())
                 expression = expression.And(o => values.Contains(o.IsDeleted));
         }
-        
+
         private void AddCustomerConstraint(ref Expression<Func<Order, bool>> expression, ICollection<int> customerIds)
         {
             if (customerIds is not null && customerIds.Any())
@@ -47,7 +47,7 @@ namespace eStore_Admin.Application.Filtering.Factories
             if (statusValues is not null && statusValues.Any())
                 expression = expression.And(o => statusValues.Contains((int)o.Status));
         }
-        
+
         private void AddMinTotalConstraint(ref Expression<Func<Order, bool>> expression, decimal? total)
         {
             if (total is not null)
@@ -95,7 +95,7 @@ namespace eStore_Admin.Application.Filtering.Factories
 
             expression = expression.And(c => c.ShippingAddress.Contains(address.Trim()));
         }
-        
+
         private void AddPostalCodeConstraint(ref Expression<Func<Order, bool>> expression, string postalCode)
         {
             if (string.IsNullOrWhiteSpace(postalCode))

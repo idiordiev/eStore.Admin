@@ -13,7 +13,7 @@ namespace eStore_Admin.Infrastructure.Persistence
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
         }
-        
+
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Gamepad> Gamepads { get; set; }
         public DbSet<Goods> Goods { get; set; }

@@ -9,8 +9,8 @@ namespace eStore_Admin.Application.Requests.Mousepads.Queries.GetById
 {
     public class GetMousepadByIdQueryHandler : IRequestHandler<GetMousepadByIdQuery, MousepadResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GetMousepadByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {

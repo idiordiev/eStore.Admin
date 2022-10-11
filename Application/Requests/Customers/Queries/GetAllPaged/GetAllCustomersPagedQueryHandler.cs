@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Responses;
-using eStore_Admin.Application.Utility;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Customers.Queries.GetAllPaged

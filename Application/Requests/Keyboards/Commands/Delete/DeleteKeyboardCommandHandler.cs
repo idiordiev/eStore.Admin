@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
@@ -9,8 +8,8 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Delete
 {
     public class DeleteKeyboardCommandHandler : IRequestHandler<DeleteKeyboardCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ILoggingService _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
         public DeleteKeyboardCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
         {
@@ -31,7 +30,7 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Delete
 
             _unitOfWork.KeyboardRepository.Delete(keyboard);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The keyboard with id {0} has been deleted.", keyboard.Id);
 
             return true;

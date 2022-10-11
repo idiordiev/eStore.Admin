@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using eStore_Admin.Application.Filtering.Models;
 using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Responses;
 using eStore_Admin.Domain.Entities;

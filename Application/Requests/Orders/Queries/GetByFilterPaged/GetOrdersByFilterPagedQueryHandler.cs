@@ -13,11 +13,12 @@ namespace eStore_Admin.Application.Requests.Orders.Queries.GetByFilterPaged
 {
     public class GetOrdersByFilterPagedQueryHandler : IRequestHandler<GetOrdersByFilterPagedQuery, IEnumerable<OrderResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPredicateFactory<Order, OrderFilterModel> _predicateFactory;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetOrdersByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IPredicateFactory<Order, OrderFilterModel> predicateFactory)
+        public GetOrdersByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper,
+            IPredicateFactory<Order, OrderFilterModel> predicateFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

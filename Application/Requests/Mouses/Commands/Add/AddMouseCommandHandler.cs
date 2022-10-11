@@ -11,10 +11,10 @@ namespace eStore_Admin.Application.Requests.Mouses.Commands.Add
 {
     public class AddMouseCommandHandler : IRequestHandler<AddMouseCommand, MouseResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly ILoggingService _logger;
         private readonly IDateTimeService _dateTimeService;
+        private readonly ILoggingService _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AddMouseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
         {
@@ -29,12 +29,12 @@ namespace eStore_Admin.Application.Requests.Mouses.Commands.Add
             var mouse = _mapper.Map<Mouse>(request.Mouse);
             mouse.Created = _dateTimeService.Now();
             mouse.LastModified = _dateTimeService.Now();
-            
+
             cancellationToken.ThrowIfCancellationRequested();
 
             _unitOfWork.MouseRepository.Add(mouse);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The mouse with id {0} has been added.", mouse.Id);
 
             return _mapper.Map<MouseResponse>(mouse);

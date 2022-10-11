@@ -5,21 +5,18 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
-using eStore_Admin.Application.Responses;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.OrderItems.Commands.Delete
 {
     public class DeleteOrderItemCommandHandler : IRequestHandler<DeleteOrderItemCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly ILoggingService _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteOrderItemCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
+        public DeleteOrderItemCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _logger = logger;
         }
 
@@ -30,13 +27,13 @@ namespace eStore_Admin.Application.Requests.OrderItems.Commands.Delete
                 return false;
 
             var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderItem.OrderId, true, cancellationToken);
-            if (order is null) 
+            if (order is null)
                 throw new KeyNotFoundException($"The order with the id {orderItem.OrderId} has not been found.");
 
             order.OrderItems.Remove(orderItem);
             order.Total = order.OrderItems.Where(oi => !oi.IsDeleted).Sum(oi => oi.UnitPrice * oi.Quantity);
             await _unitOfWork.SaveAsync(cancellationToken);
-            
+
             _logger.LogInformation("The order with id {0} has been updated, item deleted. New total is {1}.", order.Id, order.Total);
 
             return true;
