@@ -8,12 +8,14 @@ using eStore_Admin.Application.Requests.OrderItems.Queries.GetById;
 using eStore_Admin.Application.Requests.OrderItems.Queries.GetByOrderId;
 using eStore_Admin.Application.Utility;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eStore_Admin.WebApi.Controllers
 {
     [Route("api/orders/{orderId}/items")]
     [ApiController]
+    [Authorize]
     public class OrderItemsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -42,6 +44,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator, Sales Manager")]
         public async Task<IActionResult> Create(int orderId, [FromBody] OrderItemDto orderItem, CancellationToken cancellationToken)
         {
             var request = new AddOrderItemCommand(orderId) { OrderItem = orderItem };
@@ -51,6 +54,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpPut]
         [Route("{orderItemId}")]
+        [Authorize(Roles = "Administrator, Sales Manager")]
         public async Task<IActionResult> Update(int orderId, int orderItemId, [FromBody] OrderItemDto orderItem,
             CancellationToken cancellationToken)
         {
@@ -61,6 +65,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpDelete]
         [Route("{orderItemId}")]
+        [Authorize(Roles = "Administrator, Sales Manager")]
         public async Task<IActionResult> Delete(int orderId, int orderItemId, CancellationToken cancellationToken)
         {
             var request = new DeleteOrderItemCommand(orderItemId);

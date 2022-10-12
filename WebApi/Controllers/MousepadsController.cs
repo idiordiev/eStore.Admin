@@ -9,12 +9,14 @@ using eStore_Admin.Application.Requests.Mousepads.Queries.GetByFilterPaged;
 using eStore_Admin.Application.Requests.Mousepads.Queries.GetById;
 using eStore_Admin.Application.Utility;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eStore_Admin.WebApi.Controllers
 {
     [Route("api/mousepads")]
     [ApiController]
+    [Authorize]
     public class MousepadsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -48,6 +50,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Add([FromBody] MousepadDto mousepad, CancellationToken cancellationToken)
         {
             var request = new AddMousepadCommand { Mousepad = mousepad };
@@ -57,6 +60,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Update(int id, [FromBody] MousepadDto mousepad, CancellationToken cancellationToken)
         {
             var request = new EditMousepadCommand(id) { Mousepad = mousepad };
@@ -66,6 +70,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var request = new DeleteMousepadCommand(id);

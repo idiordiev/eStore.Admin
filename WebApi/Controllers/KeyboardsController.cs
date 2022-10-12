@@ -9,12 +9,14 @@ using eStore_Admin.Application.Requests.Keyboards.Queries.GetByFilterPaged;
 using eStore_Admin.Application.Requests.Keyboards.Queries.GetById;
 using eStore_Admin.Application.Utility;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eStore_Admin.WebApi.Controllers
 {
     [Route("api/keyboards")]
     [ApiController]
+    [Authorize]
     public class KeyboardsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -48,6 +50,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Add([FromBody] KeyboardDto keyboard, CancellationToken cancellationToken)
         {
             var request = new AddKeyboardCommand { Keyboard = keyboard };
@@ -57,6 +60,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Update(int id, [FromBody] KeyboardDto keyboard, CancellationToken cancellationToken)
         {
             var request = new EditKeyboardCommand(id) { Keyboard = keyboard };
@@ -66,6 +70,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var request = new DeleteKeyboardCommand(id);

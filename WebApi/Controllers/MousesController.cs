@@ -9,12 +9,14 @@ using eStore_Admin.Application.Requests.Mouses.Queries.GetByFilterPaged;
 using eStore_Admin.Application.Requests.Mouses.Queries.GetById;
 using eStore_Admin.Application.Utility;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eStore_Admin.WebApi.Controllers
 {
     [Route("api/mouses")]
     [ApiController]
+    [Authorize]
     public class MousesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -48,6 +50,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Add([FromBody] MouseDto mouse, CancellationToken cancellationToken)
         {
             var request = new AddMouseCommand { Mouse = mouse };
@@ -57,6 +60,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Update(int id, [FromBody] MouseDto mouse, CancellationToken cancellationToken)
         {
             var request = new EditMouseCommand(id) { Mouse = mouse };
@@ -66,6 +70,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var request = new DeleteMouseCommand(id);

@@ -9,12 +9,14 @@ using eStore_Admin.Application.Requests.Customers.Queries.GetByFilterPaged;
 using eStore_Admin.Application.Requests.Customers.Queries.GetById;
 using eStore_Admin.Application.Utility;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eStore_Admin.WebApi.Controllers
 {
     [Route("api/customers")]
     [ApiController]
+    [Authorize]
     public class CustomersController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -48,6 +50,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Add([FromBody] CustomerDto customer, CancellationToken cancellationToken)
         {
             var request = new AddCustomerCommand { Customer = customer };
@@ -57,6 +60,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Update(int id, [FromBody] CustomerDto customer, CancellationToken cancellationToken)
         {
             var request = new EditCustomerCommand(id) { Customer = customer };
@@ -66,6 +70,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var request = new DeleteCustomerCommand(id);

@@ -9,12 +9,14 @@ using eStore_Admin.Application.Requests.Gamepads.Queries.GetByFilterPaged;
 using eStore_Admin.Application.Requests.Gamepads.Queries.GetById;
 using eStore_Admin.Application.Utility;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eStore_Admin.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/gamepads")]
     [ApiController]
+    [Authorize]
     public class GamepadsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -48,6 +50,7 @@ namespace eStore_Admin.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Add([FromBody] GamepadDto gamepad, CancellationToken cancellationToken)
         {
             var request = new AddGamepadCommand { Gamepad = gamepad };
@@ -57,6 +60,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Update(int id, [FromBody] GamepadDto gamepad, CancellationToken cancellationToken)
         {
             var request = new EditGamepadCommand(id) { Gamepad = gamepad };
@@ -66,6 +70,7 @@ namespace eStore_Admin.WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Administrator, Storage Manager")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var request = new DeleteGamepadCommand(id);
