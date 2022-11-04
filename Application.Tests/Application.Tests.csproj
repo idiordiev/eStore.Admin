@@ -6,6 +6,8 @@
         <IsPackable>false</IsPackable>
 
         <LangVersion>10</LangVersion>
+
+        <RootNamespace>Application.Tests.Unit</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +19,10 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Application\Application.csproj" />
     </ItemGroup>
 
 </Project>
