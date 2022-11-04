@@ -356,6 +356,14 @@ namespace Infrastructure.Tests
             }
         }
 
+        public IEnumerable<ShoppingCart> ShoppingCarts
+        {
+            get
+            {
+                return Customers.Select(c => c.ShoppingCart);
+            }
+        }
+
         public ApplicationContext GetApplicationContext()
         {
             var options = new DbContextOptionsBuilder<ApplicationContext>()
