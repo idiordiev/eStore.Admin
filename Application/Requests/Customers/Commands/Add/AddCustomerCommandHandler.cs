@@ -25,6 +25,7 @@ namespace eStore_Admin.Application.Requests.Customers.Commands.Add
         public async Task<CustomerResponse> Handle(AddCustomerCommand request, CancellationToken cancellationToken)
         {
             var customer = _mapper.Map<Customer>(request.Customer);
+            customer.ShoppingCart = new ShoppingCart();
 
             cancellationToken.ThrowIfCancellationRequested();
 
