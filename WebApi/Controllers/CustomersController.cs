@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.Filtering.Models;
 using eStore_Admin.Application.RequestDTOs;
-using eStore_Admin.Application.Requests.Customers.Commands.Add;
 using eStore_Admin.Application.Requests.Customers.Commands.Delete;
 using eStore_Admin.Application.Requests.Customers.Commands.Edit;
 using eStore_Admin.Application.Requests.Customers.Queries.GetByFilterPaged;
@@ -47,15 +46,6 @@ namespace eStore_Admin.WebApi.Controllers
                 return NotFound();
 
             return Ok(response);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Add([FromBody] CustomerDto customer, CancellationToken cancellationToken)
-        {
-            var request = new AddCustomerCommand { Customer = customer };
-            var response = await _mediator.Send(request, cancellationToken);
-            return CreatedAtRoute("GetCustomerById", new { response.Id }, response);
         }
 
         [HttpPut]
