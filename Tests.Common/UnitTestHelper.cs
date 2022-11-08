@@ -3,9 +3,9 @@ using eStore_Admin.Domain.Enums;
 using eStore_Admin.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Tests
+namespace Tests.Common
 {
-    internal class UnitTestHelper
+    public class UnitTestHelper
     {
         private readonly List<KeyboardSwitch> _keyboardSwitches;
         private readonly List<Gamepad> _gamepads;

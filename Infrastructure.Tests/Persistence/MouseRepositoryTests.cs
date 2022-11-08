@@ -4,6 +4,7 @@ using eStore_Admin.Domain.Entities;
 using eStore_Admin.Infrastructure.Persistence;
 using eStore_Admin.Infrastructure.Persistence.Repositories;
 using NUnit.Framework;
+using Tests.Common;
 
 namespace Infrastructure.Tests.Persistence
 {
