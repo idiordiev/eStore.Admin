@@ -13,7 +13,7 @@ using eStore_Admin.Domain.Entities;
 using Moq;
 using NUnit.Framework;
 
-namespace Application.Tests.Unit
+namespace Application.Tests.Unit.Requests
 {
     [TestFixture]
     public class CustomerCommandsTests

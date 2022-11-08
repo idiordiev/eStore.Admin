@@ -19,7 +19,7 @@ using Moq;
 using NUnit.Framework;
 using Tests.Common;
 
-namespace Application.Tests.Unit;
+namespace Application.Tests.Unit.Requests;
 
 [TestFixture]
 public class CustomerQueriesTests
