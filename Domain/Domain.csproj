@@ -5,9 +5,4 @@
         <RootNamespace>eStore_Admin.Domain</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.10"/>
-    </ItemGroup>
-
 </Project>
