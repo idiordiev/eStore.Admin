@@ -8,7 +8,8 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.Mousepads.Queries.GetAllPaged
 {
-    public class GetAllMousepadsPagedQueryHandler : IRequestHandler<GetAllMousepadPagedQuery, IEnumerable<MousepadResponse>>
+    public class
+        GetAllMousepadsPagedQueryHandler : IRequestHandler<GetAllMousepadPagedQuery, IEnumerable<MousepadResponse>>
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -19,9 +20,12 @@ namespace eStore_Admin.Application.Requests.Mousepads.Queries.GetAllPaged
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<MousepadResponse>> Handle(GetAllMousepadPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<MousepadResponse>> Handle(GetAllMousepadPagedQuery request,
+            CancellationToken cancellationToken)
         {
-            var mousepads = await _unitOfWork.MousepadRepository.GetAllPagedAsync(request.PagingParameters, false, cancellationToken);
+            var mousepads =
+                await _unitOfWork.MousepadRepository.GetAllPagedAsync(request.PagingParameters, false,
+                    cancellationToken);
             return _mapper.Map<IEnumerable<MousepadResponse>>(mousepads);
         }
     }

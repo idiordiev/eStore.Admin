@@ -5,6 +5,7 @@ using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Mousepads.Commands.Edit
@@ -16,7 +17,8 @@ namespace eStore_Admin.Application.Requests.Mousepads.Commands.Edit
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public EditMousepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
+        public EditMousepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
+            IDateTimeService dateTimeService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -26,9 +28,12 @@ namespace eStore_Admin.Application.Requests.Mousepads.Commands.Edit
 
         public async Task<MousepadResponse> Handle(EditMousepadCommand request, CancellationToken cancellationToken)
         {
-            var mousepad = await _unitOfWork.MousepadRepository.GetByIdAsync(request.MousepadId, true, cancellationToken);
+            Mousepad mousepad =
+                await _unitOfWork.MousepadRepository.GetByIdAsync(request.MousepadId, true, cancellationToken);
             if (mousepad is null)
+            {
                 throw new KeyNotFoundException($"The mousepad with the id {request.MousepadId} has not been found.");
+            }
 
             cancellationToken.ThrowIfCancellationRequested();
 

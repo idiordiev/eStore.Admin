@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.ShoppingCarts.Commands.Clear
@@ -19,18 +20,20 @@ namespace eStore_Admin.Application.Requests.ShoppingCarts.Commands.Clear
 
         public async Task<bool> Handle(ClearShoppingCartCommand request, CancellationToken cancellationToken)
         {
-            var shoppingCart = await _unitOfWork.ShoppingCartRepository.GetByIdWithItemsAsync(request.ShoppingCartId, true, cancellationToken);
+            ShoppingCart shoppingCart =
+                await _unitOfWork.ShoppingCartRepository.GetByIdWithItemsAsync(request.ShoppingCartId, true,
+                    cancellationToken);
             if (shoppingCart is null)
             {
                 _logger.LogInformation("The shopping cart with id {0} has not been found.", request.ShoppingCartId);
                 return false;
             }
-        
+
             cancellationToken.ThrowIfCancellationRequested();
-        
+
             shoppingCart.Goods.Clear();
             await _unitOfWork.SaveAsync(cancellationToken);
-        
+
             _logger.LogInformation("The shopping cart with id {0} has been cleared.", shoppingCart.Id);
 
             return true;

@@ -26,13 +26,20 @@ namespace eStore_Admin.Application.Requests.OrderItems.Commands.Add
 
         public async Task<OrderResponse> Handle(AddOrderItemCommand request, CancellationToken cancellationToken)
         {
-            var order = await _unitOfWork.OrderRepository.GetByIdWithOrderItemsAsync(request.OrderId, true, cancellationToken);
+            Order order =
+                await _unitOfWork.OrderRepository.GetByIdWithOrderItemsAsync(request.OrderId, true, cancellationToken);
             if (order is null)
+            {
                 throw new KeyNotFoundException($"The order with the id {request.OrderId} has not been found.");
+            }
 
-            var goods = await _unitOfWork.GoodsRepository.GetByIdAsync(request.OrderItem.GoodsId, false, cancellationToken);
+            Goods goods =
+                await _unitOfWork.GoodsRepository.GetByIdAsync(request.OrderItem.GoodsId, false, cancellationToken);
             if (goods is null)
-                throw new KeyNotFoundException($"The goods with the id {request.OrderItem.GoodsId} has not been found.");
+            {
+                throw new KeyNotFoundException(
+                    $"The goods with the id {request.OrderItem.GoodsId} has not been found.");
+            }
 
             var orderItem = new OrderItem
             {
@@ -49,7 +56,8 @@ namespace eStore_Admin.Application.Requests.OrderItems.Commands.Add
             order.Total = order.OrderItems.Where(oi => !oi.IsDeleted).Sum(oi => oi.UnitPrice * oi.Quantity);
             await _unitOfWork.SaveAsync(cancellationToken);
 
-            _logger.LogInformation("The order with id {0} has been updated, new item added. New total is {1}.", order.Id, order.Total);
+            _logger.LogInformation("The order with id {0} has been updated, new item added. New total is {1}.",
+                order.Id, order.Total);
 
             return _mapper.Map<OrderResponse>(order);
         }

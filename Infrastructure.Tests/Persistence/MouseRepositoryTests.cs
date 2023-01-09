@@ -14,7 +14,7 @@ namespace Infrastructure.Tests.Persistence
         private UnitTestHelper _helper;
         private ApplicationContext _context;
         private IMouseRepository _repository;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -34,7 +34,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var expected = _helper.Mouses.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
             var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
@@ -48,14 +48,15 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedName = "changedName";
-            
+
             // Act
             var mouses = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            var mouseToChange = mouses.First(c => c.Id == 10);
+            Mouse? mouseToChange = mouses.First(c => c.Id == 10);
             mouseToChange.Name = changedName;
-            
+
             // Assert
-            Assert.That((await _context.Mouses.FindAsync(10))?.Name, Is.EqualTo(changedName), "Changes has not been saved.");
+            Assert.That((await _context.Mouses.FindAsync(10))?.Name, Is.EqualTo(changedName),
+                "Changes has not been saved.");
         }
 
         [TestCase(1, 1)]
@@ -64,14 +65,16 @@ namespace Infrastructure.Tests.Persistence
         [TestCase(1, 2)]
         [TestCase(1, 3)]
         [TestCase(4, 1)]
-        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredMouse(int pageSize, int pageNumber)
+        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredMouse(int pageSize,
+            int pageNumber)
         {
             // Arrange
             var expected = _helper.Mouses.Where(c => c.Id > 10).Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
-            var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 10, pagingParams, false, CancellationToken.None);
+            var actual =
+                await _repository.GetByConditionPagedAsync(c => c.Id > 10, pagingParams, false, CancellationToken.None);
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
@@ -83,14 +86,16 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedName = "changedName";
-            
+
             // Act
-            var mouses = await _repository.GetByConditionPagedAsync(c => c.Id == 10, pagingParams, true, CancellationToken.None);
-            var mouseToChange = mouses.First(c => c.Id == 10);
+            var mouses =
+                await _repository.GetByConditionPagedAsync(c => c.Id == 10, pagingParams, true, CancellationToken.None);
+            Mouse? mouseToChange = mouses.First(c => c.Id == 10);
             mouseToChange.Name = changedName;
-            
+
             // Assert
-            Assert.That((await _context.Mouses.FindAsync(10))?.Name, Is.EqualTo(changedName), "Changes has not been saved.");
+            Assert.That((await _context.Mouses.FindAsync(10))?.Name, Is.EqualTo(changedName),
+                "Changes has not been saved.");
         }
 
         [TestCase(10)]
@@ -99,10 +104,10 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingMouse_ReturnsMouse(int id)
         {
             // Arrange
-            var expected = _helper.Mouses.First(c => c.Id == id);
-            
+            Mouse? expected = _helper.Mouses.First(c => c.Id == id);
+
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Mouse? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual mouse is not equal to expected.");
@@ -115,7 +120,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Mouse? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -128,13 +133,14 @@ namespace Infrastructure.Tests.Persistence
         {
             // Arrange
             const string changedName = "changedName";
-            
+
             // Act
-            var mouse = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Mouse? mouse = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             mouse.Name = changedName;
 
             // Assert
-            Assert.That((await _context.Mouses.FindAsync(id))?.Name, Is.EqualTo(changedName), "Changes has not been tracked.");
+            Assert.That((await _context.Mouses.FindAsync(id))?.Name, Is.EqualTo(changedName),
+                "Changes has not been tracked.");
         }
 
         [Test]
@@ -156,7 +162,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingMouse_UpdatedMouse()
         {
             // Arrange
-            var mouseToUpdate = _helper.Mouses.First(c => c.Id == 10);
+            Mouse? mouseToUpdate = _helper.Mouses.First(c => c.Id == 10);
             const string changedName = "changedName";
             mouseToUpdate.Name = changedName;
 
@@ -172,7 +178,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingMouse_DeletedMouseFromContext()
         {
             // Arrange
-            var mouseToDelete = _helper.Mouses.First(c => c.Id == 10);
+            Mouse? mouseToDelete = _helper.Mouses.First(c => c.Id == 10);
 
             // Act
             _repository.Delete(mouseToDelete);

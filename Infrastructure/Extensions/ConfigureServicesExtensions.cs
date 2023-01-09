@@ -66,7 +66,7 @@ namespace eStore_Admin.Infrastructure.Extensions
             {
                 options.UseSqlServer(configuration.GetConnectionString("IdentityContext"));
             });
-            var builder = services.AddIdentityCore<IdentityUser>(options =>
+            IdentityBuilder builder = services.AddIdentityCore<IdentityUser>(options =>
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = false;
@@ -75,7 +75,7 @@ namespace eStore_Admin.Infrastructure.Extensions
                 options.Password.RequiredLength = 10;
                 options.User.RequireUniqueEmail = true;
             });
-            
+
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
             builder.AddEntityFrameworkStores<IdentityContext>();
             builder.AddDefaultTokenProviders();
@@ -84,9 +84,9 @@ namespace eStore_Admin.Infrastructure.Extensions
         private static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.JwtSetting));
-            
-            var jwtSettings = configuration.GetSection(JwtSettings.JwtSetting);
-            var secretKey = Environment.GetEnvironmentVariable("SECRET");
+
+            IConfigurationSection jwtSettings = configuration.GetSection(JwtSettings.JwtSetting);
+            string secretKey = Environment.GetEnvironmentVariable("SECRET");
 
             services.AddAuthentication(options =>
                 {
@@ -101,7 +101,7 @@ namespace eStore_Admin.Infrastructure.Extensions
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        
+
                         ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
                         ValidAudience = jwtSettings.GetSection("validAudience").Value,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))

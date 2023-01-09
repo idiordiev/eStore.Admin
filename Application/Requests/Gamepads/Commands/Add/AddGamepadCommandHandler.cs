@@ -16,7 +16,8 @@ namespace eStore_Admin.Application.Requests.Gamepads.Commands.Add
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddGamepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
+        public AddGamepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
+            IDateTimeService dateTimeService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

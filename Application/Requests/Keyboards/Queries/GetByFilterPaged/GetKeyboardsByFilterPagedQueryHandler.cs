@@ -11,7 +11,9 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetByFilterPaged
 {
-    public class GetKeyboardsByFilterPagedQueryHandler : IRequestHandler<GetKeyboardsByFilterPagedQuery, IEnumerable<KeyboardResponse>>
+    public class
+        GetKeyboardsByFilterPagedQueryHandler : IRequestHandler<GetKeyboardsByFilterPagedQuery,
+            IEnumerable<KeyboardResponse>>
     {
         private readonly IMapper _mapper;
         private readonly IPredicateFactory<Keyboard, KeyboardFilterModel> _predicateFactory;
@@ -25,11 +27,13 @@ namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetByFilterPaged
             _predicateFactory = predicateFactory;
         }
 
-        public async Task<IEnumerable<KeyboardResponse>> Handle(GetKeyboardsByFilterPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<KeyboardResponse>> Handle(GetKeyboardsByFilterPagedQuery request,
+            CancellationToken cancellationToken)
         {
             var predicate = _predicateFactory.CreateExpression(request.FilterModel);
             var keyboards =
-                await _unitOfWork.KeyboardRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false,
+                await _unitOfWork.KeyboardRepository.GetByConditionPagedAsync(predicate, request.PagingParameters,
+                    false,
                     cancellationToken);
             return _mapper.Map<IEnumerable<KeyboardResponse>>(keyboards);
         }

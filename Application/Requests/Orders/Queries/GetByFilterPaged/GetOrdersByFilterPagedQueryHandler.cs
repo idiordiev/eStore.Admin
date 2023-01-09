@@ -11,7 +11,8 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.Orders.Queries.GetByFilterPaged
 {
-    public class GetOrdersByFilterPagedQueryHandler : IRequestHandler<GetOrdersByFilterPagedQuery, IEnumerable<OrderResponse>>
+    public class
+        GetOrdersByFilterPagedQueryHandler : IRequestHandler<GetOrdersByFilterPagedQuery, IEnumerable<OrderResponse>>
     {
         private readonly IMapper _mapper;
         private readonly IPredicateFactory<Order, OrderFilterModel> _predicateFactory;
@@ -25,10 +26,12 @@ namespace eStore_Admin.Application.Requests.Orders.Queries.GetByFilterPaged
             _predicateFactory = predicateFactory;
         }
 
-        public async Task<IEnumerable<OrderResponse>> Handle(GetOrdersByFilterPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<OrderResponse>> Handle(GetOrdersByFilterPagedQuery request,
+            CancellationToken cancellationToken)
         {
             var predicate = _predicateFactory.CreateExpression(request.FilterModel);
-            var orders = await _unitOfWork.OrderRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false,
+            var orders = await _unitOfWork.OrderRepository.GetByConditionPagedAsync(predicate, request.PagingParameters,
+                false,
                 cancellationToken);
             return _mapper.Map<IEnumerable<OrderResponse>>(orders);
         }

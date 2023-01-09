@@ -6,6 +6,7 @@ using eStore_Admin.Application.Requests.OrderItems.Commands.Delete;
 using eStore_Admin.Application.Requests.OrderItems.Commands.Edit;
 using eStore_Admin.Application.Requests.OrderItems.Queries.GetById;
 using eStore_Admin.Application.Requests.OrderItems.Queries.GetByOrderId;
+using eStore_Admin.Application.Responses;
 using eStore_Admin.Application.Utility;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -39,16 +40,17 @@ namespace eStore_Admin.WebApi.Controllers
         public async Task<IActionResult> GetById(int orderId, int orderItemId, CancellationToken cancellationToken)
         {
             var request = new GetOrderItemByIdQuery(orderItemId);
-            var response = await _mediator.Send(request, cancellationToken);
+            OrderItemResponse response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
         }
 
         [HttpPost]
         [Authorize(Roles = "Administrator, Sales Manager")]
-        public async Task<IActionResult> Create(int orderId, [FromBody] OrderItemDto orderItem, CancellationToken cancellationToken)
+        public async Task<IActionResult> Create(int orderId, [FromBody] OrderItemDto orderItem,
+            CancellationToken cancellationToken)
         {
             var request = new AddOrderItemCommand(orderId) { OrderItem = orderItem };
-            var response = await _mediator.Send(request, cancellationToken);
+            OrderResponse response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetOrderItemById", new { response.Id }, response);
         }
 
@@ -59,7 +61,7 @@ namespace eStore_Admin.WebApi.Controllers
             CancellationToken cancellationToken)
         {
             var request = new EditOrderItemCommand(orderItemId) { OrderItem = orderItem };
-            var response = await _mediator.Send(request, cancellationToken);
+            OrderResponse response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetOrderItemById", new { response.Id }, response);
         }
 
@@ -69,9 +71,11 @@ namespace eStore_Admin.WebApi.Controllers
         public async Task<IActionResult> Delete(int orderId, int orderItemId, CancellationToken cancellationToken)
         {
             var request = new DeleteOrderItemCommand(orderItemId);
-            var isSuccess = await _mediator.Send(request, cancellationToken);
+            bool isSuccess = await _mediator.Send(request, cancellationToken);
             if (isSuccess)
+            {
                 return Ok();
+            }
 
             return NotFound();
         }

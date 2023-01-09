@@ -17,7 +17,8 @@ namespace eStore_Admin.Application.PipelineBehaviors
             _validators = validators;
         }
 
-        public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+            CancellationToken cancellationToken)
         {
             var context = new ValidationContext<TRequest>(request);
             var failures = _validators
@@ -27,7 +28,9 @@ namespace eStore_Admin.Application.PipelineBehaviors
                 .ToList();
 
             if (failures.Any())
+            {
                 throw new ValidationException(failures);
+            }
 
             return next();
         }

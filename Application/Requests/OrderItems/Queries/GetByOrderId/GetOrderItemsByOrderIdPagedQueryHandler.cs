@@ -8,7 +8,9 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.OrderItems.Queries.GetByOrderId
 {
-    public class GetOrderItemsByOrderIdPagedQueryHandler : IRequestHandler<GetOrderItemsByOrderIdPagedQuery, IEnumerable<OrderItemResponse>>
+    public class
+        GetOrderItemsByOrderIdPagedQueryHandler : IRequestHandler<GetOrderItemsByOrderIdPagedQuery,
+            IEnumerable<OrderItemResponse>>
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -22,7 +24,8 @@ namespace eStore_Admin.Application.Requests.OrderItems.Queries.GetByOrderId
         public async Task<IEnumerable<OrderItemResponse>> Handle(GetOrderItemsByOrderIdPagedQuery request,
             CancellationToken cancellationToken)
         {
-            var orderItems = await _unitOfWork.OrderItemRepository.GetByConditionPagedAsync(oi => oi.OrderId == request.OrderId,
+            var orderItems = await _unitOfWork.OrderItemRepository.GetByConditionPagedAsync(
+                oi => oi.OrderId == request.OrderId,
                 request.PagingParameters, false, cancellationToken);
             return _mapper.Map<IEnumerable<OrderItemResponse>>(orderItems);
         }

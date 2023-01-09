@@ -19,9 +19,11 @@ namespace eStore_Admin.Application.Requests.Mouses.Queries.GetAllPaged
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<MouseResponse>> Handle(GetAllMousesPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<MouseResponse>> Handle(GetAllMousesPagedQuery request,
+            CancellationToken cancellationToken)
         {
-            var mouses = await _unitOfWork.MouseRepository.GetAllPagedAsync(request.PagingParameters, false, cancellationToken);
+            var mouses =
+                await _unitOfWork.MouseRepository.GetAllPagedAsync(request.PagingParameters, false, cancellationToken);
             return _mapper.Map<IEnumerable<MouseResponse>>(mouses);
         }
     }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Gamepads.Queries.GetById
@@ -20,7 +21,8 @@ namespace eStore_Admin.Application.Requests.Gamepads.Queries.GetById
 
         public async Task<GamepadResponse> Handle(GetGamepadByIdQuery request, CancellationToken cancellationToken)
         {
-            var gamepad = await _unitOfWork.GamepadRepository.GetByIdAsync(request.GamepadId, false, cancellationToken);
+            Gamepad gamepad =
+                await _unitOfWork.GamepadRepository.GetByIdAsync(request.GamepadId, false, cancellationToken);
             return _mapper.Map<GamepadResponse>(gamepad);
         }
     }

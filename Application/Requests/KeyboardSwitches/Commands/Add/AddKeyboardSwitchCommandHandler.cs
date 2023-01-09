@@ -22,7 +22,8 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Add
             _logger = logger;
         }
 
-        public async Task<KeyboardSwitchResponse> Handle(AddKeyboardSwitchCommand request, CancellationToken cancellationToken)
+        public async Task<KeyboardSwitchResponse> Handle(AddKeyboardSwitchCommand request,
+            CancellationToken cancellationToken)
         {
             var keyboardSwitch = _mapper.Map<KeyboardSwitch>(request.KeyboardSwitch);
 

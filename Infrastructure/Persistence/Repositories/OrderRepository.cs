@@ -17,7 +17,8 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
         {
         }
 
-        public async Task<IEnumerable<Order>> GetAllWithOrderItemsPagedAsync(PagingParameters pagingParameters, bool trackChanges,
+        public async Task<IEnumerable<Order>> GetAllWithOrderItemsPagedAsync(PagingParameters pagingParameters,
+            bool trackChanges,
             CancellationToken cancellationToken)
         {
             var entities = DbSet
@@ -33,7 +34,8 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
                     .ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Order>> GetByConditionWithOrderItemsPagedAsync(Expression<Func<Order, bool>> condition,
+        public async Task<IEnumerable<Order>> GetByConditionWithOrderItemsPagedAsync(
+            Expression<Func<Order, bool>> condition,
             PagingParameters pagingParameters, bool trackChanges,
             CancellationToken cancellationToken)
         {
@@ -51,7 +53,8 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
                     .ToListAsync(cancellationToken);
         }
 
-        public async Task<Order> GetByIdWithOrderItemsAsync(int id, bool trackChanges, CancellationToken cancellationToken)
+        public async Task<Order> GetByIdWithOrderItemsAsync(int id, bool trackChanges,
+            CancellationToken cancellationToken)
         {
             return trackChanges
                 ? await DbSet

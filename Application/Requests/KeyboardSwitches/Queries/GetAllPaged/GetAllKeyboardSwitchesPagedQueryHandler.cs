@@ -23,7 +23,9 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Queries.GetAllPaged
         public async Task<IEnumerable<KeyboardSwitchResponse>> Handle(GetAllKeyboardSwitchesPagedQuery request,
             CancellationToken cancellationToken)
         {
-            var switches = await _unitOfWork.KeyboardSwitchRepository.GetAllPagedAsync(request.PagingParameters, false, cancellationToken);
+            var switches =
+                await _unitOfWork.KeyboardSwitchRepository.GetAllPagedAsync(request.PagingParameters, false,
+                    cancellationToken);
             return _mapper.Map<IEnumerable<KeyboardSwitchResponse>>(switches);
         }
     }

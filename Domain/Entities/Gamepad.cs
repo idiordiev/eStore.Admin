@@ -14,6 +14,7 @@ namespace eStore_Admin.Domain.Entities
         public override bool Equals(object obj)
         {
             if (obj is Gamepad other)
+            {
                 return Id == other.Id
                        && IsDeleted == other.IsDeleted
                        && Name == other.Name
@@ -27,6 +28,7 @@ namespace eStore_Admin.Domain.Entities
                        && LastModified == other.LastModified
                        && Feedback == other.Feedback
                        && Math.Abs(Weight - other.Weight) < 0.01;
+            }
 
             return false;
         }

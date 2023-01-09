@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Keyboards.Commands.Delete
@@ -19,7 +20,8 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Delete
 
         public async Task<bool> Handle(DeleteKeyboardCommand request, CancellationToken cancellationToken)
         {
-            var keyboard = await _unitOfWork.KeyboardRepository.GetByIdAsync(request.KeyboardId, true, cancellationToken);
+            Keyboard keyboard =
+                await _unitOfWork.KeyboardRepository.GetByIdAsync(request.KeyboardId, true, cancellationToken);
             if (keyboard is null)
             {
                 _logger.LogInformation("The keyboard with id {0} has not been found.", request.KeyboardId);

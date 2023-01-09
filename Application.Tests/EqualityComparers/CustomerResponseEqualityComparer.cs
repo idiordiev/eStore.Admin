@@ -8,24 +8,35 @@ namespace Application.Tests.Unit.EqualityComparers
     {
         public bool Equals(CustomerResponse x, CustomerResponse y)
         {
-            if (ReferenceEquals(x, y)) 
+            if (ReferenceEquals(x, y))
+            {
                 return true;
-            if (ReferenceEquals(x, null)) 
+            }
+
+            if (ReferenceEquals(x, null))
+            {
                 return false;
-            if (ReferenceEquals(y, null)) 
+            }
+
+            if (ReferenceEquals(y, null))
+            {
                 return false;
-            if (x.GetType() != y.GetType()) 
+            }
+
+            if (x.GetType() != y.GetType())
+            {
                 return false;
-            
-            return x.Id == y.Id 
+            }
+
+            return x.Id == y.Id
                    && x.IsDeleted == y.IsDeleted
-                   && x.FirstName == y.FirstName 
-                   && x.LastName == y.LastName 
-                   && x.Email == y.Email 
-                   && x.PhoneNumber == y.PhoneNumber 
-                   && x.Country == y.Country 
+                   && x.FirstName == y.FirstName
+                   && x.LastName == y.LastName
+                   && x.Email == y.Email
+                   && x.PhoneNumber == y.PhoneNumber
+                   && x.Country == y.Country
                    && x.City == y.City
-                   && x.Address == y.Address 
+                   && x.Address == y.Address
                    && x.PostalCode == y.PostalCode;
         }
 
@@ -42,7 +53,7 @@ namespace Application.Tests.Unit.EqualityComparers
             hashCode.Add(obj.City);
             hashCode.Add(obj.Address);
             hashCode.Add(obj.PostalCode);
-            
+
             return hashCode.ToHashCode();
         }
     }

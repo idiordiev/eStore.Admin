@@ -7,6 +7,7 @@ using eStore_Admin.Application.Requests.Orders.Commands.Delete;
 using eStore_Admin.Application.Requests.Orders.Commands.Edit;
 using eStore_Admin.Application.Requests.Orders.Queries.GetByFilterPaged;
 using eStore_Admin.Application.Requests.Orders.Queries.GetById;
+using eStore_Admin.Application.Responses;
 using eStore_Admin.Application.Utility;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +32,8 @@ namespace eStore_Admin.WebApi.Controllers
             [FromQuery] PagingParameters pagingParams,
             CancellationToken cancellationToken)
         {
-            var request = new GetOrdersByFilterPagedQuery { PagingParameters = pagingParams, FilterModel = filterModel };
+            var request = new GetOrdersByFilterPagedQuery
+                { PagingParameters = pagingParams, FilterModel = filterModel };
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
         }
@@ -41,10 +43,12 @@ namespace eStore_Admin.WebApi.Controllers
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
             var request = new GetOrderByIdQuery(id);
-            var response = await _mediator.Send(request, cancellationToken);
+            OrderResponse response = await _mediator.Send(request, cancellationToken);
 
             if (response is null)
+            {
                 return NotFound();
+            }
 
             return Ok(response);
         }
@@ -54,7 +58,7 @@ namespace eStore_Admin.WebApi.Controllers
         public async Task<IActionResult> Create([FromBody] OrderDto order, CancellationToken cancellationToken)
         {
             var request = new AddOrderCommand { Order = order };
-            var response = await _mediator.Send(request, cancellationToken);
+            OrderResponse response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetOrderById", new { response.Id }, response);
         }
 
@@ -64,7 +68,7 @@ namespace eStore_Admin.WebApi.Controllers
         public async Task<IActionResult> Update(int id, [FromBody] OrderDto order, CancellationToken cancellationToken)
         {
             var request = new EditOrderCommand(id) { Order = order };
-            var response = await _mediator.Send(request, cancellationToken);
+            OrderResponse response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetOrderById", new { response.Id }, response);
         }
 
@@ -74,9 +78,11 @@ namespace eStore_Admin.WebApi.Controllers
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var request = new DeleteOrderCommand(id);
-            var isSuccess = await _mediator.Send(request, cancellationToken);
+            bool isSuccess = await _mediator.Send(request, cancellationToken);
             if (isSuccess)
+            {
                 return Ok();
+            }
 
             return NotFound();
         }

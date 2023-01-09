@@ -8,7 +8,8 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetAllPaged
 {
-    public class GetAllKeyboardsPagedQueryHandler : IRequestHandler<GetAllKeyboardsPagedQuery, IEnumerable<KeyboardResponse>>
+    public class
+        GetAllKeyboardsPagedQueryHandler : IRequestHandler<GetAllKeyboardsPagedQuery, IEnumerable<KeyboardResponse>>
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -19,9 +20,12 @@ namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetAllPaged
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<KeyboardResponse>> Handle(GetAllKeyboardsPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<KeyboardResponse>> Handle(GetAllKeyboardsPagedQuery request,
+            CancellationToken cancellationToken)
         {
-            var keyboards = await _unitOfWork.KeyboardRepository.GetAllPagedAsync(request.PagingParameters, false, cancellationToken);
+            var keyboards =
+                await _unitOfWork.KeyboardRepository.GetAllPagedAsync(request.PagingParameters, false,
+                    cancellationToken);
             return _mapper.Map<IEnumerable<KeyboardResponse>>(keyboards);
         }
     }

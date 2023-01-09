@@ -8,7 +8,8 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.Gamepads.Queries.GetAllPaged
 {
-    public class GetAllGamepadsPagedQueryHandler : IRequestHandler<GetAllGamepadsPagedQuery, IEnumerable<GamepadResponse>>
+    public class
+        GetAllGamepadsPagedQueryHandler : IRequestHandler<GetAllGamepadsPagedQuery, IEnumerable<GamepadResponse>>
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -19,9 +20,12 @@ namespace eStore_Admin.Application.Requests.Gamepads.Queries.GetAllPaged
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<GamepadResponse>> Handle(GetAllGamepadsPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<GamepadResponse>> Handle(GetAllGamepadsPagedQuery request,
+            CancellationToken cancellationToken)
         {
-            var gamepads = await _unitOfWork.GamepadRepository.GetAllPagedAsync(request.PagingParameters, false, cancellationToken);
+            var gamepads =
+                await _unitOfWork.GamepadRepository.GetAllPagedAsync(request.PagingParameters, false,
+                    cancellationToken);
             return _mapper.Map<IEnumerable<GamepadResponse>>(gamepads);
         }
     }

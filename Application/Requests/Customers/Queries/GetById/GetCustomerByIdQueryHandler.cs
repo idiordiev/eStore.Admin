@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Customers.Queries.GetById
@@ -20,7 +21,8 @@ namespace eStore_Admin.Application.Requests.Customers.Queries.GetById
 
         public async Task<CustomerResponse> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
         {
-            var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, false, cancellationToken);
+            Customer customer =
+                await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, false, cancellationToken);
             return _mapper.Map<CustomerResponse>(customer);
         }
     }

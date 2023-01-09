@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace eStore_Admin.Infrastructure.Identity
@@ -9,7 +8,7 @@ namespace eStore_Admin.Infrastructure.Identity
         public IdentityContext()
         {
         }
-        
+
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
         }
@@ -17,7 +16,7 @@ namespace eStore_Admin.Infrastructure.Identity
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new RoleConfiguration());
-            
+
             base.OnModelCreating(builder);
         }
     }

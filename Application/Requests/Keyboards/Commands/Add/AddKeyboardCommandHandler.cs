@@ -16,7 +16,8 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Add
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddKeyboardCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
+        public AddKeyboardCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
+            IDateTimeService dateTimeService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

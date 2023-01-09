@@ -35,7 +35,7 @@ namespace Application.Tests.Unit.Filtering
             // Arrange
             var filter = new CustomerFilterModel();
             Expression<Func<Customer, bool>> expected = c => true;
-            
+
             // Act
             var actual = _predicateFactory.CreateExpression(filter);
 
@@ -44,10 +44,10 @@ namespace Application.Tests.Unit.Filtering
             var actualList = _helper.Customers.Where(actual.Compile());
             CollectionAssert.AreEquivalent(expectedList, actualList, "The actual predicate is not equal to expected.");
         }
-        
-        [TestCase(new [] { true })]
-        [TestCase(new [] { false })]
-        [TestCase(new [] { true, false })]
+
+        [TestCase(new[] { true })]
+        [TestCase(new[] { false })]
+        [TestCase(new[] { true, false })]
         public void CreateExpression_IsDeletedValues_ReturnsCorrectPredicate(ICollection<bool> values)
         {
             // Arrange
@@ -56,7 +56,7 @@ namespace Application.Tests.Unit.Filtering
                 IsDeletedValues = new List<bool>(values)
             };
             Expression<Func<Customer, bool>> expected = c => values.Contains(c.IsDeleted);
-            
+
             // Act
             var actual = _predicateFactory.CreateExpression(filter);
 
@@ -86,7 +86,7 @@ namespace Application.Tests.Unit.Filtering
                 FirstName = value
             };
             Expression<Func<Customer, bool>> expected = c => c.FirstName.Contains(value.Trim());
-            
+
             // Act
             var actual = _predicateFactory.CreateExpression(filter);
 
@@ -95,7 +95,7 @@ namespace Application.Tests.Unit.Filtering
             var actualList = _helper.Customers.Where(actual.Compile());
             CollectionAssert.AreEquivalent(expectedList, actualList, "The actual predicate is not equal to expected.");
         }
-        
+
         [TestCase("")]
         [TestCase("L")]
         [TestCase("g")]
@@ -115,7 +115,7 @@ namespace Application.Tests.Unit.Filtering
                 LastName = value
             };
             Expression<Func<Customer, bool>> expected = c => c.LastName.Contains(value.Trim());
-            
+
             // Act
             var actual = _predicateFactory.CreateExpression(filter);
 
@@ -124,7 +124,7 @@ namespace Application.Tests.Unit.Filtering
             var actualList = _helper.Customers.Where(actual.Compile());
             CollectionAssert.AreEquivalent(expectedList, actualList, "The actual predicate is not equal to expected.");
         }
-        
+
         [TestCase("")]
         [TestCase("e")]
         [TestCase("E")]
@@ -145,7 +145,7 @@ namespace Application.Tests.Unit.Filtering
                 Email = value
             };
             Expression<Func<Customer, bool>> expected = c => c.Email.Contains(value.Trim());
-            
+
             // Act
             var actual = _predicateFactory.CreateExpression(filter);
 
@@ -154,7 +154,7 @@ namespace Application.Tests.Unit.Filtering
             var actualList = _helper.Customers.Where(actual.Compile());
             CollectionAssert.AreEquivalent(expectedList, actualList, "The actual predicate is not equal to expected.");
         }
-        
+
         [TestCase("")]
         [TestCase("P")]
         [TestCase("t")]
@@ -174,7 +174,7 @@ namespace Application.Tests.Unit.Filtering
                 PhoneNumber = value
             };
             Expression<Func<Customer, bool>> expected = c => c.PhoneNumber.Contains(value.Trim());
-            
+
             // Act
             var actual = _predicateFactory.CreateExpression(filter);
 
@@ -183,7 +183,7 @@ namespace Application.Tests.Unit.Filtering
             var actualList = _helper.Customers.Where(actual.Compile());
             CollectionAssert.AreEquivalent(expectedList, actualList, "The actual predicate is not equal to expected.");
         }
-        
+
         [TestCase("")]
         [TestCase("C")]
         [TestCase("h")]
@@ -203,7 +203,7 @@ namespace Application.Tests.Unit.Filtering
                 Country = value
             };
             Expression<Func<Customer, bool>> expected = c => c.Country.Contains(value.Trim());
-            
+
             // Act
             var actual = _predicateFactory.CreateExpression(filter);
 
@@ -212,7 +212,7 @@ namespace Application.Tests.Unit.Filtering
             var actualList = _helper.Customers.Where(actual.Compile());
             CollectionAssert.AreEquivalent(expectedList, actualList, "The actual predicate is not equal to expected.");
         }
-        
+
         [TestCase("")]
         [TestCase("C")]
         [TestCase("V")]
@@ -232,7 +232,7 @@ namespace Application.Tests.Unit.Filtering
                 City = value
             };
             Expression<Func<Customer, bool>> expected = c => c.City.Contains(value.Trim());
-            
+
             // Act
             var actual = _predicateFactory.CreateExpression(filter);
 
@@ -241,7 +241,7 @@ namespace Application.Tests.Unit.Filtering
             var actualList = _helper.Customers.Where(actual.Compile());
             CollectionAssert.AreEquivalent(expectedList, actualList, "The actual predicate is not equal to expected.");
         }
-        
+
         [TestCase("")]
         [TestCase("Add")]
         [TestCase("hdf")]
@@ -261,7 +261,7 @@ namespace Application.Tests.Unit.Filtering
                 Address = value
             };
             Expression<Func<Customer, bool>> expected = c => c.Address.Contains(value.Trim());
-            
+
             // Act
             var actual = _predicateFactory.CreateExpression(filter);
 
@@ -270,7 +270,7 @@ namespace Application.Tests.Unit.Filtering
             var actualList = _helper.Customers.Where(actual.Compile());
             CollectionAssert.AreEquivalent(expectedList, actualList, "The actual predicate is not equal to expected.");
         }
-        
+
         [TestCase("")]
         [TestCase("p")]
         [TestCase("k")]

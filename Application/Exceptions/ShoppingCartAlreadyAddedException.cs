@@ -14,7 +14,8 @@ namespace eStore_Admin.Application.Exceptions
         {
         }
 
-        public ShoppingCartAlreadyAddedException(string message, Exception innerException) : base(message, innerException)
+        public ShoppingCartAlreadyAddedException(string message, Exception innerException) : base(message,
+            innerException)
         {
         }
 

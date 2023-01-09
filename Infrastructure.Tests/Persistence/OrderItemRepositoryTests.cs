@@ -34,7 +34,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var expected = _helper.OrderItems.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
             var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
@@ -48,14 +48,15 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const int changedQuantity = 69;
-            
+
             // Act
             var orderItems = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            var orderItemToChange = orderItems.First(c => c.Id == 1);
+            OrderItem? orderItemToChange = orderItems.First(c => c.Id == 1);
             orderItemToChange.Quantity = changedQuantity;
-            
+
             // Assert
-            Assert.That((await _context.OrderItems.FindAsync(1))?.Quantity, Is.EqualTo(changedQuantity), "Changes has not been saved.");
+            Assert.That((await _context.OrderItems.FindAsync(1))?.Quantity, Is.EqualTo(changedQuantity),
+                "Changes has not been saved.");
         }
 
         [TestCase(1, 1)]
@@ -64,14 +65,16 @@ namespace Infrastructure.Tests.Persistence
         [TestCase(1, 2)]
         [TestCase(1, 3)]
         [TestCase(4, 1)]
-        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredOrderItem(int pageSize, int pageNumber)
+        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredOrderItem(int pageSize,
+            int pageNumber)
         {
             // Arrange
             var expected = _helper.OrderItems.Where(c => c.Id > 1).Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
-            var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
+            var actual =
+                await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
@@ -83,14 +86,16 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const int changedQuantity = 69;
-            
+
             // Act
-            var orderItems = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
-            var orderItemToChange = orderItems.First(c => c.Id == 1);
+            var orderItems =
+                await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
+            OrderItem? orderItemToChange = orderItems.First(c => c.Id == 1);
             orderItemToChange.Quantity = changedQuantity;
-            
+
             // Assert
-            Assert.That((await _context.OrderItems.FindAsync(1))?.Quantity, Is.EqualTo(changedQuantity), "Changes has not been saved.");
+            Assert.That((await _context.OrderItems.FindAsync(1))?.Quantity, Is.EqualTo(changedQuantity),
+                "Changes has not been saved.");
         }
 
         [TestCase(1)]
@@ -114,10 +119,10 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingOrderItem_ReturnsOrderItem(int id)
         {
             // Arrange
-            var expected = _helper.OrderItems.First(c => c.Id == id);
-            
+            OrderItem? expected = _helper.OrderItems.First(c => c.Id == id);
+
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            OrderItem? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual order item is not equal to expected.");
@@ -130,7 +135,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            OrderItem? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -158,13 +163,14 @@ namespace Infrastructure.Tests.Persistence
         {
             // Arrange
             const int changedQuantity = 69;
-            
+
             // Act
-            var orderItem = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            OrderItem? orderItem = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             orderItem.Quantity = changedQuantity;
 
             // Assert
-            Assert.That((await _context.OrderItems.FindAsync(id))?.Quantity, Is.EqualTo(changedQuantity), "Changes has not been tracked.");
+            Assert.That((await _context.OrderItems.FindAsync(id))?.Quantity, Is.EqualTo(changedQuantity),
+                "Changes has not been tracked.");
         }
 
         [Test]
@@ -186,7 +192,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingOrderItem_UpdatedOrderItem()
         {
             // Arrange
-            var orderItemToUpdate = _helper.OrderItems.First(c => c.Id == 1);
+            OrderItem? orderItemToUpdate = _helper.OrderItems.First(c => c.Id == 1);
             const int changedQuantity = 69;
             orderItemToUpdate.Quantity = changedQuantity;
 
@@ -194,7 +200,8 @@ namespace Infrastructure.Tests.Persistence
             _repository.Update(orderItemToUpdate);
 
             // Assert
-            Assert.That(_context.OrderItems.Find(1)?.Quantity, Is.EqualTo(changedQuantity), "The order item has not been updated.");
+            Assert.That(_context.OrderItems.Find(1)?.Quantity, Is.EqualTo(changedQuantity),
+                "The order item has not been updated.");
             return Task.CompletedTask;
         }
 
@@ -202,7 +209,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingOrderItem_DeletedOrderItemFromContext()
         {
             // Arrange
-            var orderItemToDelete = _helper.OrderItems.First(c => c.Id == 1);
+            OrderItem? orderItemToDelete = _helper.OrderItems.First(c => c.Id == 1);
 
             // Act
             _repository.Delete(orderItemToDelete);

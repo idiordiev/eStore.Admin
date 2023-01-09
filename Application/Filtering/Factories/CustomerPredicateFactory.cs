@@ -31,13 +31,17 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddIsDeletedConstraint(ref Expression<Func<Customer, bool>> expression, ICollection<bool> values)
         {
             if (values is not null && values.Any())
+            {
                 expression = expression.And(c => values.Contains(c.IsDeleted));
+            }
         }
 
         private void AddFirstNameConstraint(ref Expression<Func<Customer, bool>> expression, string firstName)
         {
             if (string.IsNullOrWhiteSpace(firstName))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.FirstName.Contains(firstName.Trim()));
         }
@@ -45,7 +49,9 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddLastNameConstraint(ref Expression<Func<Customer, bool>> expression, string lastName)
         {
             if (string.IsNullOrWhiteSpace(lastName))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.LastName.Contains(lastName.Trim()));
         }
@@ -53,7 +59,9 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddPostalCodeConstraint(ref Expression<Func<Customer, bool>> expression, string postalCode)
         {
             if (string.IsNullOrWhiteSpace(postalCode))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.PostalCode.Contains(postalCode.Trim()));
         }
@@ -62,7 +70,9 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddEmailConstraint(ref Expression<Func<Customer, bool>> expression, string email)
         {
             if (string.IsNullOrWhiteSpace(email))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.Email.Contains(email.Trim()));
         }
@@ -70,7 +80,9 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddPhoneNumberConstraint(ref Expression<Func<Customer, bool>> expression, string phoneNumber)
         {
             if (string.IsNullOrWhiteSpace(phoneNumber))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.PhoneNumber.Contains(phoneNumber.Trim()));
         }
@@ -78,7 +90,9 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddCountryConstraint(ref Expression<Func<Customer, bool>> expression, string country)
         {
             if (string.IsNullOrWhiteSpace(country))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.Country.Contains(country.Trim()));
         }
@@ -86,7 +100,9 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddCityConstraint(ref Expression<Func<Customer, bool>> expression, string city)
         {
             if (string.IsNullOrWhiteSpace(city))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.City.Contains(city.Trim()));
         }
@@ -94,7 +110,9 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddAddressConstraint(ref Expression<Func<Customer, bool>> expression, string address)
         {
             if (string.IsNullOrWhiteSpace(address))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.Address.Contains(address.Trim()));
         }

@@ -5,6 +5,7 @@ using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Edit
@@ -22,11 +23,16 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Edit
             _logger = logger;
         }
 
-        public async Task<KeyboardSwitchResponse> Handle(EditKeyboardSwitchCommand request, CancellationToken cancellationToken)
+        public async Task<KeyboardSwitchResponse> Handle(EditKeyboardSwitchCommand request,
+            CancellationToken cancellationToken)
         {
-            var keyboardSwitch = await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, true, cancellationToken);
+            KeyboardSwitch keyboardSwitch =
+                await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, true, cancellationToken);
             if (keyboardSwitch is null)
-                throw new KeyNotFoundException($"The keyboard switch with the id {request.SwitchId} has not been found.");
+            {
+                throw new KeyNotFoundException(
+                    $"The keyboard switch with the id {request.SwitchId} has not been found.");
+            }
 
             cancellationToken.ThrowIfCancellationRequested();
 

@@ -5,6 +5,7 @@ using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Gamepads.Commands.Edit
@@ -16,7 +17,8 @@ namespace eStore_Admin.Application.Requests.Gamepads.Commands.Edit
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public EditGamepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
+        public EditGamepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
+            IDateTimeService dateTimeService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -26,9 +28,12 @@ namespace eStore_Admin.Application.Requests.Gamepads.Commands.Edit
 
         public async Task<GamepadResponse> Handle(EditGamepadCommand request, CancellationToken cancellationToken)
         {
-            var gamepad = await _unitOfWork.GamepadRepository.GetByIdAsync(request.GamepadId, true, cancellationToken);
+            Gamepad gamepad =
+                await _unitOfWork.GamepadRepository.GetByIdAsync(request.GamepadId, true, cancellationToken);
             if (gamepad is null)
+            {
                 throw new KeyNotFoundException($"The gamepad with the id {request.GamepadId} has not been found.");
+            }
 
             cancellationToken.ThrowIfCancellationRequested();
 

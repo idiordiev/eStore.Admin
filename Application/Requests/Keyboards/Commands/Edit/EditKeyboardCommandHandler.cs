@@ -5,6 +5,7 @@ using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Keyboards.Commands.Edit
@@ -16,7 +17,8 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Edit
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public EditKeyboardCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ILoggingService logger, IDateTimeService dateTimeService)
+        public EditKeyboardCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ILoggingService logger,
+            IDateTimeService dateTimeService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -26,9 +28,12 @@ namespace eStore_Admin.Application.Requests.Keyboards.Commands.Edit
 
         public async Task<KeyboardResponse> Handle(EditKeyboardCommand request, CancellationToken cancellationToken)
         {
-            var keyboard = await _unitOfWork.KeyboardRepository.GetByIdAsync(request.KeyboardId, true, cancellationToken);
+            Keyboard keyboard =
+                await _unitOfWork.KeyboardRepository.GetByIdAsync(request.KeyboardId, true, cancellationToken);
             if (keyboard is null)
+            {
                 throw new KeyNotFoundException($"The keyboard with the id {request.KeyboardId} has not been found.");
+            }
 
             cancellationToken.ThrowIfCancellationRequested();
 

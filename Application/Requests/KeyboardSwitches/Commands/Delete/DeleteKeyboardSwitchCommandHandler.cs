@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Delete
@@ -20,7 +21,8 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Delete
 
         public async Task<bool> Handle(DeleteKeyboardSwitchCommand request, CancellationToken cancellationToken)
         {
-            var keyboardSwitch = await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, true, cancellationToken);
+            KeyboardSwitch keyboardSwitch =
+                await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, true, cancellationToken);
             if (keyboardSwitch is null)
             {
                 _logger.LogInformation("The keyboard switch with id {0} has not been found.", request.SwitchId);

@@ -19,9 +19,11 @@ namespace eStore_Admin.Application.Requests.Orders.Queries.GetAllPaged
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<OrderResponse>> Handle(GetAllOrdersPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<OrderResponse>> Handle(GetAllOrdersPagedQuery request,
+            CancellationToken cancellationToken)
         {
-            var orders = await _unitOfWork.OrderRepository.GetAllPagedAsync(request.PagingParameters, false, cancellationToken);
+            var orders =
+                await _unitOfWork.OrderRepository.GetAllPagedAsync(request.PagingParameters, false, cancellationToken);
             return _mapper.Map<IEnumerable<OrderResponse>>(orders);
         }
     }

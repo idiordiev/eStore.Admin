@@ -11,7 +11,9 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.Gamepads.Queries.GetByFilterPaged
 {
-    public class GetGamepadsByFilterPagedQueryHandler : IRequestHandler<GetGamepadsByFilterPagedQuery, IEnumerable<GamepadResponse>>
+    public class
+        GetGamepadsByFilterPagedQueryHandler : IRequestHandler<GetGamepadsByFilterPagedQuery,
+            IEnumerable<GamepadResponse>>
     {
         private readonly IMapper _mapper;
         private readonly IPredicateFactory<Gamepad, GamepadFilterModel> _predicateFactory;
@@ -25,11 +27,13 @@ namespace eStore_Admin.Application.Requests.Gamepads.Queries.GetByFilterPaged
             _predicateFactory = predicateFactory;
         }
 
-        public async Task<IEnumerable<GamepadResponse>> Handle(GetGamepadsByFilterPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<GamepadResponse>> Handle(GetGamepadsByFilterPagedQuery request,
+            CancellationToken cancellationToken)
         {
             var predicate = _predicateFactory.CreateExpression(request.FilterModel);
             var gamepads =
-                await _unitOfWork.GamepadRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false, cancellationToken);
+                await _unitOfWork.GamepadRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false,
+                    cancellationToken);
             return _mapper.Map<IEnumerable<GamepadResponse>>(gamepads);
         }
     }

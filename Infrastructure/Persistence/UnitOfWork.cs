@@ -10,7 +10,7 @@ namespace eStore_Admin.Infrastructure.Persistence
         private readonly ApplicationContext _context;
 
         private bool _disposed;
-        
+
         private ICustomerRepository _customerRepository;
         private IGamepadRepository _gamepadRepository;
         private IGoodsRepository _goodsRepository;
@@ -32,7 +32,10 @@ namespace eStore_Admin.Infrastructure.Persistence
             get
             {
                 if (_customerRepository is null)
+                {
                     _customerRepository = new CustomerRepository(_context);
+                }
+
                 return _customerRepository;
             }
         }
@@ -42,7 +45,10 @@ namespace eStore_Admin.Infrastructure.Persistence
             get
             {
                 if (_gamepadRepository is null)
+                {
                     _gamepadRepository = new GamepadRepository(_context);
+                }
+
                 return _gamepadRepository;
             }
         }
@@ -52,7 +58,10 @@ namespace eStore_Admin.Infrastructure.Persistence
             get
             {
                 if (_goodsRepository is null)
+                {
                     _goodsRepository = new GoodsRepository(_context);
+                }
+
                 return _goodsRepository;
             }
         }
@@ -62,7 +71,10 @@ namespace eStore_Admin.Infrastructure.Persistence
             get
             {
                 if (_keyboardRepository is null)
+                {
                     _keyboardRepository = new KeyboardRepository(_context);
+                }
+
                 return _keyboardRepository;
             }
         }
@@ -72,7 +84,10 @@ namespace eStore_Admin.Infrastructure.Persistence
             get
             {
                 if (_keyboardSwitchRepository is null)
+                {
                     _keyboardSwitchRepository = new KeyboardSwitchRepository(_context);
+                }
+
                 return _keyboardSwitchRepository;
             }
         }
@@ -82,7 +97,10 @@ namespace eStore_Admin.Infrastructure.Persistence
             get
             {
                 if (_mousepadRepository is null)
+                {
                     _mousepadRepository = new MousepadRepository(_context);
+                }
+
                 return _mousepadRepository;
             }
         }
@@ -92,7 +110,10 @@ namespace eStore_Admin.Infrastructure.Persistence
             get
             {
                 if (_mouseRepository is null)
+                {
                     _mouseRepository = new MouseRepository(_context);
+                }
+
                 return _mouseRepository;
             }
         }
@@ -102,7 +123,10 @@ namespace eStore_Admin.Infrastructure.Persistence
             get
             {
                 if (_orderRepository is null)
+                {
                     _orderRepository = new OrderRepository(_context);
+                }
+
                 return _orderRepository;
             }
         }
@@ -112,7 +136,10 @@ namespace eStore_Admin.Infrastructure.Persistence
             get
             {
                 if (_orderItemRepository is null)
+                {
                     _orderItemRepository = new OrderItemRepository(_context);
+                }
+
                 return _orderItemRepository;
             }
         }
@@ -122,7 +149,10 @@ namespace eStore_Admin.Infrastructure.Persistence
             get
             {
                 if (_shoppingCartRepository is null)
+                {
                     _shoppingCartRepository = new ShoppingCartRepository(_context);
+                }
+
                 return _shoppingCartRepository;
             }
         }
@@ -147,7 +177,9 @@ namespace eStore_Admin.Infrastructure.Persistence
             if (!_disposed)
             {
                 if (disposing)
+                {
                     _context.Dispose();
+                }
 
                 _disposed = true;
             }

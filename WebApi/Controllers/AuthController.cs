@@ -17,59 +17,70 @@ namespace eStore_Admin.WebApi.Controllers
         {
             _authService = authService;
         }
-        
+
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginCredentials loginCredentials, CancellationToken cancellationToken)
+        public async Task<IActionResult> Login([FromBody] LoginCredentials loginCredentials,
+            CancellationToken cancellationToken)
         {
-            var token = await _authService.CreateTokenAsync(loginCredentials, cancellationToken);
+            string token = await _authService.CreateTokenAsync(loginCredentials, cancellationToken);
             return Ok(token);
         }
-        
+
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddUser([FromBody] UserDto user, CancellationToken cancellationToken)
         {
-            var isSuccess = await _authService.AddUserWithRolesAsync(user, cancellationToken);
+            bool isSuccess = await _authService.AddUserWithRolesAsync(user, cancellationToken);
             if (isSuccess)
+            {
                 return Ok();
+            }
 
             return BadRequest();
         }
-        
+
         [HttpDelete]
         [Route("{username}")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteUser(string username, CancellationToken cancellationToken)
         {
-            var isSuccess = await _authService.DeleteUserAsync(username, cancellationToken);
+            bool isSuccess = await _authService.DeleteUserAsync(username, cancellationToken);
             if (isSuccess)
+            {
                 return Ok();
+            }
 
             return BadRequest();
         }
-        
+
         [HttpPut]
         [Route("{username}/removerole")]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> RemoveRoleFromUser(string username, [FromBody] string role, CancellationToken cancellationToken)
+        public async Task<IActionResult> RemoveRoleFromUser(string username, [FromBody] string role,
+            CancellationToken cancellationToken)
         {
-            var isSuccess = await _authService.RemoveRoleFromUserAsync(username, role, cancellationToken);
+            bool isSuccess = await _authService.RemoveRoleFromUserAsync(username, role, cancellationToken);
             if (isSuccess)
+            {
                 return Ok();
+            }
 
             return BadRequest();
         }
-        
+
         [HttpPut]
         [Route("{username}/addrole")]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> AddRoleToUser(string username, [FromBody] string role, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddRoleToUser(string username, [FromBody] string role,
+            CancellationToken cancellationToken)
         {
-            var isSuccess = await _authService.AddRoleToUserAsync(username, role, cancellationToken);
+            bool isSuccess = await _authService.AddRoleToUserAsync(username, role, cancellationToken);
             if (isSuccess)
+            {
                 return Ok();
+            }
 
             return BadRequest();
         }

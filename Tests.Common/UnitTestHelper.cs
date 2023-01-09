@@ -17,7 +17,7 @@ namespace Tests.Common
 
         public UnitTestHelper()
         {
-            this._keyboardSwitches = new List<KeyboardSwitch>()
+            _keyboardSwitches = new List<KeyboardSwitch>()
             {
                 new KeyboardSwitch
                 {
@@ -46,7 +46,7 @@ namespace Tests.Common
                 }
             };
 
-            this._gamepads = new List<Gamepad>()
+            _gamepads = new List<Gamepad>()
             {
                 new Gamepad
                 {
@@ -86,7 +86,7 @@ namespace Tests.Common
                 }
             };
 
-            this._keyboards = new List<Keyboard>()
+            _keyboards = new List<Keyboard>()
             {
                 new Keyboard
                 {
@@ -152,7 +152,7 @@ namespace Tests.Common
                 }
             };
 
-            this._mouses = new List<Mouse>()
+            _mouses = new List<Mouse>()
             {
                 new Mouse
                 {
@@ -189,7 +189,7 @@ namespace Tests.Common
                 }
             };
 
-            this._mousepads = new List<Mousepad>()
+            _mousepads = new List<Mousepad>()
             {
                 new Mousepad
                 {
@@ -229,7 +229,7 @@ namespace Tests.Common
                 }
             };
 
-            this._customers = new List<Customer>()
+            _customers = new List<Customer>()
             {
                 new Customer
                 {
@@ -240,7 +240,7 @@ namespace Tests.Common
                     ShoppingCart = new ShoppingCart()
                     {
                         Id = 1, IsDeleted = false, CustomerId = 1,
-                        Goods = new List<Goods>(this.Goods.Where(g => new[] { 1, 2, 3, 4, 8, 12 }.Contains(g.Id)))
+                        Goods = new List<Goods>(Goods.Where(g => new[] { 1, 2, 3, 4, 8, 12 }.Contains(g.Id)))
                     }
                 },
                 new Customer
@@ -252,11 +252,12 @@ namespace Tests.Common
                     ShoppingCart = new ShoppingCart()
                     {
                         Id = 2, IsDeleted = false, CustomerId = 2,
-                        Goods = new List<Goods>(this.Goods.Where(g => new[] { 3, 6, 2, 1, 10, 12 }.Contains(g.Id)))
+                        Goods = new List<Goods>(Goods.Where(g => new[] { 3, 6, 2, 1, 10, 12 }.Contains(g.Id)))
                     }
                 }
             };
-            this._orders = new List<Order>()
+
+            _orders = new List<Order>()
             {
                 new Order
                 {
@@ -369,42 +370,90 @@ namespace Tests.Common
             };
         }
 
-        public IEnumerable<KeyboardSwitch> KeyboardSwitches => this._keyboardSwitches;
+        public IEnumerable<KeyboardSwitch> KeyboardSwitches
+        {
+            get
+            {
+                return _keyboardSwitches;
+            }
+        }
 
-        public IEnumerable<Gamepad> Gamepads => this._gamepads;
+        public IEnumerable<Gamepad> Gamepads
+        {
+            get
+            {
+                return _gamepads;
+            }
+        }
 
 
-        public IEnumerable<Keyboard> Keyboards => this._keyboards;
+        public IEnumerable<Keyboard> Keyboards
+        {
+            get
+            {
+                return _keyboards;
+            }
+        }
 
-        public IEnumerable<Mouse> Mouses => this._mouses;
+        public IEnumerable<Mouse> Mouses
+        {
+            get
+            {
+                return _mouses;
+            }
+        }
 
-        public IEnumerable<Mousepad> Mousepads => this._mousepads;
+        public IEnumerable<Mousepad> Mousepads
+        {
+            get
+            {
+                return _mousepads;
+            }
+        }
 
-        public IEnumerable<Customer> Customers => this._customers;
+        public IEnumerable<Customer> Customers
+        {
+            get
+            {
+                return _customers;
+            }
+        }
 
-        public IEnumerable<Order> Orders => this._orders;
+        public IEnumerable<Order> Orders
+        {
+            get
+            {
+                return _orders;
+            }
+        }
 
         public IEnumerable<Goods> Goods
         {
             get
             {
                 var goods = new List<Goods>();
-                goods.AddRange(this.Gamepads);
-                goods.AddRange(this.Keyboards);
-                goods.AddRange(this.Mouses);
-                goods.AddRange(this.Mousepads);
+                goods.AddRange(Gamepads);
+                goods.AddRange(Keyboards);
+                goods.AddRange(Mouses);
+                goods.AddRange(Mousepads);
                 return goods;
             }
         }
 
         public IEnumerable<OrderItem> OrderItems
         {
-            get { return this.Orders.SelectMany(o => o.OrderItems); }
+            get
+            {
+                return Orders.SelectMany(o => o.OrderItems);
+            }
         }
 
         public IEnumerable<ShoppingCart> ShoppingCarts
         {
-            get { return this.Customers.Select(c => c.ShoppingCart); }
+            get
+            {
+                return Customers.Select(c => c.ShoppingCart);
+            }
         }
 
         public ApplicationContext GetApplicationContext()
@@ -415,13 +464,13 @@ namespace Tests.Common
 
             var context = new ApplicationContext(options);
 
-            context.KeyboardSwitches.AddRange(this._keyboardSwitches);
-            context.Gamepads.AddRange(this._gamepads);
-            context.Keyboards.AddRange(this._keyboards);
-            context.Mouses.AddRange(this._mouses);
-            context.Mousepads.AddRange(this._mousepads);
-            context.Customers.AddRange(this._customers);
-            context.Orders.AddRange(this._orders);
+            context.KeyboardSwitches.AddRange(_keyboardSwitches);
+            context.Gamepads.AddRange(_gamepads);
+            context.Keyboards.AddRange(_keyboards);
+            context.Mouses.AddRange(_mouses);
+            context.Mousepads.AddRange(_mousepads);
+            context.Customers.AddRange(_customers);
+            context.Orders.AddRange(_orders);
             context.SaveChanges();
 
             return context;

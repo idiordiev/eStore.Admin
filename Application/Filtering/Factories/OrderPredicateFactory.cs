@@ -33,49 +33,65 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddIsDeletedConstraint(ref Expression<Func<Order, bool>> expression, ICollection<bool> values)
         {
             if (values is not null && values.Any())
+            {
                 expression = expression.And(o => values.Contains(o.IsDeleted));
+            }
         }
 
         private void AddCustomerConstraint(ref Expression<Func<Order, bool>> expression, ICollection<int> customerIds)
         {
             if (customerIds is not null && customerIds.Any())
+            {
                 expression = expression.And(o => customerIds.Contains(o.CustomerId));
+            }
         }
 
         private void AddStatusConstraint(ref Expression<Func<Order, bool>> expression, ICollection<int> statusValues)
         {
             if (statusValues is not null && statusValues.Any())
+            {
                 expression = expression.And(o => statusValues.Contains((int)o.Status));
+            }
         }
 
         private void AddMinTotalConstraint(ref Expression<Func<Order, bool>> expression, decimal? total)
         {
             if (total is not null)
+            {
                 expression = expression.And(o => o.Total >= total);
+            }
         }
 
         private void AddMaxTotalConstraint(ref Expression<Func<Order, bool>> expression, decimal? total)
         {
             if (total is not null)
+            {
                 expression = expression.And(o => o.Total <= total);
+            }
         }
 
         private void AddDateFromConstraint(ref Expression<Func<Order, bool>> expression, DateTime? date)
         {
             if (date is not null)
+            {
                 expression = expression.And(m => m.TimeStamp >= date);
+            }
         }
 
         private void AddDateToConstraint(ref Expression<Func<Order, bool>> expression, DateTime? date)
         {
             if (date is not null)
+            {
                 expression = expression.And(m => m.TimeStamp <= date);
+            }
         }
 
         private void AddCountryConstraint(ref Expression<Func<Order, bool>> expression, string country)
         {
             if (string.IsNullOrWhiteSpace(country))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.ShippingCountry.Contains(country.Trim()));
         }
@@ -83,7 +99,9 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddCityConstraint(ref Expression<Func<Order, bool>> expression, string city)
         {
             if (string.IsNullOrWhiteSpace(city))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.ShippingCity.Contains(city.Trim()));
         }
@@ -91,7 +109,9 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddAddressConstraint(ref Expression<Func<Order, bool>> expression, string address)
         {
             if (string.IsNullOrWhiteSpace(address))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.ShippingAddress.Contains(address.Trim()));
         }
@@ -99,7 +119,9 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddPostalCodeConstraint(ref Expression<Func<Order, bool>> expression, string postalCode)
         {
             if (string.IsNullOrWhiteSpace(postalCode))
+            {
                 return;
+            }
 
             expression = expression.And(c => c.ShippingPostalCode.Contains(postalCode.Trim()));
         }

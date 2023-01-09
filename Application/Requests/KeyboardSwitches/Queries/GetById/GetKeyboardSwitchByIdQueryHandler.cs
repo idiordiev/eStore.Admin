@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.KeyboardSwitches.Queries.GetById
@@ -18,9 +19,11 @@ namespace eStore_Admin.Application.Requests.KeyboardSwitches.Queries.GetById
             _mapper = mapper;
         }
 
-        public async Task<KeyboardSwitchResponse> Handle(GetKeyboardSwitchByIdQuery request, CancellationToken cancellationToken)
+        public async Task<KeyboardSwitchResponse> Handle(GetKeyboardSwitchByIdQuery request,
+            CancellationToken cancellationToken)
         {
-            var keyboardSwitch = await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, false, cancellationToken);
+            KeyboardSwitch keyboardSwitch =
+                await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, false, cancellationToken);
             return _mapper.Map<KeyboardSwitchResponse>(keyboardSwitch);
         }
     }

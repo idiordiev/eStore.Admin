@@ -16,7 +16,8 @@ namespace eStore_Admin.Application.Requests.Mouses.Commands.Add
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddMouseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
+        public AddMouseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
+            IDateTimeService dateTimeService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

@@ -14,7 +14,7 @@ namespace Infrastructure.Tests.Persistence
         private UnitTestHelper _helper;
         private ApplicationContext _context;
         private IKeyboardRepository _repository;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -34,7 +34,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var expected = _helper.Keyboards.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
             var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
@@ -48,14 +48,15 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedName = "changedName";
-            
+
             // Act
             var keyboards = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            var keyboardToChange = keyboards.First(c => c.Id == 5);
+            Keyboard? keyboardToChange = keyboards.First(c => c.Id == 5);
             keyboardToChange.Name = changedName;
-            
+
             // Assert
-            Assert.That((await _context.Keyboards.FindAsync(5))?.Name, Is.EqualTo(changedName), "Changes has not been saved.");
+            Assert.That((await _context.Keyboards.FindAsync(5))?.Name, Is.EqualTo(changedName),
+                "Changes has not been saved.");
         }
 
         [TestCase(1, 1)]
@@ -64,14 +65,16 @@ namespace Infrastructure.Tests.Persistence
         [TestCase(1, 2)]
         [TestCase(1, 3)]
         [TestCase(4, 1)]
-        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredKeyboard(int pageSize, int pageNumber)
+        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredKeyboard(int pageSize,
+            int pageNumber)
         {
             // Arrange
             var expected = _helper.Keyboards.Where(c => c.Id > 5).Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
-            var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 5, pagingParams, false, CancellationToken.None);
+            var actual =
+                await _repository.GetByConditionPagedAsync(c => c.Id > 5, pagingParams, false, CancellationToken.None);
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
@@ -83,14 +86,16 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedName = "changedName";
-            
+
             // Act
-            var keyboards = await _repository.GetByConditionPagedAsync(c => c.Id == 5, pagingParams, true, CancellationToken.None);
-            var keyboardToChange = keyboards.First(c => c.Id == 5);
+            var keyboards =
+                await _repository.GetByConditionPagedAsync(c => c.Id == 5, pagingParams, true, CancellationToken.None);
+            Keyboard? keyboardToChange = keyboards.First(c => c.Id == 5);
             keyboardToChange.Name = changedName;
-            
+
             // Assert
-            Assert.That((await _context.Keyboards.FindAsync(5))?.Name, Is.EqualTo(changedName), "Changes has not been saved.");
+            Assert.That((await _context.Keyboards.FindAsync(5))?.Name, Is.EqualTo(changedName),
+                "Changes has not been saved.");
         }
 
         [TestCase(5)]
@@ -101,10 +106,10 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingKeyboard_ReturnsKeyboard(int id)
         {
             // Arrange
-            var expected = _helper.Keyboards.First(c => c.Id == id);
-            
+            Keyboard? expected = _helper.Keyboards.First(c => c.Id == id);
+
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Keyboard? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual keyboard is not equal to expected.");
@@ -117,7 +122,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Keyboard? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -132,13 +137,14 @@ namespace Infrastructure.Tests.Persistence
         {
             // Arrange
             const string changedName = "changedName";
-            
+
             // Act
-            var keyboard = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Keyboard? keyboard = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             keyboard.Name = changedName;
 
             // Assert
-            Assert.That((await _context.Keyboards.FindAsync(id))?.Name, Is.EqualTo(changedName), "Changes has not been tracked.");
+            Assert.That((await _context.Keyboards.FindAsync(id))?.Name, Is.EqualTo(changedName),
+                "Changes has not been tracked.");
         }
 
         [Test]
@@ -160,7 +166,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingKeyboard_UpdatedKeyboard()
         {
             // Arrange
-            var keyboardToUpdate = _helper.Keyboards.First(c => c.Id == 5);
+            Keyboard? keyboardToUpdate = _helper.Keyboards.First(c => c.Id == 5);
             const string changedName = "changedName";
             keyboardToUpdate.Name = changedName;
 
@@ -168,7 +174,8 @@ namespace Infrastructure.Tests.Persistence
             _repository.Update(keyboardToUpdate);
 
             // Assert
-            Assert.That(_context.Keyboards.Find(5)?.Name, Is.EqualTo(changedName), "The keyboard has not been updated.");
+            Assert.That(_context.Keyboards.Find(5)?.Name, Is.EqualTo(changedName),
+                "The keyboard has not been updated.");
             return Task.CompletedTask;
         }
 
@@ -176,7 +183,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingKeyboard_DeletedKeyboardFromContext()
         {
             // Arrange
-            var keyboardToDelete = _helper.Keyboards.First(c => c.Id == 5);
+            Keyboard? keyboardToDelete = _helper.Keyboards.First(c => c.Id == 5);
 
             // Act
             _repository.Delete(keyboardToDelete);

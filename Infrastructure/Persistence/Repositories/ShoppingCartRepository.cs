@@ -17,7 +17,8 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
         {
         }
 
-        public async Task<IEnumerable<ShoppingCart>> GetAllWithItemsPagedAsync(PagingParameters pagingParameters, bool trackChanges, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ShoppingCart>> GetAllWithItemsPagedAsync(PagingParameters pagingParameters,
+            bool trackChanges, CancellationToken cancellationToken)
         {
             var entities = DbSet
                 .OrderBy(sc => sc.Id)
@@ -32,7 +33,8 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
                     .ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<ShoppingCart>> GetByConditionWithItemsPagedAsync(Expression<Func<ShoppingCart, bool>> condition, PagingParameters pagingParameters, bool trackChanges,
+        public async Task<IEnumerable<ShoppingCart>> GetByConditionWithItemsPagedAsync(
+            Expression<Func<ShoppingCart, bool>> condition, PagingParameters pagingParameters, bool trackChanges,
             CancellationToken cancellationToken)
         {
             var entities = DbSet
@@ -49,7 +51,8 @@ namespace eStore_Admin.Infrastructure.Persistence.Repositories
                     .ToListAsync(cancellationToken);
         }
 
-        public async Task<ShoppingCart> GetByIdWithItemsAsync(int id, bool trackChanges, CancellationToken cancellationToken)
+        public async Task<ShoppingCart> GetByIdWithItemsAsync(int id, bool trackChanges,
+            CancellationToken cancellationToken)
         {
             return trackChanges
                 ? await DbSet

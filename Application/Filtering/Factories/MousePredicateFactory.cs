@@ -31,58 +31,80 @@ namespace eStore_Admin.Application.Filtering.Factories
         private void AddIsDeletedConstraint(ref Expression<Func<Mouse, bool>> expression, ICollection<bool> values)
         {
             if (values is not null && values.Any())
+            {
                 expression = expression.And(m => values.Contains(m.IsDeleted));
+            }
         }
 
         private void AddNameConstraint(ref Expression<Func<Mouse, bool>> expression, string name)
         {
             if (string.IsNullOrWhiteSpace(name))
+            {
                 return;
+            }
 
-            var value = name.Trim();
+            string value = name.Trim();
             expression = expression.And(m => m.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        private void AddManufacturerConstraint(ref Expression<Func<Mouse, bool>> expression, ICollection<string> manufacturers)
+        private void AddManufacturerConstraint(ref Expression<Func<Mouse, bool>> expression,
+            ICollection<string> manufacturers)
         {
             if (manufacturers is not null && manufacturers.Any())
-                expression = expression.And(mouse => manufacturers.Any(manufacturer => mouse.Manufacturer.Equals(manufacturer)));
+            {
+                expression = expression.And(mouse =>
+                    manufacturers.Any(manufacturer => mouse.Manufacturer.Equals(manufacturer)));
+            }
         }
 
         private void AddMinPriceConstraint(ref Expression<Func<Mouse, bool>> expression, decimal? price)
         {
             if (price is not null)
+            {
                 expression = expression.And(m => m.Price >= price);
+            }
         }
 
         private void AddMaxPriceConstraint(ref Expression<Func<Mouse, bool>> expression, decimal? price)
         {
             if (price is not null)
+            {
                 expression = expression.And(m => m.Price <= price);
+            }
         }
 
         private void AddCreatedDateStartConstraint(ref Expression<Func<Mouse, bool>> expression, DateTime? date)
         {
             if (date is not null)
+            {
                 expression = expression.And(m => m.Created >= date);
+            }
         }
 
         private void AddCreatedDateEndConstraint(ref Expression<Func<Mouse, bool>> expression, DateTime? date)
         {
             if (date is not null)
+            {
                 expression = expression.And(m => m.Created <= date);
+            }
         }
 
-        private void AddConnectionTypeConstraint(ref Expression<Func<Mouse, bool>> expression, ICollection<string> connectionTypes)
+        private void AddConnectionTypeConstraint(ref Expression<Func<Mouse, bool>> expression,
+            ICollection<string> connectionTypes)
         {
             if (connectionTypes is not null && connectionTypes.Any())
+            {
                 expression = expression.And(m => connectionTypes.Any(ct => ct.Equals(m.ConnectionType)));
+            }
         }
 
-        private void AddBacklightConstraint(ref Expression<Func<Mouse, bool>> expression, ICollection<string> backlights)
+        private void AddBacklightConstraint(ref Expression<Func<Mouse, bool>> expression,
+            ICollection<string> backlights)
         {
             if (backlights is not null && backlights.Any())
+            {
                 expression = expression.And(m => backlights.Any(b => b.Equals(m.Backlight)));
+            }
         }
     }
 }

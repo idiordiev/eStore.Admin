@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace eStore_Admin.Domain.Entities
 {
@@ -21,6 +22,7 @@ namespace eStore_Admin.Domain.Entities
         public override bool Equals(object obj)
         {
             if (obj is Customer other)
+            {
                 return Id == other.Id
                        && IsDeleted == other.IsDeleted
                        && IdentityId == other.IdentityId
@@ -33,6 +35,7 @@ namespace eStore_Admin.Domain.Entities
                        && Address == other.Address
                        && PostalCode == other.PostalCode
                        && ShoppingCartId == other.ShoppingCartId;
+            }
 
             return false;
         }

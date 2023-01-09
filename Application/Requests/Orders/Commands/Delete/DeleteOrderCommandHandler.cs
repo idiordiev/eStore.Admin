@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Orders.Commands.Delete
@@ -19,7 +20,7 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Delete
 
         public async Task<bool> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId, true, cancellationToken);
+            Order order = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId, true, cancellationToken);
             if (order is null)
             {
                 _logger.LogInformation("The order with id {0} has not been found.", request.OrderId);

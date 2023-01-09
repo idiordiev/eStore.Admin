@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Gamepads.Commands.Delete
@@ -19,7 +20,8 @@ namespace eStore_Admin.Application.Requests.Gamepads.Commands.Delete
 
         public async Task<bool> Handle(DeleteGamepadCommand request, CancellationToken cancellationToken)
         {
-            var gamepad = await _unitOfWork.GamepadRepository.GetByIdAsync(request.GamepadId, false, cancellationToken);
+            Gamepad gamepad =
+                await _unitOfWork.GamepadRepository.GetByIdAsync(request.GamepadId, false, cancellationToken);
             if (gamepad is null)
             {
                 _logger.LogInformation("The gamepad with id {0} has not been found.", request.GamepadId);

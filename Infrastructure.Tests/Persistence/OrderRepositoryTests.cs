@@ -34,7 +34,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var expected = _helper.Orders.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
             var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
@@ -48,14 +48,15 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedAddress = "changedAddress";
-            
+
             // Act
             var orders = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            var orderToChange = orders.First(c => c.Id == 1);
+            Order? orderToChange = orders.First(c => c.Id == 1);
             orderToChange.ShippingAddress = changedAddress;
-            
+
             // Assert
-            Assert.That((await _context.Orders.FindAsync(1))?.ShippingAddress, Is.EqualTo(changedAddress), "Changes has not been saved.");
+            Assert.That((await _context.Orders.FindAsync(1))?.ShippingAddress, Is.EqualTo(changedAddress),
+                "Changes has not been saved.");
         }
 
         [TestCase(1, 1)]
@@ -64,14 +65,16 @@ namespace Infrastructure.Tests.Persistence
         [TestCase(1, 2)]
         [TestCase(1, 3)]
         [TestCase(4, 1)]
-        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredOrder(int pageSize, int pageNumber)
+        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredOrder(int pageSize,
+            int pageNumber)
         {
             // Arrange
             var expected = _helper.Orders.Where(c => c.Id > 1).Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
-            var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
+            var actual =
+                await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
@@ -83,14 +86,16 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedAddress = "changedAddress";
-            
+
             // Act
-            var orders = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
-            var orderToChange = orders.First(c => c.Id == 1);
+            var orders =
+                await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
+            Order? orderToChange = orders.First(c => c.Id == 1);
             orderToChange.ShippingAddress = changedAddress;
-            
+
             // Assert
-            Assert.That((await _context.Orders.FindAsync(1))?.ShippingAddress, Is.EqualTo(changedAddress), "Changes has not been saved.");
+            Assert.That((await _context.Orders.FindAsync(1))?.ShippingAddress, Is.EqualTo(changedAddress),
+                "Changes has not been saved.");
         }
 
         [TestCase(1)]
@@ -102,10 +107,10 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingOrder_ReturnsOrder(int id)
         {
             // Arrange
-            var expected = _helper.Orders.First(c => c.Id == id);
-            
+            Order? expected = _helper.Orders.First(c => c.Id == id);
+
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Order? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual order is not equal to expected.");
@@ -118,7 +123,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Order? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -134,13 +139,14 @@ namespace Infrastructure.Tests.Persistence
         {
             // Arrange
             const string changedAddress = "changedAddress";
-            
+
             // Act
-            var order = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Order? order = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             order.ShippingAddress = changedAddress;
 
             // Assert
-            Assert.That((await _context.Orders.FindAsync(id))?.ShippingAddress, Is.EqualTo(changedAddress), "Changes has not been tracked.");
+            Assert.That((await _context.Orders.FindAsync(id))?.ShippingAddress, Is.EqualTo(changedAddress),
+                "Changes has not been tracked.");
         }
 
         [Test]
@@ -162,7 +168,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingOrder_UpdatedOrder()
         {
             // Arrange
-            var orderToUpdate = _helper.Orders.First(c => c.Id == 1);
+            Order? orderToUpdate = _helper.Orders.First(c => c.Id == 1);
             const string changedAddress = "changedAddress";
             orderToUpdate.ShippingAddress = changedAddress;
 
@@ -170,7 +176,8 @@ namespace Infrastructure.Tests.Persistence
             _repository.Update(orderToUpdate);
 
             // Assert
-            Assert.That(_context.Orders.Find(1)?.ShippingAddress, Is.EqualTo(changedAddress), "The order has not been updated.");
+            Assert.That(_context.Orders.Find(1)?.ShippingAddress, Is.EqualTo(changedAddress),
+                "The order has not been updated.");
             return Task.CompletedTask;
         }
 
@@ -178,7 +185,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingOrder_DeletedOrderFromContext()
         {
             // Arrange
-            var orderToDelete = _helper.Orders.First(c => c.Id == 1);
+            Order? orderToDelete = _helper.Orders.First(c => c.Id == 1);
 
             // Act
             _repository.Delete(orderToDelete);
@@ -187,28 +194,30 @@ namespace Infrastructure.Tests.Persistence
             // Assert
             Assert.That(await _context.Orders.FindAsync(1), Is.Null, "The order has not been deleted.");
         }
-        
-        
+
+
         [TestCase(1, 1)]
         [TestCase(2, 1)]
         [TestCase(3, 1)]
         [TestCase(1, 2)]
         [TestCase(1, 3)]
         [TestCase(4, 1)]
-        public async Task GetAllWithOrderItemsPagedAsync_ValidPagingParams_ReturnsRequiredOrders(int pageSize, int pageNumber)
+        public async Task GetAllWithOrderItemsPagedAsync_ValidPagingParams_ReturnsRequiredOrders(int pageSize,
+            int pageNumber)
         {
             // Arrange
             var expected = _helper.Orders.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
             var expectedOrderItems = expected.Select(o => o.OrderItems);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
             var actual = await _repository.GetAllWithOrderItemsPagedAsync(pagingParams, false, CancellationToken.None);
             var actualList = actual.ToList();
-            
+
             // Assert
             CollectionAssert.AreEqual(expected, actualList, "The actual collection is not equal to expected");
-            CollectionAssert.AreEquivalent(expectedOrderItems, actualList.Select(o => o.OrderItems), "The actual order items are not equivalent to expected.");
+            CollectionAssert.AreEquivalent(expectedOrderItems, actualList.Select(o => o.OrderItems),
+                "The actual order items are not equivalent to expected.");
         }
 
         [Test]
@@ -217,14 +226,15 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedAddress = "changedAddress";
-            
+
             // Act
             var orders = await _repository.GetAllWithOrderItemsPagedAsync(pagingParams, true, CancellationToken.None);
-            var orderToChange = orders.First(c => c.Id == 1);
+            Order? orderToChange = orders.First(c => c.Id == 1);
             orderToChange.ShippingAddress = changedAddress;
-            
+
             // Assert
-            Assert.That((await _context.Orders.FindAsync(1))?.ShippingAddress, Is.EqualTo(changedAddress), "Changes has not been saved.");
+            Assert.That((await _context.Orders.FindAsync(1))?.ShippingAddress, Is.EqualTo(changedAddress),
+                "Changes has not been saved.");
         }
 
         [TestCase(1, 1)]
@@ -233,20 +243,25 @@ namespace Infrastructure.Tests.Persistence
         [TestCase(1, 2)]
         [TestCase(1, 3)]
         [TestCase(4, 1)]
-        public async Task GetByConditionWithOrderItemsPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredOrder(int pageSize, int pageNumber)
+        public async Task GetByConditionWithOrderItemsPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredOrder(
+            int pageSize, int pageNumber)
         {
             // Arrange
-            var expected = _helper.Orders.Where(c => c.Id > 1).Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
+            var expected = _helper.Orders.Where(c => c.Id > 1).Skip(pageSize * (pageNumber - 1)).Take(pageSize)
+                .ToList();
             var expectedOrderItems = expected.Select(o => o.OrderItems);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
-            var actual = await _repository.GetByConditionWithOrderItemsPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
+            var actual =
+                await _repository.GetByConditionWithOrderItemsPagedAsync(c => c.Id > 1, pagingParams, false,
+                    CancellationToken.None);
             var actualList = actual.ToList();
-            
+
             // Assert
             CollectionAssert.AreEqual(expected, actualList, "The actual collection is not equal to expected.");
-            CollectionAssert.AreEquivalent(expectedOrderItems, actualList.Select(o => o.OrderItems), "The actual order items are not equivalent to expected.");
+            CollectionAssert.AreEquivalent(expectedOrderItems, actualList.Select(o => o.OrderItems),
+                "The actual order items are not equivalent to expected.");
         }
 
         [Test]
@@ -255,14 +270,17 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedAddress = "changedAddress";
-            
+
             // Act
-            var orders = await _repository.GetByConditionWithOrderItemsPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
-            var orderToChange = orders.First(c => c.Id == 1);
+            var orders =
+                await _repository.GetByConditionWithOrderItemsPagedAsync(c => c.Id == 1, pagingParams, true,
+                    CancellationToken.None);
+            Order? orderToChange = orders.First(c => c.Id == 1);
             orderToChange.ShippingAddress = changedAddress;
-            
+
             // Assert
-            Assert.That((await _context.Orders.FindAsync(1))?.ShippingAddress, Is.EqualTo(changedAddress), "Changes has not been saved.");
+            Assert.That((await _context.Orders.FindAsync(1))?.ShippingAddress, Is.EqualTo(changedAddress),
+                "Changes has not been saved.");
         }
 
         [TestCase(1)]
@@ -274,15 +292,16 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdWithOrderItemsAsync_ExistingOrder_ReturnsOrder(int id)
         {
             // Arrange
-            var expected = _helper.Orders.First(c => c.Id == id);
+            Order? expected = _helper.Orders.First(c => c.Id == id);
             var expectedOrderItems = _helper.OrderItems.Where(oi => oi.OrderId == id);
-            
+
             // Act
-            var actual = await _repository.GetByIdWithOrderItemsAsync(id, false, CancellationToken.None);
+            Order? actual = await _repository.GetByIdWithOrderItemsAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual order is not equal to expected.");
-            CollectionAssert.AreEquivalent(expectedOrderItems, actual.OrderItems, "The actual order items are not equivalent to expected.");
+            CollectionAssert.AreEquivalent(expectedOrderItems, actual.OrderItems,
+                "The actual order items are not equivalent to expected.");
         }
 
         [TestCase(0)]
@@ -292,7 +311,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Order? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -308,13 +327,14 @@ namespace Infrastructure.Tests.Persistence
         {
             // Arrange
             const string changedAddress = "changedAddress";
-            
+
             // Act
-            var order = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Order? order = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             order.ShippingAddress = changedAddress;
 
             // Assert
-            Assert.That((await _context.Orders.FindAsync(id))?.ShippingAddress, Is.EqualTo(changedAddress), "Changes has not been tracked.");
+            Assert.That((await _context.Orders.FindAsync(id))?.ShippingAddress, Is.EqualTo(changedAddress),
+                "Changes has not been tracked.");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Mousepads.Queries.GetById
@@ -20,7 +21,8 @@ namespace eStore_Admin.Application.Requests.Mousepads.Queries.GetById
 
         public async Task<MousepadResponse> Handle(GetMousepadByIdQuery request, CancellationToken cancellationToken)
         {
-            var mousepad = await _unitOfWork.MousepadRepository.GetByIdAsync(request.MousepadId, false, cancellationToken);
+            Mousepad mousepad =
+                await _unitOfWork.MousepadRepository.GetByIdAsync(request.MousepadId, false, cancellationToken);
             return _mapper.Map<MousepadResponse>(mousepad);
         }
     }

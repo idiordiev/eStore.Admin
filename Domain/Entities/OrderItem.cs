@@ -13,12 +13,14 @@
         public override bool Equals(object obj)
         {
             if (obj is OrderItem other)
+            {
                 return Id == other.Id
                        && IsDeleted == other.IsDeleted
                        && OrderId == other.OrderId
                        && UnitPrice == other.UnitPrice
                        && GoodsId == other.GoodsId
                        && Quantity == other.Quantity;
+            }
 
             return false;
         }

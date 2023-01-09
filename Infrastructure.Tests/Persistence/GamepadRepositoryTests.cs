@@ -34,7 +34,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var expected = _helper.Gamepads.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
             var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
@@ -48,14 +48,15 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedName = "changedName";
-            
+
             // Act
             var gamepads = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            var gamepadToChange = gamepads.First(c => c.Id == 1);
+            Gamepad? gamepadToChange = gamepads.First(c => c.Id == 1);
             gamepadToChange.Name = changedName;
-            
+
             // Assert
-            Assert.That((await _context.Gamepads.FindAsync(1))?.Name, Is.EqualTo(changedName), "Changes has not been saved.");
+            Assert.That((await _context.Gamepads.FindAsync(1))?.Name, Is.EqualTo(changedName),
+                "Changes has not been saved.");
         }
 
         [TestCase(1, 1)]
@@ -64,14 +65,16 @@ namespace Infrastructure.Tests.Persistence
         [TestCase(1, 2)]
         [TestCase(1, 3)]
         [TestCase(4, 1)]
-        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredGamepad(int pageSize, int pageNumber)
+        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredGamepad(int pageSize,
+            int pageNumber)
         {
             // Arrange
             var expected = _helper.Gamepads.Where(c => c.Id > 1).Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
-            var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
+            var actual =
+                await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
@@ -83,14 +86,16 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedName = "changedName";
-            
+
             // Act
-            var gamepads = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
-            var gamepadToChange = gamepads.First(c => c.Id == 1);
+            var gamepads =
+                await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
+            Gamepad? gamepadToChange = gamepads.First(c => c.Id == 1);
             gamepadToChange.Name = changedName;
-            
+
             // Assert
-            Assert.That((await _context.Gamepads.FindAsync(1))?.Name, Is.EqualTo(changedName), "Changes has not been saved.");
+            Assert.That((await _context.Gamepads.FindAsync(1))?.Name, Is.EqualTo(changedName),
+                "Changes has not been saved.");
         }
 
         [TestCase(1)]
@@ -100,10 +105,10 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingGamepad_ReturnsGamepad(int id)
         {
             // Arrange
-            var expected = _helper.Gamepads.First(c => c.Id == id);
-            
+            Gamepad? expected = _helper.Gamepads.First(c => c.Id == id);
+
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Gamepad? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual gamepad is not equal to expected.");
@@ -116,7 +121,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Gamepad? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -130,13 +135,14 @@ namespace Infrastructure.Tests.Persistence
         {
             // Arrange
             const string changedName = "changedName";
-            
+
             // Act
-            var gamepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Gamepad? gamepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             gamepad.Name = changedName;
 
             // Assert
-            Assert.That((await _context.Gamepads.FindAsync(id))?.Name, Is.EqualTo(changedName), "Changes has not been tracked.");
+            Assert.That((await _context.Gamepads.FindAsync(id))?.Name, Is.EqualTo(changedName),
+                "Changes has not been tracked.");
         }
 
         [Test]
@@ -158,7 +164,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingGamepad_UpdatedGamepad()
         {
             // Arrange
-            var gamepadToUpdate = _helper.Gamepads.First(c => c.Id == 1);
+            Gamepad? gamepadToUpdate = _helper.Gamepads.First(c => c.Id == 1);
             const string changedName = "changedName";
             gamepadToUpdate.Name = changedName;
 
@@ -174,7 +180,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingGamepad_DeletedGamepadFromContext()
         {
             // Arrange
-            var gamepadToDelete = _helper.Gamepads.First(c => c.Id == 1);
+            Gamepad? gamepadToDelete = _helper.Gamepads.First(c => c.Id == 1);
 
             // Act
             _repository.Delete(gamepadToDelete);

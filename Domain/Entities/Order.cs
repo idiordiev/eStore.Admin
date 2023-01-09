@@ -21,6 +21,7 @@ namespace eStore_Admin.Domain.Entities
         public override bool Equals(object obj)
         {
             if (obj is Order other)
+            {
                 return Id == other.Id
                        && IsDeleted == other.IsDeleted
                        && TimeStamp == other.TimeStamp
@@ -31,6 +32,7 @@ namespace eStore_Admin.Domain.Entities
                        && ShippingCity == other.ShippingCity
                        && ShippingAddress == other.ShippingAddress
                        && ShippingPostalCode == other.ShippingPostalCode;
+            }
 
             return false;
         }

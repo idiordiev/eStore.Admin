@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
+using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Responses;
 using eStore_Admin.Domain.Entities;
 using MediatR;
@@ -18,7 +19,8 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Add
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddOrderCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger, IDateTimeService dateTimeService)
+        public AddOrderCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
+            IDateTimeService dateTimeService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -31,11 +33,13 @@ namespace eStore_Admin.Application.Requests.Orders.Commands.Add
             var order = _mapper.Map<Order>(request.Order);
             order.TimeStamp = _dateTimeService.Now();
 
-            foreach (var item in request.Order.ItemsToAdd)
+            foreach (OrderItemDto item in request.Order.ItemsToAdd)
             {
-                var goods = await _unitOfWork.GoodsRepository.GetByIdAsync(item.GoodsId, false, cancellationToken);
+                Goods goods = await _unitOfWork.GoodsRepository.GetByIdAsync(item.GoodsId, false, cancellationToken);
                 if (goods is null)
+                {
                     throw new KeyNotFoundException($"The goods with id {item.GoodsId} has not been found.");
+                }
 
                 order.OrderItems.Add(new OrderItem
                 {

@@ -6,6 +6,7 @@ using eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Delete;
 using eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Edit;
 using eStore_Admin.Application.Requests.KeyboardSwitches.Queries.GetAllPaged;
 using eStore_Admin.Application.Requests.KeyboardSwitches.Queries.GetById;
+using eStore_Admin.Application.Responses;
 using eStore_Admin.Application.Utility;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +27,8 @@ namespace eStore_Admin.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PagingParameters pagingParameters, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAll([FromQuery] PagingParameters pagingParameters,
+            CancellationToken cancellationToken)
         {
             var request = new GetAllKeyboardSwitchesPagedQuery { PagingParameters = pagingParameters };
             var response = await _mediator.Send(request, cancellationToken);
@@ -38,30 +40,34 @@ namespace eStore_Admin.WebApi.Controllers
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
             var request = new GetKeyboardSwitchByIdQuery(id);
-            var response = await _mediator.Send(request, cancellationToken);
+            KeyboardSwitchResponse response = await _mediator.Send(request, cancellationToken);
 
             if (response is null)
+            {
                 return NotFound();
+            }
 
             return Ok(response);
         }
 
         [HttpPost]
         [Authorize(Roles = "Administrator, Storage Manager")]
-        public async Task<IActionResult> Add([FromBody] KeyboardSwitchDto keyboardSwitch, CancellationToken cancellationToken)
+        public async Task<IActionResult> Add([FromBody] KeyboardSwitchDto keyboardSwitch,
+            CancellationToken cancellationToken)
         {
             var request = new AddKeyboardSwitchCommand { KeyboardSwitch = keyboardSwitch };
-            var response = await _mediator.Send(request, cancellationToken);
+            KeyboardSwitchResponse response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetKeyboardSwitchById", new { response.Id }, response);
         }
 
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Administrator, Storage Manager")]
-        public async Task<IActionResult> Update(int id, [FromBody] KeyboardSwitchDto keyboardSwitch, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id, [FromBody] KeyboardSwitchDto keyboardSwitch,
+            CancellationToken cancellationToken)
         {
             var request = new EditKeyboardSwitchCommand(id) { KeyboardSwitch = keyboardSwitch };
-            var response = await _mediator.Send(request, cancellationToken);
+            KeyboardSwitchResponse response = await _mediator.Send(request, cancellationToken);
             return CreatedAtRoute("GetKeyboardSwitchById", new { response.Id }, response);
         }
 
@@ -71,9 +77,11 @@ namespace eStore_Admin.WebApi.Controllers
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var request = new DeleteKeyboardSwitchCommand(id);
-            var isSuccess = await _mediator.Send(request, cancellationToken);
+            bool isSuccess = await _mediator.Send(request, cancellationToken);
             if (!isSuccess)
+            {
                 return NotFound();
+            }
 
             return Ok();
         }

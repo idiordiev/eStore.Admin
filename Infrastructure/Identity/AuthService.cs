@@ -20,8 +20,9 @@ namespace eStore_Admin.Infrastructure.Identity
         private readonly ILoggingService _logger;
         private readonly JwtSettings _jwtSettings;
         private readonly IDateTimeService _dateTimeService;
-        
-        public AuthService(UserManager<IdentityUser> userManager, ILoggingService logger, IOptions<JwtSettings> jwtSettings, IDateTimeService dateTimeService)
+
+        public AuthService(UserManager<IdentityUser> userManager, ILoggingService logger,
+            IOptions<JwtSettings> jwtSettings, IDateTimeService dateTimeService)
         {
             _userManager = userManager;
             _logger = logger;
@@ -31,20 +32,24 @@ namespace eStore_Admin.Infrastructure.Identity
 
         public async Task<string> CreateTokenAsync(LoginCredentials credentials, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByNameAsync(credentials.UserName);
+            IdentityUser user = await _userManager.FindByNameAsync(credentials.UserName);
             if (user is null)
+            {
                 throw new InvalidCredentialException($"The user with name {credentials.UserName} has not been found.");
+            }
 
-            var isPasswordValid = await _userManager.CheckPasswordAsync(user, credentials.Password);
+            bool isPasswordValid = await _userManager.CheckPasswordAsync(user, credentials.Password);
             if (!isPasswordValid)
+            {
                 throw new InvalidCredentialException($"Wrong password for user {credentials.UserName}.");
+            }
 
             var claims = await GetClaimsAsync(user);
-            var signingCredentials = GetSigningCredentials();
+            SigningCredentials signingCredentials = GetSigningCredentials();
 
-            var tokenOptions = new JwtSecurityToken(issuer: _jwtSettings.ValidIssuer,
-                audience: _jwtSettings.ValidAudience,
-                claims: claims,
+            var tokenOptions = new JwtSecurityToken(_jwtSettings.ValidIssuer,
+                _jwtSettings.ValidAudience,
+                claims,
                 expires: _dateTimeService.Now().AddHours(3),
                 signingCredentials: signingCredentials);
 
@@ -53,7 +58,7 @@ namespace eStore_Admin.Infrastructure.Identity
 
         private SigningCredentials GetSigningCredentials()
         {
-            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"));
+            byte[] key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"));
             var secret = new SymmetricSecurityKey(key);
             var signingCredentials = new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
             return signingCredentials;
@@ -65,9 +70,11 @@ namespace eStore_Admin.Infrastructure.Identity
             var roles = await _userManager.GetRolesAsync(user);
 
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
-            foreach (var role in roles)
+            foreach (string role in roles)
+            {
                 claims.Add(new Claim(ClaimTypes.Role, role));
-            
+            }
+
             return claims;
         }
 
@@ -82,9 +89,10 @@ namespace eStore_Admin.Infrastructure.Identity
             };
 
             cancellationToken.ThrowIfCancellationRequested();
-            
+
             await _userManager.CreateAsync(identityUser, user.Password);
-            _logger.LogInformation("New user has been added to Identity. Username: {0}, roles: {1}", identityUser.UserName, string.Join(", ", user.Roles));
+            _logger.LogInformation("New user has been added to Identity. Username: {0}, roles: {1}",
+                identityUser.UserName, string.Join(", ", user.Roles));
 
             cancellationToken.ThrowIfCancellationRequested();
             await _userManager.AddToRolesAsync(identityUser, user.Roles);
@@ -92,26 +100,32 @@ namespace eStore_Admin.Infrastructure.Identity
             return true;
         }
 
-        public async Task<bool> AddRoleToUserAsync(string userName, string roleName, CancellationToken cancellationToken)
+        public async Task<bool> AddRoleToUserAsync(string userName, string roleName,
+            CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            IdentityUser user = await _userManager.FindByNameAsync(userName);
             if (user is null)
+            {
                 return false;
-            
+            }
+
             cancellationToken.ThrowIfCancellationRequested();
 
             await _userManager.AddToRoleAsync(user, roleName);
             _logger.LogInformation("User {0} has been added to role {1}", userName, roleName);
-            
+
             return true;
         }
 
-        public async Task<bool> RemoveRoleFromUserAsync(string userName, string roleName, CancellationToken cancellationToken)
+        public async Task<bool> RemoveRoleFromUserAsync(string userName, string roleName,
+            CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            IdentityUser user = await _userManager.FindByNameAsync(userName);
             if (user is null)
+            {
                 return false;
-            
+            }
+
             cancellationToken.ThrowIfCancellationRequested();
 
             await _userManager.RemoveFromRoleAsync(user, roleName);
@@ -121,9 +135,11 @@ namespace eStore_Admin.Infrastructure.Identity
 
         public async Task<bool> DeleteUserAsync(string userName, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            IdentityUser user = await _userManager.FindByNameAsync(userName);
             if (user is null)
+            {
                 return false;
+            }
 
             await _userManager.DeleteAsync(user);
             _logger.LogInformation("User has been deleted from identity. Username: {0}", userName);

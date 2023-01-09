@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Mouses.Commands.Delete
@@ -19,7 +20,7 @@ namespace eStore_Admin.Application.Requests.Mouses.Commands.Delete
 
         public async Task<bool> Handle(DeleteMouseCommand request, CancellationToken cancellationToken)
         {
-            var mouse = await _unitOfWork.MouseRepository.GetByIdAsync(request.MouseId, true, cancellationToken);
+            Mouse mouse = await _unitOfWork.MouseRepository.GetByIdAsync(request.MouseId, true, cancellationToken);
             if (mouse is null)
             {
                 _logger.LogInformation("The mouse with id {0} has not been found.", request.MouseId);

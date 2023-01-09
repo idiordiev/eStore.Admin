@@ -5,6 +5,7 @@ using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Customers.Commands.Edit
@@ -24,9 +25,12 @@ namespace eStore_Admin.Application.Requests.Customers.Commands.Edit
 
         public async Task<CustomerResponse> Handle(EditCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true, cancellationToken);
+            Customer customer =
+                await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true, cancellationToken);
             if (customer is null)
+            {
                 throw new KeyNotFoundException($"The customer with id {request.CustomerId} has not been found.");
+            }
 
             cancellationToken.ThrowIfCancellationRequested();
 

@@ -24,21 +24,36 @@
 
         public int PageNumber
         {
-            get => _pageNumber;
-            set => _pageNumber = value < 1 ? DefaultPageNumber : value;
+            get
+            {
+                return _pageNumber;
+            }
+            set
+            {
+                _pageNumber = value < 1 ? DefaultPageNumber : value;
+            }
         }
 
         public int PageSize
         {
-            get => _pageSize;
+            get
+            {
+                return _pageSize;
+            }
             set
             {
                 if (value < 1)
+                {
                     _pageSize = DefaultPageSize;
+                }
                 else if (value > MaxPageSize)
+                {
                     _pageSize = MaxPageSize;
+                }
                 else
+                {
                     _pageSize = value;
+                }
             }
         }
     }

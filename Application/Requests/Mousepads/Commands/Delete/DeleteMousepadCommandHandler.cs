@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Interfaces.Services;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Mousepads.Commands.Delete
@@ -19,7 +20,8 @@ namespace eStore_Admin.Application.Requests.Mousepads.Commands.Delete
 
         public async Task<bool> Handle(DeleteMousepadCommand request, CancellationToken cancellationToken)
         {
-            var mousepad = await _unitOfWork.MousepadRepository.GetByIdAsync(request.MousepadId, true, cancellationToken);
+            Mousepad mousepad =
+                await _unitOfWork.MousepadRepository.GetByIdAsync(request.MousepadId, true, cancellationToken);
             if (mousepad is null)
             {
                 _logger.LogInformation("The mousepad with id {0} has not been found.", request.MousepadId);

@@ -14,7 +14,7 @@ namespace Infrastructure.Tests.Persistence
         private UnitTestHelper _helper;
         private ApplicationContext _context;
         private IMousepadRepository _repository;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -34,7 +34,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var expected = _helper.Mousepads.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
             var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
@@ -48,14 +48,15 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedName = "changedName";
-            
+
             // Act
             var mousepads = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            var mousepadToChange = mousepads.First(c => c.Id == 13);
+            Mousepad? mousepadToChange = mousepads.First(c => c.Id == 13);
             mousepadToChange.Name = changedName;
-            
+
             // Assert
-            Assert.That((await _context.Mousepads.FindAsync(13))?.Name, Is.EqualTo(changedName), "Changes has not been saved.");
+            Assert.That((await _context.Mousepads.FindAsync(13))?.Name, Is.EqualTo(changedName),
+                "Changes has not been saved.");
         }
 
         [TestCase(1, 1)]
@@ -64,14 +65,16 @@ namespace Infrastructure.Tests.Persistence
         [TestCase(1, 2)]
         [TestCase(1, 3)]
         [TestCase(4, 1)]
-        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredMousepad(int pageSize, int pageNumber)
+        public async Task GetByConditionPagedAsync_ValidPagingParamsAndCondition_ReturnsRequiredMousepad(int pageSize,
+            int pageNumber)
         {
             // Arrange
             var expected = _helper.Mousepads.Where(c => c.Id > 13).Skip(pageSize * (pageNumber - 1)).Take(pageSize);
             var pagingParams = new PagingParameters(pageSize, pageNumber);
-            
+
             // Act
-            var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 13, pagingParams, false, CancellationToken.None);
+            var actual =
+                await _repository.GetByConditionPagedAsync(c => c.Id > 13, pagingParams, false, CancellationToken.None);
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
@@ -83,14 +86,16 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
             var pagingParams = new PagingParameters();
             const string changedName = "changedName";
-            
+
             // Act
-            var mousepads = await _repository.GetByConditionPagedAsync(c => c.Id == 13, pagingParams, true, CancellationToken.None);
-            var mousepadToChange = mousepads.First(c => c.Id == 13);
+            var mousepads =
+                await _repository.GetByConditionPagedAsync(c => c.Id == 13, pagingParams, true, CancellationToken.None);
+            Mousepad? mousepadToChange = mousepads.First(c => c.Id == 13);
             mousepadToChange.Name = changedName;
-            
+
             // Assert
-            Assert.That((await _context.Mousepads.FindAsync(13))?.Name, Is.EqualTo(changedName), "Changes has not been saved.");
+            Assert.That((await _context.Mousepads.FindAsync(13))?.Name, Is.EqualTo(changedName),
+                "Changes has not been saved.");
         }
 
         [TestCase(13)]
@@ -99,10 +104,10 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingMousepad_ReturnsMousepad(int id)
         {
             // Arrange
-            var expected = _helper.Mousepads.First(c => c.Id == id);
-            
+            Mousepad? expected = _helper.Mousepads.First(c => c.Id == id);
+
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Mousepad? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual mousepad is not equal to expected.");
@@ -115,7 +120,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Mousepad? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -128,13 +133,14 @@ namespace Infrastructure.Tests.Persistence
         {
             // Arrange
             const string changedName = "changedName";
-            
+
             // Act
-            var mousepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Mousepad? mousepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             mousepad.Name = changedName;
 
             // Assert
-            Assert.That((await _context.Mousepads.FindAsync(id))?.Name, Is.EqualTo(changedName), "Changes has not been tracked.");
+            Assert.That((await _context.Mousepads.FindAsync(id))?.Name, Is.EqualTo(changedName),
+                "Changes has not been tracked.");
         }
 
         [Test]
@@ -156,7 +162,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingMousepad_UpdatedMousepad()
         {
             // Arrange
-            var mousepadToUpdate = _helper.Mousepads.First(c => c.Id == 13);
+            Mousepad? mousepadToUpdate = _helper.Mousepads.First(c => c.Id == 13);
             const string changedName = "changedName";
             mousepadToUpdate.Name = changedName;
 
@@ -164,7 +170,8 @@ namespace Infrastructure.Tests.Persistence
             _repository.Update(mousepadToUpdate);
 
             // Assert
-            Assert.That(_context.Mousepads.Find(13)?.Name, Is.EqualTo(changedName), "The mousepad has not been updated.");
+            Assert.That(_context.Mousepads.Find(13)?.Name, Is.EqualTo(changedName),
+                "The mousepad has not been updated.");
             return Task.CompletedTask;
         }
 
@@ -172,7 +179,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingMousepad_DeletedMousepadFromContext()
         {
             // Arrange
-            var mousepadToDelete = _helper.Mousepads.First(c => c.Id == 13);
+            Mousepad? mousepadToDelete = _helper.Mousepads.First(c => c.Id == 13);
 
             // Act
             _repository.Delete(mousepadToDelete);

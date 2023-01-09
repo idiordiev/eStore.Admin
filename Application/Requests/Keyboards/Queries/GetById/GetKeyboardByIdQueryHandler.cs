@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Application.Responses;
+using eStore_Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetById
@@ -20,7 +21,8 @@ namespace eStore_Admin.Application.Requests.Keyboards.Queries.GetById
 
         public async Task<KeyboardResponse> Handle(GetKeyboardByIdQuery request, CancellationToken cancellationToken)
         {
-            var keyboard = await _unitOfWork.KeyboardRepository.GetByIdAsync(request.KeyboardId, false, cancellationToken);
+            Keyboard keyboard =
+                await _unitOfWork.KeyboardRepository.GetByIdAsync(request.KeyboardId, false, cancellationToken);
             return _mapper.Map<KeyboardResponse>(keyboard);
         }
     }

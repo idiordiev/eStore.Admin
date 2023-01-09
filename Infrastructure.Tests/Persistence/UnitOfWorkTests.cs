@@ -22,14 +22,14 @@ namespace Infrastructure.Tests.Persistence
             _context = _helper.GetApplicationContext();
             _unitOfWork = new UnitOfWork(_context);
         }
-        
+
         [Test]
         public void CustomerRepository_FirstCall_ReturnsNewInstance()
         {
             // Arrange
-            
+
             // Act
-            var instance = _unitOfWork.CustomerRepository;
+            ICustomerRepository? instance = _unitOfWork.CustomerRepository;
 
             // Assert
             Assert.That(instance, Is.InstanceOf<CustomerRepository>(), "UnitOfWork returned wrong implementation.");
@@ -39,22 +39,22 @@ namespace Infrastructure.Tests.Persistence
         public void CustomerRepository_SecondCall_ReturnsSameInstance()
         {
             // Arrange
-            
+
             // Act
-            var first = _unitOfWork.CustomerRepository;
-            var second = _unitOfWork.CustomerRepository;
+            ICustomerRepository? first = _unitOfWork.CustomerRepository;
+            ICustomerRepository? second = _unitOfWork.CustomerRepository;
 
             // Assert
             Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
         }
-        
+
         [Test]
         public void GamepadRepository_FirstCall_ReturnsNewInstance()
         {
             // Arrange
-            
+
             // Act
-            var instance = _unitOfWork.GamepadRepository;
+            IGamepadRepository? instance = _unitOfWork.GamepadRepository;
 
             // Assert
             Assert.That(instance, Is.InstanceOf<GamepadRepository>(), "UnitOfWork returned wrong implementation.");
@@ -64,22 +64,22 @@ namespace Infrastructure.Tests.Persistence
         public void GamepadRepository_SecondCall_ReturnsSameInstance()
         {
             // Arrange
-            
+
             // Act
-            var first = _unitOfWork.GamepadRepository;
-            var second = _unitOfWork.GamepadRepository;
+            IGamepadRepository? first = _unitOfWork.GamepadRepository;
+            IGamepadRepository? second = _unitOfWork.GamepadRepository;
 
             // Assert
             Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
         }
-        
+
         [Test]
         public void GoodsRepository_FirstCall_ReturnsNewInstance()
         {
             // Arrange
-            
+
             // Act
-            var instance = _unitOfWork.GoodsRepository;
+            IGoodsRepository? instance = _unitOfWork.GoodsRepository;
 
             // Assert
             Assert.That(instance, Is.InstanceOf<GoodsRepository>(), "UnitOfWork returned wrong implementation.");
@@ -89,22 +89,22 @@ namespace Infrastructure.Tests.Persistence
         public void GoodsRepository_SecondCall_ReturnsSameInstance()
         {
             // Arrange
-            
+
             // Act
-            var first = _unitOfWork.GoodsRepository;
-            var second = _unitOfWork.GoodsRepository;
+            IGoodsRepository? first = _unitOfWork.GoodsRepository;
+            IGoodsRepository? second = _unitOfWork.GoodsRepository;
 
             // Assert
             Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
         }
-        
+
         [Test]
         public void KeyboardRepository_FirstCall_ReturnsNewInstance()
         {
             // Arrange
-            
+
             // Act
-            var instance = _unitOfWork.KeyboardRepository;
+            IKeyboardRepository? instance = _unitOfWork.KeyboardRepository;
 
             // Assert
             Assert.That(instance, Is.InstanceOf<KeyboardRepository>(), "UnitOfWork returned wrong implementation.");
@@ -114,47 +114,48 @@ namespace Infrastructure.Tests.Persistence
         public void KeyboardRepository_SecondCall_ReturnsSameInstance()
         {
             // Arrange
-            
+
             // Act
-            var first = _unitOfWork.KeyboardRepository;
-            var second = _unitOfWork.KeyboardRepository;
+            IKeyboardRepository? first = _unitOfWork.KeyboardRepository;
+            IKeyboardRepository? second = _unitOfWork.KeyboardRepository;
 
             // Assert
             Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
         }
-        
+
         [Test]
         public void KeyboardSwitchRepository_FirstCall_ReturnsNewInstance()
         {
             // Arrange
-            
+
             // Act
-            var instance = _unitOfWork.KeyboardSwitchRepository;
+            IKeyboardSwitchRepository? instance = _unitOfWork.KeyboardSwitchRepository;
 
             // Assert
-            Assert.That(instance, Is.InstanceOf<KeyboardSwitchRepository>(), "UnitOfWork returned wrong implementation.");
+            Assert.That(instance, Is.InstanceOf<KeyboardSwitchRepository>(),
+                "UnitOfWork returned wrong implementation.");
         }
 
         [Test]
         public void KeyboardSwitchRepository_SecondCall_ReturnsSameInstance()
         {
             // Arrange
-            
+
             // Act
-            var first = _unitOfWork.KeyboardSwitchRepository;
-            var second = _unitOfWork.KeyboardSwitchRepository;
+            IKeyboardSwitchRepository? first = _unitOfWork.KeyboardSwitchRepository;
+            IKeyboardSwitchRepository? second = _unitOfWork.KeyboardSwitchRepository;
 
             // Assert
             Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
         }
-        
+
         [Test]
         public void MousepadRepository_FirstCall_ReturnsNewInstance()
         {
             // Arrange
-            
+
             // Act
-            var instance = _unitOfWork.MousepadRepository;
+            IMousepadRepository? instance = _unitOfWork.MousepadRepository;
 
             // Assert
             Assert.That(instance, Is.InstanceOf<MousepadRepository>(), "UnitOfWork returned wrong implementation.");
@@ -164,22 +165,22 @@ namespace Infrastructure.Tests.Persistence
         public void MousepadRepository_SecondCall_ReturnsSameInstance()
         {
             // Arrange
-            
+
             // Act
-            var first = _unitOfWork.MousepadRepository;
-            var second = _unitOfWork.MousepadRepository;
+            IMousepadRepository? first = _unitOfWork.MousepadRepository;
+            IMousepadRepository? second = _unitOfWork.MousepadRepository;
 
             // Assert
             Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
         }
-        
+
         [Test]
         public void MouseRepository_FirstCall_ReturnsNewInstance()
         {
             // Arrange
-            
+
             // Act
-            var instance = _unitOfWork.MouseRepository;
+            IMouseRepository? instance = _unitOfWork.MouseRepository;
 
             // Assert
             Assert.That(instance, Is.InstanceOf<MouseRepository>(), "UnitOfWork returned wrong implementation.");
@@ -189,22 +190,22 @@ namespace Infrastructure.Tests.Persistence
         public void MouseRepository_SecondCall_ReturnsSameInstance()
         {
             // Arrange
-            
+
             // Act
-            var first = _unitOfWork.MouseRepository;
-            var second = _unitOfWork.MouseRepository;
+            IMouseRepository? first = _unitOfWork.MouseRepository;
+            IMouseRepository? second = _unitOfWork.MouseRepository;
 
             // Assert
             Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
         }
-        
+
         [Test]
         public void OrderItemRepository_FirstCall_ReturnsNewInstance()
         {
             // Arrange
-            
+
             // Act
-            var instance = _unitOfWork.OrderItemRepository;
+            IOrderItemRepository? instance = _unitOfWork.OrderItemRepository;
 
             // Assert
             Assert.That(instance, Is.InstanceOf<OrderItemRepository>(), "UnitOfWork returned wrong implementation.");
@@ -214,22 +215,22 @@ namespace Infrastructure.Tests.Persistence
         public void OrderItemRepository_SecondCall_ReturnsSameInstance()
         {
             // Arrange
-            
+
             // Act
-            var first = _unitOfWork.OrderItemRepository;
-            var second = _unitOfWork.OrderItemRepository;
+            IOrderItemRepository? first = _unitOfWork.OrderItemRepository;
+            IOrderItemRepository? second = _unitOfWork.OrderItemRepository;
 
             // Assert
             Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
         }
-        
+
         [Test]
         public void OrderRepository_FirstCall_ReturnsNewInstance()
         {
             // Arrange
-            
+
             // Act
-            var instance = _unitOfWork.OrderRepository;
+            IOrderRepository? instance = _unitOfWork.OrderRepository;
 
             // Assert
             Assert.That(instance, Is.InstanceOf<OrderRepository>(), "UnitOfWork returned wrong implementation.");
@@ -239,23 +240,23 @@ namespace Infrastructure.Tests.Persistence
         public void OrderRepository_SecondCall_ReturnsSameInstance()
         {
             // Arrange
-            
+
             // Act
-            var first = _unitOfWork.OrderRepository;
-            var second = _unitOfWork.OrderRepository;
+            IOrderRepository? first = _unitOfWork.OrderRepository;
+            IOrderRepository? second = _unitOfWork.OrderRepository;
 
             // Assert
             Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
         }
-        
-        
+
+
         [Test]
         public void ShoppingCartRepository_FirstCall_ReturnsNewInstance()
         {
             // Arrange
-            
+
             // Act
-            var instance = _unitOfWork.ShoppingCartRepository;
+            IShoppingCartRepository? instance = _unitOfWork.ShoppingCartRepository;
 
             // Assert
             Assert.That(instance, Is.InstanceOf<ShoppingCartRepository>(), "UnitOfWork returned wrong implementation.");
@@ -265,10 +266,10 @@ namespace Infrastructure.Tests.Persistence
         public void ShoppingCartRepository_SecondCall_ReturnsSameInstance()
         {
             // Arrange
-            
+
             // Act
-            var first = _unitOfWork.ShoppingCartRepository;
-            var second = _unitOfWork.ShoppingCartRepository;
+            IShoppingCartRepository? first = _unitOfWork.ShoppingCartRepository;
+            IShoppingCartRepository? second = _unitOfWork.ShoppingCartRepository;
 
             // Assert
             Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
@@ -281,7 +282,7 @@ namespace Infrastructure.Tests.Persistence
             var context = new Mock<ApplicationContext>();
             context.Setup(x => x.Dispose());
             IUnitOfWork unitOfWork = new UnitOfWork(context.Object);
-            
+
             // Act
             unitOfWork.Dispose();
 
@@ -296,11 +297,11 @@ namespace Infrastructure.Tests.Persistence
             var context = new Mock<ApplicationContext>();
             context.Setup(x => x.Dispose());
             IUnitOfWork unitOfWork = new UnitOfWork(context.Object);
-            
+
             // Act
             unitOfWork.Dispose();
             unitOfWork.Dispose();
-            
+
             // Assert
             context.Verify(x => x.Dispose(), Times.Once);
         }

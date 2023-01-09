@@ -11,7 +11,8 @@ using MediatR;
 
 namespace eStore_Admin.Application.Requests.Mouses.Queries.GetByFilterPaged
 {
-    public class GetMousesByFilterPagedQueryHandler : IRequestHandler<GetMousesByFilterPagedQuery, IEnumerable<MouseResponse>>
+    public class
+        GetMousesByFilterPagedQueryHandler : IRequestHandler<GetMousesByFilterPagedQuery, IEnumerable<MouseResponse>>
     {
         private readonly IMapper _mapper;
         private readonly IPredicateFactory<Mouse, MouseFilterModel> _predicateFactory;
@@ -25,10 +26,12 @@ namespace eStore_Admin.Application.Requests.Mouses.Queries.GetByFilterPaged
             _predicateFactory = predicateFactory;
         }
 
-        public async Task<IEnumerable<MouseResponse>> Handle(GetMousesByFilterPagedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<MouseResponse>> Handle(GetMousesByFilterPagedQuery request,
+            CancellationToken cancellationToken)
         {
             var predicate = _predicateFactory.CreateExpression(request.FilterModel);
-            var mouses = await _unitOfWork.MouseRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false,
+            var mouses = await _unitOfWork.MouseRepository.GetByConditionPagedAsync(predicate, request.PagingParameters,
+                false,
                 cancellationToken);
             return _mapper.Map<IEnumerable<MouseResponse>>(mouses);
         }
