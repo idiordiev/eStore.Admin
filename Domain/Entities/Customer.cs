@@ -24,7 +24,7 @@ namespace eStore_Admin.Domain.Entities
                 return Id == other.Id
                        && IsDeleted == other.IsDeleted
                        && IdentityId == other.IdentityId
-                       && FirstName == other.LastName
+                       && FirstName == other.FirstName
                        && LastName == other.LastName
                        && Email == other.Email
                        && PhoneNumber == other.PhoneNumber

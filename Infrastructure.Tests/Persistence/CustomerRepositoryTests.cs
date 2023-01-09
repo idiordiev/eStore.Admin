@@ -74,7 +74,7 @@ namespace Infrastructure.Tests.Persistence
             var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
+            Assert.That(actual, Is.EqualTo(expected), "The actual collection is not equal to expected.");
         }
 
         [Test]
