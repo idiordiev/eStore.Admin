@@ -106,7 +106,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingKeyboard_ReturnsKeyboard(int id)
         {
             // Arrange
-            Keyboard? expected = _helper.Keyboards.First(c => c.Id == id);
+            Keyboard expected = _helper.Keyboards.First(c => c.Id == id);
 
             // Act
             Keyboard? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
@@ -166,7 +166,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingKeyboard_UpdatedKeyboard()
         {
             // Arrange
-            Keyboard? keyboardToUpdate = _helper.Keyboards.First(c => c.Id == 5);
+            Keyboard keyboardToUpdate = _helper.Keyboards.First(c => c.Id == 5);
             const string changedName = "changedName";
             keyboardToUpdate.Name = changedName;
 
@@ -183,7 +183,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingKeyboard_DeletedKeyboardFromContext()
         {
             // Arrange
-            Keyboard? keyboardToDelete = _helper.Keyboards.First(c => c.Id == 5);
+            Keyboard keyboardToDelete = _helper.Keyboards.First(c => c.Id == 5);
 
             // Act
             _repository.Delete(keyboardToDelete);

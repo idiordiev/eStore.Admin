@@ -108,7 +108,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingKeyboardSwitch_ReturnsKeyboardSwitch(int id)
         {
             // Arrange
-            KeyboardSwitch? expected = _helper.KeyboardSwitches.First(c => c.Id == id);
+            KeyboardSwitch expected = _helper.KeyboardSwitches.First(c => c.Id == id);
 
             // Act
             KeyboardSwitch? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
@@ -169,7 +169,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingKeyboardSwitch_UpdatedKeyboardSwitch()
         {
             // Arrange
-            KeyboardSwitch? keyboardSwitchToUpdate = _helper.KeyboardSwitches.First(c => c.Id == 1);
+            KeyboardSwitch keyboardSwitchToUpdate = _helper.KeyboardSwitches.First(c => c.Id == 1);
             const string changedName = "changedName";
             keyboardSwitchToUpdate.Name = changedName;
 
@@ -186,7 +186,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingKeyboardSwitch_DeletedKeyboardSwitchFromContext()
         {
             // Arrange
-            KeyboardSwitch? keyboardSwitchToDelete = _helper.KeyboardSwitches.First(c => c.Id == 1);
+            KeyboardSwitch keyboardSwitchToDelete = _helper.KeyboardSwitches.First(c => c.Id == 1);
 
             // Act
             _repository.Delete(keyboardSwitchToDelete);

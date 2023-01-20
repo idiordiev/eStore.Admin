@@ -105,7 +105,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingGamepad_ReturnsGamepad(int id)
         {
             // Arrange
-            Gamepad? expected = _helper.Gamepads.First(c => c.Id == id);
+            Gamepad expected = _helper.Gamepads.First(c => c.Id == id);
 
             // Act
             Gamepad? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
@@ -164,7 +164,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingGamepad_UpdatedGamepad()
         {
             // Arrange
-            Gamepad? gamepadToUpdate = _helper.Gamepads.First(c => c.Id == 1);
+            Gamepad gamepadToUpdate = _helper.Gamepads.First(c => c.Id == 1);
             const string changedName = "changedName";
             gamepadToUpdate.Name = changedName;
 
@@ -180,7 +180,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingGamepad_DeletedGamepadFromContext()
         {
             // Arrange
-            Gamepad? gamepadToDelete = _helper.Gamepads.First(c => c.Id == 1);
+            Gamepad gamepadToDelete = _helper.Gamepads.First(c => c.Id == 1);
 
             // Act
             _repository.Delete(gamepadToDelete);

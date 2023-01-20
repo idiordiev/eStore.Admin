@@ -99,7 +99,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingShoppingCart_ReturnsShoppingCart(int id)
         {
             // Arrange
-            ShoppingCart? expected = _helper.ShoppingCarts.First(c => c.Id == id);
+            ShoppingCart expected = _helper.ShoppingCarts.First(c => c.Id == id);
 
             // Act
             ShoppingCart? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
@@ -156,7 +156,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingShoppingCart_UpdatedShoppingCart()
         {
             // Arrange
-            ShoppingCart? shoppingCartToUpdate = _helper.ShoppingCarts.First(c => c.Id == 1);
+            ShoppingCart shoppingCartToUpdate = _helper.ShoppingCarts.First(c => c.Id == 1);
             shoppingCartToUpdate.IsDeleted = true;
 
             // Act
@@ -171,7 +171,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingShoppingCart_DeletedShoppingCartFromContext()
         {
             // Arrange
-            ShoppingCart? shoppingCartToDelete = _helper.ShoppingCarts.First(c => c.Id == 1);
+            ShoppingCart shoppingCartToDelete = _helper.ShoppingCarts.First(c => c.Id == 1);
 
             // Act
             _repository.Delete(shoppingCartToDelete);

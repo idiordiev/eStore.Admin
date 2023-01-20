@@ -104,7 +104,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingMouse_ReturnsMouse(int id)
         {
             // Arrange
-            Mouse? expected = _helper.Mouses.First(c => c.Id == id);
+            Mouse expected = _helper.Mouses.First(c => c.Id == id);
 
             // Act
             Mouse? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
@@ -162,7 +162,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingMouse_UpdatedMouse()
         {
             // Arrange
-            Mouse? mouseToUpdate = _helper.Mouses.First(c => c.Id == 10);
+            Mouse mouseToUpdate = _helper.Mouses.First(c => c.Id == 10);
             const string changedName = "changedName";
             mouseToUpdate.Name = changedName;
 
@@ -178,7 +178,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingMouse_DeletedMouseFromContext()
         {
             // Arrange
-            Mouse? mouseToDelete = _helper.Mouses.First(c => c.Id == 10);
+            Mouse mouseToDelete = _helper.Mouses.First(c => c.Id == 10);
 
             // Act
             _repository.Delete(mouseToDelete);

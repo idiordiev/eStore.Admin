@@ -107,7 +107,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingOrder_ReturnsOrder(int id)
         {
             // Arrange
-            Order? expected = _helper.Orders.First(c => c.Id == id);
+            Order expected = _helper.Orders.First(c => c.Id == id);
 
             // Act
             Order? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
@@ -168,7 +168,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingOrder_UpdatedOrder()
         {
             // Arrange
-            Order? orderToUpdate = _helper.Orders.First(c => c.Id == 1);
+            Order orderToUpdate = _helper.Orders.First(c => c.Id == 1);
             const string changedAddress = "changedAddress";
             orderToUpdate.ShippingAddress = changedAddress;
 
@@ -185,7 +185,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingOrder_DeletedOrderFromContext()
         {
             // Arrange
-            Order? orderToDelete = _helper.Orders.First(c => c.Id == 1);
+            Order orderToDelete = _helper.Orders.First(c => c.Id == 1);
 
             // Act
             _repository.Delete(orderToDelete);
@@ -292,7 +292,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdWithOrderItemsAsync_ExistingOrder_ReturnsOrder(int id)
         {
             // Arrange
-            Order? expected = _helper.Orders.First(c => c.Id == id);
+            Order expected = _helper.Orders.First(c => c.Id == id);
             var expectedOrderItems = _helper.OrderItems.Where(oi => oi.OrderId == id);
 
             // Act

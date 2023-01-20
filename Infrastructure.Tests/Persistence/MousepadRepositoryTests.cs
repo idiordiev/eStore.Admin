@@ -104,7 +104,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingMousepad_ReturnsMousepad(int id)
         {
             // Arrange
-            Mousepad? expected = _helper.Mousepads.First(c => c.Id == id);
+            Mousepad expected = _helper.Mousepads.First(c => c.Id == id);
 
             // Act
             Mousepad? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
@@ -162,7 +162,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingMousepad_UpdatedMousepad()
         {
             // Arrange
-            Mousepad? mousepadToUpdate = _helper.Mousepads.First(c => c.Id == 13);
+            Mousepad mousepadToUpdate = _helper.Mousepads.First(c => c.Id == 13);
             const string changedName = "changedName";
             mousepadToUpdate.Name = changedName;
 
@@ -179,7 +179,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingMousepad_DeletedMousepadFromContext()
         {
             // Arrange
-            Mousepad? mousepadToDelete = _helper.Mousepads.First(c => c.Id == 13);
+            Mousepad mousepadToDelete = _helper.Mousepads.First(c => c.Id == 13);
 
             // Act
             _repository.Delete(mousepadToDelete);

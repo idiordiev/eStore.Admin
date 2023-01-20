@@ -458,7 +458,7 @@ namespace Tests.Common
 
         public ApplicationContext GetApplicationContext()
         {
-            DbContextOptions<ApplicationContext>? options = new DbContextOptionsBuilder<ApplicationContext>()
+            DbContextOptions<ApplicationContext> options = new DbContextOptionsBuilder<ApplicationContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 

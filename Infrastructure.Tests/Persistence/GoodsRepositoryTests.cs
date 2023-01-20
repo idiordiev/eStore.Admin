@@ -116,7 +116,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task GetByIdAsync_ExistingGood_ReturnsGood(int id)
         {
             // Arrange
-            Goods? expected = _helper.Goods.First(c => c.Id == id);
+            Goods expected = _helper.Goods.First(c => c.Id == id);
 
             // Act
             Goods? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
@@ -186,7 +186,7 @@ namespace Infrastructure.Tests.Persistence
         public Task Update_ExistingGood_UpdatedGood()
         {
             // Arrange
-            Goods? goodToUpdate = _helper.Goods.First(c => c.Id == 13);
+            Goods goodToUpdate = _helper.Goods.First(c => c.Id == 13);
             const string changedName = "changedName";
             goodToUpdate.Name = changedName;
 
@@ -202,7 +202,7 @@ namespace Infrastructure.Tests.Persistence
         public async Task Delete_ExistingGood_DeletedGoodFromContext()
         {
             // Arrange
-            Goods? goodToDelete = _helper.Goods.First(c => c.Id == 13);
+            Goods goodToDelete = _helper.Goods.First(c => c.Id == 13);
 
             // Act
             _repository.Delete(goodToDelete);
