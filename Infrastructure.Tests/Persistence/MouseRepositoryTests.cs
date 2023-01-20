@@ -51,7 +51,7 @@ namespace Infrastructure.Tests.Persistence
 
             // Act
             var mouses = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            Mouse? mouseToChange = mouses.First(c => c.Id == 10);
+            Mouse mouseToChange = mouses.First(c => c.Id == 10);
             mouseToChange.Name = changedName;
 
             // Assert
@@ -90,7 +90,7 @@ namespace Infrastructure.Tests.Persistence
             // Act
             var mouses =
                 await _repository.GetByConditionPagedAsync(c => c.Id == 10, pagingParams, true, CancellationToken.None);
-            Mouse? mouseToChange = mouses.First(c => c.Id == 10);
+            Mouse mouseToChange = mouses.First(c => c.Id == 10);
             mouseToChange.Name = changedName;
 
             // Assert
@@ -107,7 +107,7 @@ namespace Infrastructure.Tests.Persistence
             Mouse expected = _helper.Mouses.First(c => c.Id == id);
 
             // Act
-            Mouse? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Mouse actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual mouse is not equal to expected.");
@@ -120,7 +120,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            Mouse? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Mouse actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -135,7 +135,7 @@ namespace Infrastructure.Tests.Persistence
             const string changedName = "changedName";
 
             // Act
-            Mouse? mouse = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Mouse mouse = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             mouse.Name = changedName;
 
             // Assert

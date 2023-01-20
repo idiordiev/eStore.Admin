@@ -51,7 +51,7 @@ namespace Infrastructure.Tests.Persistence
 
             // Act
             var keyboards = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            Keyboard? keyboardToChange = keyboards.First(c => c.Id == 5);
+            Keyboard keyboardToChange = keyboards.First(c => c.Id == 5);
             keyboardToChange.Name = changedName;
 
             // Assert
@@ -90,7 +90,7 @@ namespace Infrastructure.Tests.Persistence
             // Act
             var keyboards =
                 await _repository.GetByConditionPagedAsync(c => c.Id == 5, pagingParams, true, CancellationToken.None);
-            Keyboard? keyboardToChange = keyboards.First(c => c.Id == 5);
+            Keyboard keyboardToChange = keyboards.First(c => c.Id == 5);
             keyboardToChange.Name = changedName;
 
             // Assert
@@ -109,7 +109,7 @@ namespace Infrastructure.Tests.Persistence
             Keyboard expected = _helper.Keyboards.First(c => c.Id == id);
 
             // Act
-            Keyboard? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Keyboard actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual keyboard is not equal to expected.");
@@ -122,7 +122,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            Keyboard? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Keyboard actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -139,7 +139,7 @@ namespace Infrastructure.Tests.Persistence
             const string changedName = "changedName";
 
             // Act
-            Keyboard? keyboard = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Keyboard keyboard = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             keyboard.Name = changedName;
 
             // Assert

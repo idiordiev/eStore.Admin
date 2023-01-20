@@ -51,7 +51,7 @@ namespace Infrastructure.Tests.Persistence
 
             // Act
             var orders = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            Order? orderToChange = orders.First(c => c.Id == 1);
+            Order orderToChange = orders.First(c => c.Id == 1);
             orderToChange.ShippingAddress = changedAddress;
 
             // Assert
@@ -90,7 +90,7 @@ namespace Infrastructure.Tests.Persistence
             // Act
             var orders =
                 await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
-            Order? orderToChange = orders.First(c => c.Id == 1);
+            Order orderToChange = orders.First(c => c.Id == 1);
             orderToChange.ShippingAddress = changedAddress;
 
             // Assert
@@ -110,7 +110,7 @@ namespace Infrastructure.Tests.Persistence
             Order expected = _helper.Orders.First(c => c.Id == id);
 
             // Act
-            Order? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Order actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual order is not equal to expected.");
@@ -123,7 +123,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            Order? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Order actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -141,7 +141,7 @@ namespace Infrastructure.Tests.Persistence
             const string changedAddress = "changedAddress";
 
             // Act
-            Order? order = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Order order = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             order.ShippingAddress = changedAddress;
 
             // Assert
@@ -229,7 +229,7 @@ namespace Infrastructure.Tests.Persistence
 
             // Act
             var orders = await _repository.GetAllWithOrderItemsPagedAsync(pagingParams, true, CancellationToken.None);
-            Order? orderToChange = orders.First(c => c.Id == 1);
+            Order orderToChange = orders.First(c => c.Id == 1);
             orderToChange.ShippingAddress = changedAddress;
 
             // Assert
@@ -275,7 +275,7 @@ namespace Infrastructure.Tests.Persistence
             var orders =
                 await _repository.GetByConditionWithOrderItemsPagedAsync(c => c.Id == 1, pagingParams, true,
                     CancellationToken.None);
-            Order? orderToChange = orders.First(c => c.Id == 1);
+            Order orderToChange = orders.First(c => c.Id == 1);
             orderToChange.ShippingAddress = changedAddress;
 
             // Assert
@@ -296,7 +296,7 @@ namespace Infrastructure.Tests.Persistence
             var expectedOrderItems = _helper.OrderItems.Where(oi => oi.OrderId == id);
 
             // Act
-            Order? actual = await _repository.GetByIdWithOrderItemsAsync(id, false, CancellationToken.None);
+            Order actual = await _repository.GetByIdWithOrderItemsAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual order is not equal to expected.");
@@ -311,7 +311,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            Order? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Order actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -329,7 +329,7 @@ namespace Infrastructure.Tests.Persistence
             const string changedAddress = "changedAddress";
 
             // Act
-            Order? order = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Order order = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             order.ShippingAddress = changedAddress;
 
             // Assert

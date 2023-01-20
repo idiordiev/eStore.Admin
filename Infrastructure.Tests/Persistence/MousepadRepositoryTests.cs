@@ -51,7 +51,7 @@ namespace Infrastructure.Tests.Persistence
 
             // Act
             var mousepads = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            Mousepad? mousepadToChange = mousepads.First(c => c.Id == 13);
+            Mousepad mousepadToChange = mousepads.First(c => c.Id == 13);
             mousepadToChange.Name = changedName;
 
             // Assert
@@ -90,7 +90,7 @@ namespace Infrastructure.Tests.Persistence
             // Act
             var mousepads =
                 await _repository.GetByConditionPagedAsync(c => c.Id == 13, pagingParams, true, CancellationToken.None);
-            Mousepad? mousepadToChange = mousepads.First(c => c.Id == 13);
+            Mousepad mousepadToChange = mousepads.First(c => c.Id == 13);
             mousepadToChange.Name = changedName;
 
             // Assert
@@ -107,7 +107,7 @@ namespace Infrastructure.Tests.Persistence
             Mousepad expected = _helper.Mousepads.First(c => c.Id == id);
 
             // Act
-            Mousepad? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Mousepad actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual mousepad is not equal to expected.");
@@ -120,7 +120,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            Mousepad? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Mousepad actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -135,7 +135,7 @@ namespace Infrastructure.Tests.Persistence
             const string changedName = "changedName";
 
             // Act
-            Mousepad? mousepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Mousepad mousepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             mousepad.Name = changedName;
 
             // Assert

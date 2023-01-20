@@ -51,7 +51,7 @@ namespace Infrastructure.Tests.Persistence
 
             // Act
             var orderItems = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            OrderItem? orderItemToChange = orderItems.First(c => c.Id == 1);
+            OrderItem orderItemToChange = orderItems.First(c => c.Id == 1);
             orderItemToChange.Quantity = changedQuantity;
 
             // Assert
@@ -90,7 +90,7 @@ namespace Infrastructure.Tests.Persistence
             // Act
             var orderItems =
                 await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
-            OrderItem? orderItemToChange = orderItems.First(c => c.Id == 1);
+            OrderItem orderItemToChange = orderItems.First(c => c.Id == 1);
             orderItemToChange.Quantity = changedQuantity;
 
             // Assert
@@ -122,7 +122,7 @@ namespace Infrastructure.Tests.Persistence
             OrderItem expected = _helper.OrderItems.First(c => c.Id == id);
 
             // Act
-            OrderItem? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            OrderItem actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual order item is not equal to expected.");
@@ -135,7 +135,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            OrderItem? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            OrderItem actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -165,7 +165,7 @@ namespace Infrastructure.Tests.Persistence
             const int changedQuantity = 69;
 
             // Act
-            OrderItem? orderItem = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            OrderItem orderItem = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             orderItem.Quantity = changedQuantity;
 
             // Assert

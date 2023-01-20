@@ -51,7 +51,7 @@ namespace Infrastructure.Tests.Persistence
 
             // Act
             var gamepads = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            Gamepad? gamepadToChange = gamepads.First(c => c.Id == 1);
+            Gamepad gamepadToChange = gamepads.First(c => c.Id == 1);
             gamepadToChange.Name = changedName;
 
             // Assert
@@ -90,7 +90,7 @@ namespace Infrastructure.Tests.Persistence
             // Act
             var gamepads =
                 await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
-            Gamepad? gamepadToChange = gamepads.First(c => c.Id == 1);
+            Gamepad gamepadToChange = gamepads.First(c => c.Id == 1);
             gamepadToChange.Name = changedName;
 
             // Assert
@@ -108,7 +108,7 @@ namespace Infrastructure.Tests.Persistence
             Gamepad expected = _helper.Gamepads.First(c => c.Id == id);
 
             // Act
-            Gamepad? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Gamepad actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual gamepad is not equal to expected.");
@@ -121,7 +121,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            Gamepad? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            Gamepad actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -137,7 +137,7 @@ namespace Infrastructure.Tests.Persistence
             const string changedName = "changedName";
 
             // Act
-            Gamepad? gamepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            Gamepad gamepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             gamepad.Name = changedName;
 
             // Assert

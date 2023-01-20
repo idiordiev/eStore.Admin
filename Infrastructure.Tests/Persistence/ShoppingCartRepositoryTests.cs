@@ -50,7 +50,7 @@ namespace Infrastructure.Tests.Persistence
 
             // Act
             var shoppingCarts = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-            ShoppingCart? shoppingCartToChange = shoppingCarts.First(c => c.Id == 1);
+            ShoppingCart shoppingCartToChange = shoppingCarts.First(c => c.Id == 1);
             shoppingCartToChange.IsDeleted = true;
 
             // Assert
@@ -87,7 +87,7 @@ namespace Infrastructure.Tests.Persistence
             // Act
             var shoppingCarts =
                 await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
-            ShoppingCart? shoppingCartToChange = shoppingCarts.First(c => c.Id == 1);
+            ShoppingCart shoppingCartToChange = shoppingCarts.First(c => c.Id == 1);
             shoppingCartToChange.IsDeleted = true;
 
             // Assert
@@ -102,7 +102,7 @@ namespace Infrastructure.Tests.Persistence
             ShoppingCart expected = _helper.ShoppingCarts.First(c => c.Id == id);
 
             // Act
-            ShoppingCart? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            ShoppingCart actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.EqualTo(expected), "The actual shopping cart is not equal to expected.");
@@ -115,7 +115,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            ShoppingCart? actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+            ShoppingCart actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
             // Assert
             Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -128,7 +128,7 @@ namespace Infrastructure.Tests.Persistence
             // Arrange
 
             // Act
-            ShoppingCart? shoppingCart = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+            ShoppingCart shoppingCart = await _repository.GetByIdAsync(id, true, CancellationToken.None);
             shoppingCart.IsDeleted = true;
 
             // Assert
