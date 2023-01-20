@@ -1,4 +1,4 @@
-﻿using eStore_Admin.Application.Requests.Orders.Commands.Edit;
+﻿using eStore_Admin.Application.Requests.Orders.Commands;
 using FluentValidation;
 
 namespace eStore_Admin.Application.Validation.Orders

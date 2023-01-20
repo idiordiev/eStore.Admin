@@ -1,4 +1,4 @@
-﻿using eStore_Admin.Application.Requests.Mouses.Commands.Add;
+﻿using eStore_Admin.Application.Requests.Mouses.Commands;
 using FluentValidation;
 
 namespace eStore_Admin.Application.Validation.Mouses

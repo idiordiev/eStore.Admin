@@ -1,4 +1,4 @@
-﻿using eStore_Admin.Application.Requests.Mousepads.Commands.Add;
+﻿using eStore_Admin.Application.Requests.Mousepads.Commands;
 using FluentValidation;
 
 namespace eStore_Admin.Application.Validation.Mousepads

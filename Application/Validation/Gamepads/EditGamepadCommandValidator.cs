@@ -1,4 +1,4 @@
-﻿using eStore_Admin.Application.Requests.Gamepads.Commands.Edit;
+﻿using eStore_Admin.Application.Requests.Gamepads.Commands;
 using FluentValidation;
 
 namespace eStore_Admin.Application.Validation.Gamepads

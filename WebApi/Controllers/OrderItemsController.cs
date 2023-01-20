@@ -1,11 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.RequestDTOs;
-using eStore_Admin.Application.Requests.OrderItems.Commands.Add;
-using eStore_Admin.Application.Requests.OrderItems.Commands.Delete;
-using eStore_Admin.Application.Requests.OrderItems.Commands.Edit;
-using eStore_Admin.Application.Requests.OrderItems.Queries.GetById;
-using eStore_Admin.Application.Requests.OrderItems.Queries.GetByOrderId;
+using eStore_Admin.Application.Requests.OrderItems.Commands;
+using eStore_Admin.Application.Requests.OrderItems.Queries;
 using eStore_Admin.Application.Responses;
 using eStore_Admin.Application.Utility;
 using MediatR;

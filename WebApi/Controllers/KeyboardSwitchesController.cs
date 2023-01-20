@@ -1,11 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using eStore_Admin.Application.RequestDTOs;
-using eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Add;
-using eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Delete;
-using eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Edit;
-using eStore_Admin.Application.Requests.KeyboardSwitches.Queries.GetAllPaged;
-using eStore_Admin.Application.Requests.KeyboardSwitches.Queries.GetById;
+using eStore_Admin.Application.Requests.KeyboardSwitches.Commands;
+using eStore_Admin.Application.Requests.KeyboardSwitches.Queries;
 using eStore_Admin.Application.Responses;
 using eStore_Admin.Application.Utility;
 using MediatR;

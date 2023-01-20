@@ -1,4 +1,4 @@
-﻿using eStore_Admin.Application.Requests.Keyboards.Commands.Edit;
+﻿using eStore_Admin.Application.Requests.Keyboards.Commands;
 using FluentValidation;
 
 namespace eStore_Admin.Application.Validation.Keyboards

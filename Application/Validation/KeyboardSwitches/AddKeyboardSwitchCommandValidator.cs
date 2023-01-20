@@ -1,4 +1,4 @@
-﻿using eStore_Admin.Application.Requests.KeyboardSwitches.Commands.Add;
+﻿using eStore_Admin.Application.Requests.KeyboardSwitches.Commands;
 using FluentValidation;
 
 namespace eStore_Admin.Application.Validation.KeyboardSwitches
