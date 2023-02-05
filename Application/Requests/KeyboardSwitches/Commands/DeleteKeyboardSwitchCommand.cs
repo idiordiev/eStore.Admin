@@ -5,47 +5,46 @@ using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands
-{
-    public class DeleteKeyboardSwitchCommand : IRequest<bool>
-    {
-        public DeleteKeyboardSwitchCommand(int switchId)
-        {
-            SwitchId = switchId;
-        }
+namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands;
 
-        public int SwitchId { get; }
+public class DeleteKeyboardSwitchCommand : IRequest<bool>
+{
+    public DeleteKeyboardSwitchCommand(int switchId)
+    {
+        SwitchId = switchId;
     }
 
-    public class DeleteKeyboardSwitchCommandHandler : IRequestHandler<DeleteKeyboardSwitchCommand, bool>
+    public int SwitchId { get; }
+}
+
+public class DeleteKeyboardSwitchCommandHandler : IRequestHandler<DeleteKeyboardSwitchCommand, bool>
+{
+    private readonly ILoggingService _logger;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public DeleteKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
     {
-        private readonly ILoggingService _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
 
-        public DeleteKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
+    public async Task<bool> Handle(DeleteKeyboardSwitchCommand request, CancellationToken cancellationToken)
+    {
+        KeyboardSwitch keyboardSwitch = await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, true,
+            cancellationToken);
+        if (keyboardSwitch is null)
         {
-            _unitOfWork = unitOfWork;
-            _logger = logger;
+            _logger.LogInformation("The keyboard switch with id {0} has not been found.", request.SwitchId);
+            return false;
         }
 
-        public async Task<bool> Handle(DeleteKeyboardSwitchCommand request, CancellationToken cancellationToken)
-        {
-            KeyboardSwitch keyboardSwitch =
-                await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, true, cancellationToken);
-            if (keyboardSwitch is null)
-            {
-                _logger.LogInformation("The keyboard switch with id {0} has not been found.", request.SwitchId);
-                return false;
-            }
+        cancellationToken.ThrowIfCancellationRequested();
 
-            cancellationToken.ThrowIfCancellationRequested();
+        _unitOfWork.KeyboardSwitchRepository.Delete(keyboardSwitch);
+        await _unitOfWork.SaveAsync(cancellationToken);
 
-            _unitOfWork.KeyboardSwitchRepository.Delete(keyboardSwitch);
-            await _unitOfWork.SaveAsync(cancellationToken);
+        _logger.LogInformation("The keyboard switch with id {0} has been deleted.", keyboardSwitch.Id);
 
-            _logger.LogInformation("The keyboard switch with id {0} has been deleted.", keyboardSwitch.Id);
-
-            return true;
-        }
+        return true;
     }
 }

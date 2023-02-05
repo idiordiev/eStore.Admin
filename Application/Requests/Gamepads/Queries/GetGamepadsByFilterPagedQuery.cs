@@ -10,37 +10,35 @@ using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.Gamepads.Queries
+namespace eStore_Admin.Application.Requests.Gamepads.Queries;
+
+public class GetGamepadsByFilterPagedQuery : IRequest<IEnumerable<GamepadResponse>>
 {
-    public class GetGamepadsByFilterPagedQuery : IRequest<IEnumerable<GamepadResponse>>
-    {
-        public PagingParameters PagingParameters { get; set; }
-        public GamepadFilterModel FilterModel { get; set; }
-    }
+    public PagingParameters PagingParameters { get; set; }
+    public GamepadFilterModel FilterModel { get; set; }
+}
     
-    public class GetGamepadsByFilterPagedQueryHandler : IRequestHandler<GetGamepadsByFilterPagedQuery,
-            IEnumerable<GamepadResponse>>
+public class GetGamepadsByFilterPagedQueryHandler : IRequestHandler<GetGamepadsByFilterPagedQuery,
+    IEnumerable<GamepadResponse>>
+{
+    private readonly IMapper _mapper;
+    private readonly IPredicateFactory<Gamepad, GamepadFilterModel> _predicateFactory;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public GetGamepadsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper,
+        IPredicateFactory<Gamepad, GamepadFilterModel> predicateFactory)
     {
-        private readonly IMapper _mapper;
-        private readonly IPredicateFactory<Gamepad, GamepadFilterModel> _predicateFactory;
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _predicateFactory = predicateFactory;
+    }
 
-        public GetGamepadsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper,
-            IPredicateFactory<Gamepad, GamepadFilterModel> predicateFactory)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _predicateFactory = predicateFactory;
-        }
-
-        public async Task<IEnumerable<GamepadResponse>> Handle(GetGamepadsByFilterPagedQuery request,
-            CancellationToken cancellationToken)
-        {
-            var predicate = _predicateFactory.CreateExpression(request.FilterModel);
-            var gamepads =
-                await _unitOfWork.GamepadRepository.GetByConditionPagedAsync(predicate, request.PagingParameters, false,
-                    cancellationToken);
-            return _mapper.Map<IEnumerable<GamepadResponse>>(gamepads);
-        }
+    public async Task<IEnumerable<GamepadResponse>> Handle(GetGamepadsByFilterPagedQuery request,
+        CancellationToken cancellationToken)
+    {
+        var predicate = _predicateFactory.CreateExpression(request.FilterModel);
+        var gamepads = await _unitOfWork.GamepadRepository.GetByConditionPagedAsync(predicate, request.PagingParameters,
+            false, cancellationToken);
+        return _mapper.Map<IEnumerable<GamepadResponse>>(gamepads);
     }
 }

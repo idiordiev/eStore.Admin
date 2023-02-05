@@ -7,114 +7,113 @@ using eStore_Admin.Application.Interfaces.Filtering;
 using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 
-namespace eStore_Admin.Application.Filtering.Factories
+namespace eStore_Admin.Application.Filtering.Factories;
+
+public class CustomerPredicateFactory : IPredicateFactory<Customer, CustomerFilterModel>
 {
-    public class CustomerPredicateFactory : IPredicateFactory<Customer, CustomerFilterModel>
+    public Expression<Func<Customer, bool>> CreateExpression(CustomerFilterModel filterModel)
     {
-        public Expression<Func<Customer, bool>> CreateExpression(CustomerFilterModel filterModel)
+        var expression = PredicateBuilder.True<Customer>();
+
+        AddIsDeletedConstraint(ref expression, filterModel.IsDeletedValues);
+        AddFirstNameConstraint(ref expression, filterModel.FirstName);
+        AddLastNameConstraint(ref expression, filterModel.LastName);
+        AddEmailConstraint(ref expression, filterModel.Email);
+        AddPhoneNumberConstraint(ref expression, filterModel.PhoneNumber);
+        AddCountryConstraint(ref expression, filterModel.Country);
+        AddCityConstraint(ref expression, filterModel.City);
+        AddAddressConstraint(ref expression, filterModel.Address);
+        AddPostalCodeConstraint(ref expression, filterModel.PostalCode);
+
+        return expression;
+    }
+
+    private void AddIsDeletedConstraint(ref Expression<Func<Customer, bool>> expression, ICollection<bool> values)
+    {
+        if (values is not null && values.Any())
         {
-            var expression = PredicateBuilder.True<Customer>();
+            expression = expression.And(c => values.Contains(c.IsDeleted));
+        }
+    }
 
-            AddIsDeletedConstraint(ref expression, filterModel.IsDeletedValues);
-            AddFirstNameConstraint(ref expression, filterModel.FirstName);
-            AddLastNameConstraint(ref expression, filterModel.LastName);
-            AddEmailConstraint(ref expression, filterModel.Email);
-            AddPhoneNumberConstraint(ref expression, filterModel.PhoneNumber);
-            AddCountryConstraint(ref expression, filterModel.Country);
-            AddCityConstraint(ref expression, filterModel.City);
-            AddAddressConstraint(ref expression, filterModel.Address);
-            AddPostalCodeConstraint(ref expression, filterModel.PostalCode);
-
-            return expression;
+    private void AddFirstNameConstraint(ref Expression<Func<Customer, bool>> expression, string firstName)
+    {
+        if (string.IsNullOrWhiteSpace(firstName))
+        {
+            return;
         }
 
-        private void AddIsDeletedConstraint(ref Expression<Func<Customer, bool>> expression, ICollection<bool> values)
+        expression = expression.And(c => c.FirstName.Contains(firstName.Trim()));
+    }
+
+    private void AddLastNameConstraint(ref Expression<Func<Customer, bool>> expression, string lastName)
+    {
+        if (string.IsNullOrWhiteSpace(lastName))
         {
-            if (values is not null && values.Any())
-            {
-                expression = expression.And(c => values.Contains(c.IsDeleted));
-            }
+            return;
         }
 
-        private void AddFirstNameConstraint(ref Expression<Func<Customer, bool>> expression, string firstName)
-        {
-            if (string.IsNullOrWhiteSpace(firstName))
-            {
-                return;
-            }
+        expression = expression.And(c => c.LastName.Contains(lastName.Trim()));
+    }
 
-            expression = expression.And(c => c.FirstName.Contains(firstName.Trim()));
+    private void AddPostalCodeConstraint(ref Expression<Func<Customer, bool>> expression, string postalCode)
+    {
+        if (string.IsNullOrWhiteSpace(postalCode))
+        {
+            return;
         }
 
-        private void AddLastNameConstraint(ref Expression<Func<Customer, bool>> expression, string lastName)
-        {
-            if (string.IsNullOrWhiteSpace(lastName))
-            {
-                return;
-            }
+        expression = expression.And(c => c.PostalCode.Contains(postalCode.Trim()));
+    }
 
-            expression = expression.And(c => c.LastName.Contains(lastName.Trim()));
+
+    private void AddEmailConstraint(ref Expression<Func<Customer, bool>> expression, string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return;
         }
 
-        private void AddPostalCodeConstraint(ref Expression<Func<Customer, bool>> expression, string postalCode)
-        {
-            if (string.IsNullOrWhiteSpace(postalCode))
-            {
-                return;
-            }
+        expression = expression.And(c => c.Email.Contains(email.Trim()));
+    }
 
-            expression = expression.And(c => c.PostalCode.Contains(postalCode.Trim()));
+    private void AddPhoneNumberConstraint(ref Expression<Func<Customer, bool>> expression, string phoneNumber)
+    {
+        if (string.IsNullOrWhiteSpace(phoneNumber))
+        {
+            return;
         }
 
+        expression = expression.And(c => c.PhoneNumber.Contains(phoneNumber.Trim()));
+    }
 
-        private void AddEmailConstraint(ref Expression<Func<Customer, bool>> expression, string email)
+    private void AddCountryConstraint(ref Expression<Func<Customer, bool>> expression, string country)
+    {
+        if (string.IsNullOrWhiteSpace(country))
         {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return;
-            }
-
-            expression = expression.And(c => c.Email.Contains(email.Trim()));
+            return;
         }
 
-        private void AddPhoneNumberConstraint(ref Expression<Func<Customer, bool>> expression, string phoneNumber)
-        {
-            if (string.IsNullOrWhiteSpace(phoneNumber))
-            {
-                return;
-            }
+        expression = expression.And(c => c.Country.Contains(country.Trim()));
+    }
 
-            expression = expression.And(c => c.PhoneNumber.Contains(phoneNumber.Trim()));
+    private void AddCityConstraint(ref Expression<Func<Customer, bool>> expression, string city)
+    {
+        if (string.IsNullOrWhiteSpace(city))
+        {
+            return;
         }
 
-        private void AddCountryConstraint(ref Expression<Func<Customer, bool>> expression, string country)
-        {
-            if (string.IsNullOrWhiteSpace(country))
-            {
-                return;
-            }
+        expression = expression.And(c => c.City.Contains(city.Trim()));
+    }
 
-            expression = expression.And(c => c.Country.Contains(country.Trim()));
+    private void AddAddressConstraint(ref Expression<Func<Customer, bool>> expression, string address)
+    {
+        if (string.IsNullOrWhiteSpace(address))
+        {
+            return;
         }
 
-        private void AddCityConstraint(ref Expression<Func<Customer, bool>> expression, string city)
-        {
-            if (string.IsNullOrWhiteSpace(city))
-            {
-                return;
-            }
-
-            expression = expression.And(c => c.City.Contains(city.Trim()));
-        }
-
-        private void AddAddressConstraint(ref Expression<Func<Customer, bool>> expression, string address)
-        {
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                return;
-            }
-
-            expression = expression.And(c => c.Address.Contains(address.Trim()));
-        }
+        expression = expression.And(c => c.Address.Contains(address.Trim()));
     }
 }

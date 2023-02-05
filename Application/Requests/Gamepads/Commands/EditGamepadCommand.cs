@@ -9,53 +9,51 @@ using eStore_Admin.Application.Responses;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.Gamepads.Commands
-{
-    public class EditGamepadCommand : IRequest<GamepadResponse>
-    {
-        public EditGamepadCommand(int gamepadId)
-        {
-            GamepadId = gamepadId;
-        }
+namespace eStore_Admin.Application.Requests.Gamepads.Commands;
 
-        public int GamepadId { get; }
-        public GamepadDto Gamepad { get; set; }
+public class EditGamepadCommand : IRequest<GamepadResponse>
+{
+    public EditGamepadCommand(int gamepadId)
+    {
+        GamepadId = gamepadId;
     }
 
-    public class EditGamepadCommandHandler : IRequestHandler<EditGamepadCommand, GamepadResponse>
+    public int GamepadId { get; }
+    public GamepadDto Gamepad { get; set; }
+}
+
+public class EditGamepadCommandHandler : IRequestHandler<EditGamepadCommand, GamepadResponse>
+{
+    private readonly IDateTimeService _dateTimeService;
+    private readonly ILoggingService _logger;
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public EditGamepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
+        IDateTimeService dateTimeService)
     {
-        private readonly IDateTimeService _dateTimeService;
-        private readonly ILoggingService _logger;
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _logger = logger;
+        _dateTimeService = dateTimeService;
+    }
 
-        public EditGamepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
-            IDateTimeService dateTimeService)
+    public async Task<GamepadResponse> Handle(EditGamepadCommand request, CancellationToken cancellationToken)
+    {
+        Gamepad gamepad = await _unitOfWork.GamepadRepository.GetByIdAsync(request.GamepadId, true, cancellationToken);
+        if (gamepad is null)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _logger = logger;
-            _dateTimeService = dateTimeService;
+            throw new KeyNotFoundException($"The gamepad with the id {request.GamepadId} has not been found.");
         }
 
-        public async Task<GamepadResponse> Handle(EditGamepadCommand request, CancellationToken cancellationToken)
-        {
-            Gamepad gamepad =
-                await _unitOfWork.GamepadRepository.GetByIdAsync(request.GamepadId, true, cancellationToken);
-            if (gamepad is null)
-            {
-                throw new KeyNotFoundException($"The gamepad with the id {request.GamepadId} has not been found.");
-            }
+        cancellationToken.ThrowIfCancellationRequested();
 
-            cancellationToken.ThrowIfCancellationRequested();
+        _mapper.Map(gamepad, request.Gamepad);
+        gamepad.LastModified = _dateTimeService.Now();
+        await _unitOfWork.SaveAsync(cancellationToken);
 
-            _mapper.Map(gamepad, request.Gamepad);
-            gamepad.LastModified = _dateTimeService.Now();
-            await _unitOfWork.SaveAsync(cancellationToken);
+        _logger.LogInformation("The gamepad with id {0} has been updated.", gamepad.Id);
 
-            _logger.LogInformation("The gamepad with id {0} has been updated.", gamepad.Id);
-
-            return _mapper.Map<GamepadResponse>(gamepad);
-        }
+        return _mapper.Map<GamepadResponse>(gamepad);
     }
 }

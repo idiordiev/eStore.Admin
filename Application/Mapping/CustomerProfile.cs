@@ -3,14 +3,13 @@ using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Responses;
 using eStore_Admin.Domain.Entities;
 
-namespace eStore_Admin.Application.Mapping
+namespace eStore_Admin.Application.Mapping;
+
+public class CustomerProfile : Profile
 {
-    public class CustomerProfile : Profile
+    public CustomerProfile()
     {
-        public CustomerProfile()
-        {
-            CreateMap<Customer, CustomerResponse>();
-            CreateMap<CustomerDto, Customer>();
-        }
+        CreateMap<Customer, CustomerResponse>();
+        CreateMap<CustomerDto, Customer>();
     }
 }

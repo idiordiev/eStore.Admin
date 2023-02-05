@@ -7,123 +7,121 @@ using eStore_Admin.Application.Interfaces.Filtering;
 using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 
-namespace eStore_Admin.Application.Filtering.Factories
+namespace eStore_Admin.Application.Filtering.Factories;
+
+public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilterModel>
 {
-    public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilterModel>
+    public Expression<Func<Mousepad, bool>> CreateExpression(MousepadFilterModel filterModel)
     {
-        public Expression<Func<Mousepad, bool>> CreateExpression(MousepadFilterModel filterModel)
+        var expression = PredicateBuilder.True<Mousepad>();
+
+        AddIsDeletedConstraint(ref expression, filterModel.IsDeletedValues);
+        AddNameConstraint(ref expression, filterModel.Name);
+        AddManufacturerConstraint(ref expression, filterModel.Manufacturers);
+        AddMinPriceConstraint(ref expression, filterModel.MinPrice);
+        AddMaxPriceConstraint(ref expression, filterModel.MaxPrice);
+        AddCreatedDateStartConstraint(ref expression, filterModel.CreatedStartDate);
+        AddCreatedDateEndConstraint(ref expression, filterModel.CreatedEndDate);
+        AddIsStitchedConstraint(ref expression, filterModel.IsStitchedValues);
+        AddBottomMaterialConstraint(ref expression, filterModel.BottomMaterials);
+        AddTopMaterialConstraint(ref expression, filterModel.TopMaterials);
+        AddBacklightConstraint(ref expression, filterModel.Backlights);
+
+        return expression;
+    }
+
+    private void AddIsDeletedConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<bool> values)
+    {
+        if (values is not null && values.Any())
         {
-            var expression = PredicateBuilder.True<Mousepad>();
+            expression = expression.And(m => values.Contains(m.IsDeleted));
+        }
+    }
 
-            AddIsDeletedConstraint(ref expression, filterModel.IsDeletedValues);
-            AddNameConstraint(ref expression, filterModel.Name);
-            AddManufacturerConstraint(ref expression, filterModel.Manufacturers);
-            AddMinPriceConstraint(ref expression, filterModel.MinPrice);
-            AddMaxPriceConstraint(ref expression, filterModel.MaxPrice);
-            AddCreatedDateStartConstraint(ref expression, filterModel.CreatedStartDate);
-            AddCreatedDateEndConstraint(ref expression, filterModel.CreatedEndDate);
-            AddIsStitchedConstraint(ref expression, filterModel.IsStitchedValues);
-            AddBottomMaterialConstraint(ref expression, filterModel.BottomMaterials);
-            AddTopMaterialConstraint(ref expression, filterModel.TopMaterials);
-            AddBacklightConstraint(ref expression, filterModel.Backlights);
-
-            return expression;
+    private void AddNameConstraint(ref Expression<Func<Mousepad, bool>> expression, string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return;
         }
 
-        private void AddIsDeletedConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<bool> values)
+        string value = name.Trim();
+        expression = expression.And(m => m.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private void AddManufacturerConstraint(ref Expression<Func<Mousepad, bool>> expression,
+        ICollection<string> manufacturers)
+    {
+        if (manufacturers is not null && manufacturers.Any())
         {
-            if (values is not null && values.Any())
-            {
-                expression = expression.And(m => values.Contains(m.IsDeleted));
-            }
+            expression = expression.And(mouse =>
+                manufacturers.Any(manufacturer => mouse.Manufacturer.Equals(manufacturer)));
         }
+    }
 
-        private void AddNameConstraint(ref Expression<Func<Mousepad, bool>> expression, string name)
+    private void AddMinPriceConstraint(ref Expression<Func<Mousepad, bool>> expression, decimal? price)
+    {
+        if (price is not null)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return;
-            }
-
-            string value = name.Trim();
-            expression = expression.And(m => m.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase));
+            expression = expression.And(m => m.Price >= price);
         }
+    }
 
-        private void AddManufacturerConstraint(ref Expression<Func<Mousepad, bool>> expression,
-            ICollection<string> manufacturers)
+    private void AddMaxPriceConstraint(ref Expression<Func<Mousepad, bool>> expression, decimal? price)
+    {
+        if (price is not null)
         {
-            if (manufacturers is not null && manufacturers.Any())
-            {
-                expression = expression.And(mouse =>
-                    manufacturers.Any(manufacturer => mouse.Manufacturer.Equals(manufacturer)));
-            }
+            expression = expression.And(m => m.Price <= price);
         }
+    }
 
-        private void AddMinPriceConstraint(ref Expression<Func<Mousepad, bool>> expression, decimal? price)
+    private void AddCreatedDateStartConstraint(ref Expression<Func<Mousepad, bool>> expression, DateTime? date)
+    {
+        if (date is not null)
         {
-            if (price is not null)
-            {
-                expression = expression.And(m => m.Price >= price);
-            }
+            expression = expression.And(m => m.Created >= date);
         }
+    }
 
-        private void AddMaxPriceConstraint(ref Expression<Func<Mousepad, bool>> expression, decimal? price)
+    private void AddCreatedDateEndConstraint(ref Expression<Func<Mousepad, bool>> expression, DateTime? date)
+    {
+        if (date is not null)
         {
-            if (price is not null)
-            {
-                expression = expression.And(m => m.Price <= price);
-            }
+            expression = expression.And(m => m.Created <= date);
         }
+    }
 
-        private void AddCreatedDateStartConstraint(ref Expression<Func<Mousepad, bool>> expression, DateTime? date)
+    private void AddIsStitchedConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<bool> values)
+    {
+        if (values is not null && values.Any())
         {
-            if (date is not null)
-            {
-                expression = expression.And(m => m.Created >= date);
-            }
+            expression = expression.And(m => values.Contains(m.IsStitched));
         }
+    }
 
-        private void AddCreatedDateEndConstraint(ref Expression<Func<Mousepad, bool>> expression, DateTime? date)
+    private void AddBottomMaterialConstraint(ref Expression<Func<Mousepad, bool>> expression,
+        ICollection<string> bottomMaterials)
+    {
+        if (bottomMaterials is not null && bottomMaterials.Any())
         {
-            if (date is not null)
-            {
-                expression = expression.And(m => m.Created <= date);
-            }
+            expression = expression.And(m => bottomMaterials.Any(b => b.Equals(m.BottomMaterial)));
         }
+    }
 
-        private void AddIsStitchedConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<bool> values)
+    private void AddTopMaterialConstraint(ref Expression<Func<Mousepad, bool>> expression,
+        ICollection<string> topMaterials)
+    {
+        if (topMaterials is not null && topMaterials.Any())
         {
-            if (values is not null && values.Any())
-            {
-                expression = expression.And(m => values.Contains(m.IsStitched));
-            }
+            expression = expression.And(m => topMaterials.Any(b => b.Equals(m.TopMaterial)));
         }
+    }
 
-        private void AddBottomMaterialConstraint(ref Expression<Func<Mousepad, bool>> expression,
-            ICollection<string> bottomMaterials)
+    private void AddBacklightConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<string> backlights)
+    {
+        if (backlights is not null && backlights.Any())
         {
-            if (bottomMaterials is not null && bottomMaterials.Any())
-            {
-                expression = expression.And(m => bottomMaterials.Any(b => b.Equals(m.BottomMaterial)));
-            }
-        }
-
-        private void AddTopMaterialConstraint(ref Expression<Func<Mousepad, bool>> expression,
-            ICollection<string> topMaterials)
-        {
-            if (topMaterials is not null && topMaterials.Any())
-            {
-                expression = expression.And(m => topMaterials.Any(b => b.Equals(m.TopMaterial)));
-            }
-        }
-
-        private void AddBacklightConstraint(ref Expression<Func<Mousepad, bool>> expression,
-            ICollection<string> backlights)
-        {
-            if (backlights is not null && backlights.Any())
-            {
-                expression = expression.And(m => backlights.Any(b => b.Equals(m.Backlight)));
-            }
+            expression = expression.And(m => backlights.Any(b => b.Equals(m.Backlight)));
         }
     }
 }

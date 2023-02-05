@@ -9,51 +9,50 @@ using eStore_Admin.Application.Responses;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands
-{
-    public class EditKeyboardSwitchCommand : IRequest<KeyboardSwitchResponse>
-    {
-        public EditKeyboardSwitchCommand(int switchId)
-        {
-            SwitchId = switchId;
-        }
+namespace eStore_Admin.Application.Requests.KeyboardSwitches.Commands;
 
-        public int SwitchId { get; }
-        public KeyboardSwitchDto KeyboardSwitch { get; set; }
+public class EditKeyboardSwitchCommand : IRequest<KeyboardSwitchResponse>
+{
+    public EditKeyboardSwitchCommand(int switchId)
+    {
+        SwitchId = switchId;
     }
 
-    public class EditKeyboardSwitchCommandHandler : IRequestHandler<EditKeyboardSwitchCommand, KeyboardSwitchResponse>
+    public int SwitchId { get; }
+    public KeyboardSwitchDto KeyboardSwitch { get; set; }
+}
+
+public class EditKeyboardSwitchCommandHandler : IRequestHandler<EditKeyboardSwitchCommand, KeyboardSwitchResponse>
+{
+    private readonly ILoggingService _logger;
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public EditKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
     {
-        private readonly ILoggingService _logger;
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _logger = logger;
+    }
 
-        public EditKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
+    public async Task<KeyboardSwitchResponse> Handle(EditKeyboardSwitchCommand request,
+        CancellationToken cancellationToken)
+    {
+        KeyboardSwitch keyboardSwitch =
+            await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, true, cancellationToken);
+        if (keyboardSwitch is null)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _logger = logger;
+            throw new KeyNotFoundException(
+                $"The keyboard switch with the id {request.SwitchId} has not been found.");
         }
 
-        public async Task<KeyboardSwitchResponse> Handle(EditKeyboardSwitchCommand request,
-            CancellationToken cancellationToken)
-        {
-            KeyboardSwitch keyboardSwitch =
-                await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, true, cancellationToken);
-            if (keyboardSwitch is null)
-            {
-                throw new KeyNotFoundException(
-                    $"The keyboard switch with the id {request.SwitchId} has not been found.");
-            }
+        cancellationToken.ThrowIfCancellationRequested();
 
-            cancellationToken.ThrowIfCancellationRequested();
+        _mapper.Map(request.KeyboardSwitch, keyboardSwitch);
+        await _unitOfWork.SaveAsync(cancellationToken);
 
-            _mapper.Map(request.KeyboardSwitch, keyboardSwitch);
-            await _unitOfWork.SaveAsync(cancellationToken);
+        _logger.LogInformation("The keyboard switch with id {0} has been deleted.", keyboardSwitch.Id);
 
-            _logger.LogInformation("The keyboard switch with id {0} has been deleted.", keyboardSwitch.Id);
-
-            return _mapper.Map<KeyboardSwitchResponse>(keyboardSwitch);
-        }
+        return _mapper.Map<KeyboardSwitchResponse>(keyboardSwitch);
     }
 }

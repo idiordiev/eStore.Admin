@@ -5,48 +5,46 @@ using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.ShoppingCarts.Commands
+namespace eStore_Admin.Application.Requests.ShoppingCarts.Commands;
+
+public class ClearShoppingCartCommand : IRequest<bool>
 {
-    public class ClearShoppingCartCommand : IRequest<bool>
+    public ClearShoppingCartCommand(int shoppingCartId)
     {
-        public ClearShoppingCartCommand(int shoppingCartId)
-        {
-            ShoppingCartId = shoppingCartId;
-        }
-
-        public int ShoppingCartId { get; }
+        ShoppingCartId = shoppingCartId;
     }
+
+    public int ShoppingCartId { get; }
+}
     
-    public class ClearShoppingCartCommandHandler : IRequestHandler<ClearShoppingCartCommand, bool>
+public class ClearShoppingCartCommandHandler : IRequestHandler<ClearShoppingCartCommand, bool>
+{
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILoggingService _logger;
+
+    public ClearShoppingCartCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ILoggingService _logger;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
 
-        public ClearShoppingCartCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
+    public async Task<bool> Handle(ClearShoppingCartCommand request, CancellationToken cancellationToken)
+    {
+        ShoppingCart shoppingCart = await _unitOfWork.ShoppingCartRepository.GetByIdWithItemsAsync(
+            request.ShoppingCartId, true, cancellationToken);
+        if (shoppingCart is null)
         {
-            _unitOfWork = unitOfWork;
-            _logger = logger;
+            _logger.LogInformation("The shopping cart with id {0} has not been found.", request.ShoppingCartId);
+            return false;
         }
 
-        public async Task<bool> Handle(ClearShoppingCartCommand request, CancellationToken cancellationToken)
-        {
-            ShoppingCart shoppingCart =
-                await _unitOfWork.ShoppingCartRepository.GetByIdWithItemsAsync(request.ShoppingCartId, true,
-                    cancellationToken);
-            if (shoppingCart is null)
-            {
-                _logger.LogInformation("The shopping cart with id {0} has not been found.", request.ShoppingCartId);
-                return false;
-            }
+        cancellationToken.ThrowIfCancellationRequested();
 
-            cancellationToken.ThrowIfCancellationRequested();
+        shoppingCart.Goods.Clear();
+        await _unitOfWork.SaveAsync(cancellationToken);
 
-            shoppingCart.Goods.Clear();
-            await _unitOfWork.SaveAsync(cancellationToken);
+        _logger.LogInformation("The shopping cart with id {0} has been cleared.", shoppingCart.Id);
 
-            _logger.LogInformation("The shopping cart with id {0} has been cleared.", shoppingCart.Id);
-
-            return true;
-        }
+        return true;
     }
 }

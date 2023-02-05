@@ -1,8 +1,7 @@
-﻿namespace eStore_Admin.Domain.Entities
+﻿namespace eStore_Admin.Domain.Entities;
+
+public abstract class Entity
 {
-    public abstract class Entity
-    {
-        public int Id { get; set; }
-        public bool IsDeleted { get; set; }
-    }
+    public int Id { get; set; }
+    public bool IsDeleted { get; set; }
 }

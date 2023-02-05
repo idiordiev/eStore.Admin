@@ -1,14 +1,13 @@
 ﻿using eStore_Admin.Application.RequestDTOs;
 using FluentValidation;
 
-namespace eStore_Admin.Application.Validation.OrderItems
+namespace eStore_Admin.Application.Validation.OrderItems;
+
+public class OrderItemRequestValidator : AbstractValidator<OrderItemDto>
 {
-    public class OrderItemRequestValidator : AbstractValidator<OrderItemDto>
+    public OrderItemRequestValidator()
     {
-        public OrderItemRequestValidator()
-        {
-            RuleFor(x => x.Quantity)
-                .GreaterThanOrEqualTo(1);
-        }
+        RuleFor(x => x.Quantity)
+            .GreaterThanOrEqualTo(1);
     }
 }

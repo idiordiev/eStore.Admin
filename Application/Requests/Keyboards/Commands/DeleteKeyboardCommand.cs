@@ -5,47 +5,46 @@ using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.Keyboards.Commands
-{
-    public class DeleteKeyboardCommand : IRequest<bool>
-    {
-        public DeleteKeyboardCommand(int keyboardId)
-        {
-            KeyboardId = keyboardId;
-        }
+namespace eStore_Admin.Application.Requests.Keyboards.Commands;
 
-        public int KeyboardId { get; }
+public class DeleteKeyboardCommand : IRequest<bool>
+{
+    public DeleteKeyboardCommand(int keyboardId)
+    {
+        KeyboardId = keyboardId;
     }
 
-    public class DeleteKeyboardCommandHandler : IRequestHandler<DeleteKeyboardCommand, bool>
+    public int KeyboardId { get; }
+}
+
+public class DeleteKeyboardCommandHandler : IRequestHandler<DeleteKeyboardCommand, bool>
+{
+    private readonly ILoggingService _logger;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public DeleteKeyboardCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
     {
-        private readonly ILoggingService _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
 
-        public DeleteKeyboardCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
+    public async Task<bool> Handle(DeleteKeyboardCommand request, CancellationToken cancellationToken)
+    {
+        Keyboard keyboard = await _unitOfWork.KeyboardRepository.GetByIdAsync(request.KeyboardId, true,
+            cancellationToken);
+        if (keyboard is null)
         {
-            _unitOfWork = unitOfWork;
-            _logger = logger;
+            _logger.LogInformation("The keyboard with id {0} has not been found.", request.KeyboardId);
+            return false;
         }
 
-        public async Task<bool> Handle(DeleteKeyboardCommand request, CancellationToken cancellationToken)
-        {
-            Keyboard keyboard =
-                await _unitOfWork.KeyboardRepository.GetByIdAsync(request.KeyboardId, true, cancellationToken);
-            if (keyboard is null)
-            {
-                _logger.LogInformation("The keyboard with id {0} has not been found.", request.KeyboardId);
-                return false;
-            }
+        cancellationToken.ThrowIfCancellationRequested();
 
-            cancellationToken.ThrowIfCancellationRequested();
+        _unitOfWork.KeyboardRepository.Delete(keyboard);
+        await _unitOfWork.SaveAsync(cancellationToken);
 
-            _unitOfWork.KeyboardRepository.Delete(keyboard);
-            await _unitOfWork.SaveAsync(cancellationToken);
+        _logger.LogInformation("The keyboard with id {0} has been deleted.", keyboard.Id);
 
-            _logger.LogInformation("The keyboard with id {0} has been deleted.", keyboard.Id);
-
-            return true;
-        }
+        return true;
     }
 }

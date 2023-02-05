@@ -1,15 +1,14 @@
 ﻿using eStore_Admin.Application.Requests.Keyboards.Commands;
 using FluentValidation;
 
-namespace eStore_Admin.Application.Validation.Keyboards
+namespace eStore_Admin.Application.Validation.Keyboards;
+
+public class AddKeyboardCommandValidator : AbstractValidator<AddKeyboardCommand>
 {
-    public class AddKeyboardCommandValidator : AbstractValidator<AddKeyboardCommand>
+    public AddKeyboardCommandValidator()
     {
-        public AddKeyboardCommandValidator()
-        {
-            RuleFor(x => x.Keyboard)
-                .NotNull()
-                .SetValidator(new KeyboardRequestValidator());
-        }
+        RuleFor(x => x.Keyboard)
+            .NotNull()
+            .SetValidator(new KeyboardRequestValidator());
     }
 }

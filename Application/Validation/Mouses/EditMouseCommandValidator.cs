@@ -1,15 +1,14 @@
 ﻿using eStore_Admin.Application.Requests.Mouses.Commands;
 using FluentValidation;
 
-namespace eStore_Admin.Application.Validation.Mouses
+namespace eStore_Admin.Application.Validation.Mouses;
+
+public class EditMouseCommandValidator : AbstractValidator<EditMouseCommand>
 {
-    public class EditMouseCommandValidator : AbstractValidator<EditMouseCommand>
+    public EditMouseCommandValidator()
     {
-        public EditMouseCommandValidator()
-        {
-            RuleFor(x => x.Mouse)
-                .NotNull()
-                .SetValidator(new MouseRequestValidator());
-        }
+        RuleFor(x => x.Mouse)
+            .NotNull()
+            .SetValidator(new MouseRequestValidator());
     }
 }

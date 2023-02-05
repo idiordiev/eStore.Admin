@@ -9,49 +9,48 @@ using eStore_Admin.Application.Responses;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.Customers.Commands
-{
-    public class EditCustomerCommand : IRequest<CustomerResponse>
-    {
-        public EditCustomerCommand(int customerId)
-        {
-            CustomerId = customerId;
-        }
+namespace eStore_Admin.Application.Requests.Customers.Commands;
 
-        public int CustomerId { get; }
-        public CustomerDto Customer { get; set; }
+public class EditCustomerCommand : IRequest<CustomerResponse>
+{
+    public EditCustomerCommand(int customerId)
+    {
+        CustomerId = customerId;
     }
 
-    public class EditCustomerCommandHandler : IRequestHandler<EditCustomerCommand, CustomerResponse>
+    public int CustomerId { get; }
+    public CustomerDto Customer { get; set; }
+}
+
+public class EditCustomerCommandHandler : IRequestHandler<EditCustomerCommand, CustomerResponse>
+{
+    private readonly ILoggingService _logger;
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public EditCustomerCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ILoggingService logger)
     {
-        private readonly ILoggingService _logger;
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
 
-        public EditCustomerCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ILoggingService logger)
+    public async Task<CustomerResponse> Handle(EditCustomerCommand request, CancellationToken cancellationToken)
+    {
+        Customer customer = await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true,
+            cancellationToken);
+        if (customer is null)
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-            _logger = logger;
+            throw new KeyNotFoundException($"The customer with id {request.CustomerId} has not been found.");
         }
 
-        public async Task<CustomerResponse> Handle(EditCustomerCommand request, CancellationToken cancellationToken)
-        {
-            Customer customer =
-                await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true, cancellationToken);
-            if (customer is null)
-            {
-                throw new KeyNotFoundException($"The customer with id {request.CustomerId} has not been found.");
-            }
+        cancellationToken.ThrowIfCancellationRequested();
 
-            cancellationToken.ThrowIfCancellationRequested();
+        _mapper.Map(request.Customer, customer);
+        await _unitOfWork.SaveAsync(cancellationToken);
 
-            _mapper.Map(request.Customer, customer);
-            await _unitOfWork.SaveAsync(cancellationToken);
+        _logger.LogInformation("The customer with id {0} has been updated.", customer.Id);
 
-            _logger.LogInformation("The customer with id {0} has been updated.", customer.Id);
-
-            return _mapper.Map<CustomerResponse>(customer);
-        }
+        return _mapper.Map<CustomerResponse>(customer);
     }
 }

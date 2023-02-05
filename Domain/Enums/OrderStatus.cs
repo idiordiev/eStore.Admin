@@ -1,12 +1,11 @@
-﻿namespace eStore_Admin.Domain.Enums
+﻿namespace eStore_Admin.Domain.Enums;
+
+public enum OrderStatus
 {
-    public enum OrderStatus
-    {
-        New = 1,
-        Paid = 2,
-        Processing = 3,
-        Sent = 4,
-        Received = 5,
-        Cancelled = 6
-    }
+    New = 1,
+    Paid = 2,
+    Processing = 3,
+    Sent = 4,
+    Received = 5,
+    Cancelled = 6
 }

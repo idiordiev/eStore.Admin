@@ -8,43 +8,42 @@ using eStore_Admin.Application.Responses;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.Mouses.Commands
+namespace eStore_Admin.Application.Requests.Mouses.Commands;
+
+public class AddMouseCommand : IRequest<MouseResponse>
 {
-    public class AddMouseCommand : IRequest<MouseResponse>
+    public MouseDto Mouse { get; set; }
+}
+
+public class AddMouseCommandHandler : IRequestHandler<AddMouseCommand, MouseResponse>
+{
+    private readonly IDateTimeService _dateTimeService;
+    private readonly ILoggingService _logger;
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public AddMouseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
+        IDateTimeService dateTimeService)
     {
-        public MouseDto Mouse { get; set; }
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _logger = logger;
+        _dateTimeService = dateTimeService;
     }
 
-    public class AddMouseCommandHandler : IRequestHandler<AddMouseCommand, MouseResponse>
+    public async Task<MouseResponse> Handle(AddMouseCommand request, CancellationToken cancellationToken)
     {
-        private readonly IDateTimeService _dateTimeService;
-        private readonly ILoggingService _logger;
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        var mouse = _mapper.Map<Mouse>(request.Mouse);
+        mouse.Created = _dateTimeService.Now();
+        mouse.LastModified = _dateTimeService.Now();
 
-        public AddMouseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
-            IDateTimeService dateTimeService)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _logger = logger;
-            _dateTimeService = dateTimeService;
-        }
+        cancellationToken.ThrowIfCancellationRequested();
 
-        public async Task<MouseResponse> Handle(AddMouseCommand request, CancellationToken cancellationToken)
-        {
-            var mouse = _mapper.Map<Mouse>(request.Mouse);
-            mouse.Created = _dateTimeService.Now();
-            mouse.LastModified = _dateTimeService.Now();
+        _unitOfWork.MouseRepository.Add(mouse);
+        await _unitOfWork.SaveAsync(cancellationToken);
 
-            cancellationToken.ThrowIfCancellationRequested();
+        _logger.LogInformation("The mouse with id {0} has been added.", mouse.Id);
 
-            _unitOfWork.MouseRepository.Add(mouse);
-            await _unitOfWork.SaveAsync(cancellationToken);
-
-            _logger.LogInformation("The mouse with id {0} has been added.", mouse.Id);
-
-            return _mapper.Map<MouseResponse>(mouse);
-        }
+        return _mapper.Map<MouseResponse>(mouse);
     }
 }

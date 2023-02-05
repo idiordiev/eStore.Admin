@@ -7,137 +7,136 @@ using eStore_Admin.Application.Interfaces.Filtering;
 using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 
-namespace eStore_Admin.Application.Filtering.Factories
+namespace eStore_Admin.Application.Filtering.Factories;
+
+public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterModel>
 {
-    public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterModel>
+    public Expression<Func<Gamepad, bool>> CreateExpression(GamepadFilterModel filterModel)
     {
-        public Expression<Func<Gamepad, bool>> CreateExpression(GamepadFilterModel filterModel)
+        var expression = PredicateBuilder.True<Gamepad>();
+
+        AddIsDeletedConstraint(ref expression, filterModel.IsDeletedValues);
+        AddNameConstraint(ref expression, filterModel.Name);
+        AddManufacturerConstraint(ref expression, filterModel.Manufacturers);
+        AddMinPriceConstraint(ref expression, filterModel.MinPrice);
+        AddMaxPriceConstraint(ref expression, filterModel.MaxPrice);
+        AddCreatedDateStartConstraint(ref expression, filterModel.CreatedStartDate);
+        AddCreatedDateEndConstraint(ref expression, filterModel.CreatedEndDate);
+        AddConnectionTypeConstraint(ref expression, filterModel.ConnectionTypes);
+        AddCompatibleDeviceConstraint(ref expression, filterModel.CompatibleDevices);
+        AddFeedbackConstraint(ref expression, filterModel.Feedbacks);
+        AddMinWeightConstraint(ref expression, filterModel.MinWeight);
+        AddMaxWeightConstraint(ref expression, filterModel.MaxWeight);
+
+        return expression;
+    }
+
+    private void AddIsDeletedConstraint(ref Expression<Func<Gamepad, bool>> expression, ICollection<bool> values)
+    {
+        if (values is not null && values.Any())
         {
-            var expression = PredicateBuilder.True<Gamepad>();
+            expression = expression.And(g => values.Contains(g.IsDeleted));
+        }
+    }
 
-            AddIsDeletedConstraint(ref expression, filterModel.IsDeletedValues);
-            AddNameConstraint(ref expression, filterModel.Name);
-            AddManufacturerConstraint(ref expression, filterModel.Manufacturers);
-            AddMinPriceConstraint(ref expression, filterModel.MinPrice);
-            AddMaxPriceConstraint(ref expression, filterModel.MaxPrice);
-            AddCreatedDateStartConstraint(ref expression, filterModel.CreatedStartDate);
-            AddCreatedDateEndConstraint(ref expression, filterModel.CreatedEndDate);
-            AddConnectionTypeConstraint(ref expression, filterModel.ConnectionTypes);
-            AddCompatibleDeviceConstraint(ref expression, filterModel.CompatibleDevices);
-            AddFeedbackConstraint(ref expression, filterModel.Feedbacks);
-            AddMinWeightConstraint(ref expression, filterModel.MinWeight);
-            AddMaxWeightConstraint(ref expression, filterModel.MaxWeight);
-
-            return expression;
+    private void AddNameConstraint(ref Expression<Func<Gamepad, bool>> expression, string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return;
         }
 
-        private void AddIsDeletedConstraint(ref Expression<Func<Gamepad, bool>> expression, ICollection<bool> values)
+        string value = name.Trim();
+        expression = expression.And(g => g.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private void AddManufacturerConstraint(ref Expression<Func<Gamepad, bool>> expression,
+        ICollection<string> manufacturers)
+    {
+        if (manufacturers is not null && manufacturers.Any())
         {
-            if (values is not null && values.Any())
-            {
-                expression = expression.And(g => values.Contains(g.IsDeleted));
-            }
+            expression = expression.And(g =>
+                manufacturers.Any(m => m.Equals(g.Manufacturer, StringComparison.InvariantCultureIgnoreCase)));
         }
+    }
 
-        private void AddNameConstraint(ref Expression<Func<Gamepad, bool>> expression, string name)
+    private void AddFeedbackConstraint(ref Expression<Func<Gamepad, bool>> expression,
+        ICollection<string> feedbacks)
+    {
+        if (feedbacks is not null && feedbacks.Any())
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return;
-            }
-
-            string value = name.Trim();
-            expression = expression.And(g => g.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase));
+            expression = expression.And(g =>
+                feedbacks.Any(f => f.Equals(g.Feedback, StringComparison.InvariantCultureIgnoreCase)));
         }
+    }
 
-        private void AddManufacturerConstraint(ref Expression<Func<Gamepad, bool>> expression,
-            ICollection<string> manufacturers)
+    private void AddMinPriceConstraint(ref Expression<Func<Gamepad, bool>> expression, decimal? price)
+    {
+        if (price is not null)
         {
-            if (manufacturers is not null && manufacturers.Any())
-            {
-                expression = expression.And(g =>
-                    manufacturers.Any(m => m.Equals(g.Manufacturer, StringComparison.InvariantCultureIgnoreCase)));
-            }
+            expression = expression.And(g => g.Price >= price);
         }
+    }
 
-        private void AddFeedbackConstraint(ref Expression<Func<Gamepad, bool>> expression,
-            ICollection<string> feedbacks)
+    private void AddMaxPriceConstraint(ref Expression<Func<Gamepad, bool>> expression, decimal? price)
+    {
+        if (price is not null)
         {
-            if (feedbacks is not null && feedbacks.Any())
-            {
-                expression = expression.And(g =>
-                    feedbacks.Any(f => f.Equals(g.Feedback, StringComparison.InvariantCultureIgnoreCase)));
-            }
+            expression = expression.And(g => g.Price <= price);
         }
+    }
 
-        private void AddMinPriceConstraint(ref Expression<Func<Gamepad, bool>> expression, decimal? price)
+    private void AddCreatedDateStartConstraint(ref Expression<Func<Gamepad, bool>> expression, DateTime? date)
+    {
+        if (date is not null)
         {
-            if (price is not null)
-            {
-                expression = expression.And(g => g.Price >= price);
-            }
+            expression = expression.And(g => g.Created >= date);
         }
+    }
 
-        private void AddMaxPriceConstraint(ref Expression<Func<Gamepad, bool>> expression, decimal? price)
+    private void AddCreatedDateEndConstraint(ref Expression<Func<Gamepad, bool>> expression, DateTime? date)
+    {
+        if (date is not null)
         {
-            if (price is not null)
-            {
-                expression = expression.And(g => g.Price <= price);
-            }
+            expression = expression.And(g => g.Created <= date);
         }
+    }
 
-        private void AddCreatedDateStartConstraint(ref Expression<Func<Gamepad, bool>> expression, DateTime? date)
+    private void AddConnectionTypeConstraint(ref Expression<Func<Gamepad, bool>> expression,
+        ICollection<string> connectionTypes)
+    {
+        if (connectionTypes is not null && connectionTypes.Any())
         {
-            if (date is not null)
-            {
-                expression = expression.And(g => g.Created >= date);
-            }
+            expression = expression.And(g =>
+                connectionTypes.Any(ct =>
+                    ct.Equals(g.ConnectionType, StringComparison.InvariantCultureIgnoreCase)));
         }
+    }
 
-        private void AddCreatedDateEndConstraint(ref Expression<Func<Gamepad, bool>> expression, DateTime? date)
+    private void AddCompatibleDeviceConstraint(ref Expression<Func<Gamepad, bool>> expression,
+        ICollection<string> compatibleDevices)
+    {
+        if (compatibleDevices is not null && compatibleDevices.Any())
         {
-            if (date is not null)
-            {
-                expression = expression.And(g => g.Created <= date);
-            }
+            expression = expression.And(g =>
+                g.CompatibleDevices.Any(cd =>
+                    compatibleDevices.Any(value => value.Equals(cd, StringComparison.InvariantCultureIgnoreCase))));
         }
+    }
 
-        private void AddConnectionTypeConstraint(ref Expression<Func<Gamepad, bool>> expression,
-            ICollection<string> connectionTypes)
+    private void AddMinWeightConstraint(ref Expression<Func<Gamepad, bool>> expression, float? weight)
+    {
+        if (weight is not null)
         {
-            if (connectionTypes is not null && connectionTypes.Any())
-            {
-                expression = expression.And(g =>
-                    connectionTypes.Any(ct =>
-                        ct.Equals(g.ConnectionType, StringComparison.InvariantCultureIgnoreCase)));
-            }
+            expression = expression.And(g => g.Weight >= weight);
         }
+    }
 
-        private void AddCompatibleDeviceConstraint(ref Expression<Func<Gamepad, bool>> expression,
-            ICollection<string> compatibleDevices)
+    private void AddMaxWeightConstraint(ref Expression<Func<Gamepad, bool>> expression, float? weight)
+    {
+        if (weight is not null)
         {
-            if (compatibleDevices is not null && compatibleDevices.Any())
-            {
-                expression = expression.And(g =>
-                    g.CompatibleDevices.Any(cd =>
-                        compatibleDevices.Any(value => value.Equals(cd, StringComparison.InvariantCultureIgnoreCase))));
-            }
-        }
-
-        private void AddMinWeightConstraint(ref Expression<Func<Gamepad, bool>> expression, float? weight)
-        {
-            if (weight is not null)
-            {
-                expression = expression.And(g => g.Weight >= weight);
-            }
-        }
-
-        private void AddMaxWeightConstraint(ref Expression<Func<Gamepad, bool>> expression, float? weight)
-        {
-            if (weight is not null)
-            {
-                expression = expression.And(g => g.Weight <= weight);
-            }
+            expression = expression.And(g => g.Weight <= weight);
         }
     }
 }

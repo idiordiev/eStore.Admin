@@ -1,23 +1,22 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace eStore_Admin.Infrastructure.Identity
+namespace eStore_Admin.Infrastructure.Identity;
+
+public class IdentityContext : IdentityDbContext
 {
-    public class IdentityContext : IdentityDbContext
+    public IdentityContext()
     {
-        public IdentityContext()
-        {
-        }
+    }
 
-        public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
-        {
-        }
+    public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
+    {
+    }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.ApplyConfiguration(new RoleConfiguration());
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.ApplyConfiguration(new RoleConfiguration());
 
-            base.OnModelCreating(builder);
-        }
+        base.OnModelCreating(builder);
     }
 }

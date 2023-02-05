@@ -1,11 +1,10 @@
-﻿namespace eStore_Admin.Application.RequestDTOs
+﻿namespace eStore_Admin.Application.RequestDTOs;
+
+public class KeyboardSwitchDto
 {
-    public class KeyboardSwitchDto
-    {
-        public bool IsDeleted { get; set; }
-        public string Name { get; set; }
-        public string Manufacturer { get; set; }
-        public bool IsTactile { get; set; }
-        public bool IsClicking { get; set; }
-    }
+    public bool IsDeleted { get; set; }
+    public string Name { get; set; }
+    public string Manufacturer { get; set; }
+    public bool IsTactile { get; set; }
+    public bool IsClicking { get; set; }
 }

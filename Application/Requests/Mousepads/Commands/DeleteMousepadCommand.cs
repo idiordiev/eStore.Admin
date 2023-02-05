@@ -5,47 +5,46 @@ using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.Mousepads.Commands
-{
-    public class DeleteMousepadCommand : IRequest<bool>
-    {
-        public DeleteMousepadCommand(int mousepadId)
-        {
-            MousepadId = mousepadId;
-        }
+namespace eStore_Admin.Application.Requests.Mousepads.Commands;
 
-        public int MousepadId { get; }
+public class DeleteMousepadCommand : IRequest<bool>
+{
+    public DeleteMousepadCommand(int mousepadId)
+    {
+        MousepadId = mousepadId;
     }
 
-    public class DeleteMousepadCommandHandler : IRequestHandler<DeleteMousepadCommand, bool>
+    public int MousepadId { get; }
+}
+
+public class DeleteMousepadCommandHandler : IRequestHandler<DeleteMousepadCommand, bool>
+{
+    private readonly ILoggingService _logger;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public DeleteMousepadCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
     {
-        private readonly ILoggingService _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
 
-        public DeleteMousepadCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
+    public async Task<bool> Handle(DeleteMousepadCommand request, CancellationToken cancellationToken)
+    {
+        Mousepad mousepad = await _unitOfWork.MousepadRepository.GetByIdAsync(request.MousepadId, true,
+            cancellationToken);
+        if (mousepad is null)
         {
-            _unitOfWork = unitOfWork;
-            _logger = logger;
+            _logger.LogInformation("The mousepad with id {0} has not been found.", request.MousepadId);
+            return false;
         }
 
-        public async Task<bool> Handle(DeleteMousepadCommand request, CancellationToken cancellationToken)
-        {
-            Mousepad mousepad =
-                await _unitOfWork.MousepadRepository.GetByIdAsync(request.MousepadId, true, cancellationToken);
-            if (mousepad is null)
-            {
-                _logger.LogInformation("The mousepad with id {0} has not been found.", request.MousepadId);
-                return false;
-            }
+        cancellationToken.ThrowIfCancellationRequested();
 
-            cancellationToken.ThrowIfCancellationRequested();
+        _unitOfWork.MousepadRepository.Delete(mousepad);
+        await _unitOfWork.SaveAsync(cancellationToken);
 
-            _unitOfWork.MousepadRepository.Delete(mousepad);
-            await _unitOfWork.SaveAsync(cancellationToken);
+        _logger.LogInformation("The mousepad with id {0} has been deleted.", mousepad.Id);
 
-            _logger.LogInformation("The mousepad with id {0} has been deleted.", mousepad.Id);
-
-            return true;
-        }
+        return true;
     }
 }

@@ -6,33 +6,32 @@ using eStore_Admin.Application.Responses;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.Orders.Queries
-{
-    public class GetOrderByIdQuery : IRequest<OrderResponse>
-    {
-        public GetOrderByIdQuery(int orderId)
-        {
-            OrderId = orderId;
-        }
+namespace eStore_Admin.Application.Requests.Orders.Queries;
 
-        public int OrderId { get; }
+public class GetOrderByIdQuery : IRequest<OrderResponse>
+{
+    public GetOrderByIdQuery(int orderId)
+    {
+        OrderId = orderId;
     }
 
-    public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, OrderResponse>
+    public int OrderId { get; }
+}
+
+public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, OrderResponse>
+{
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public GetOrderByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public GetOrderByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
-        public async Task<OrderResponse> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
-        {
-            Order order = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId, false, cancellationToken);
-            return _mapper.Map<OrderResponse>(order);
-        }
+    public async Task<OrderResponse> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
+    {
+        Order order = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId, false, cancellationToken);
+        return _mapper.Map<OrderResponse>(order);
     }
 }

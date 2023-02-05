@@ -10,68 +10,67 @@ using eStore_Admin.Application.Responses;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.Orders.Commands
-{
-    public class EditOrderCommand : IRequest<OrderResponse>
-    {
-        public EditOrderCommand(int orderId)
-        {
-            OrderId = orderId;
-        }
+namespace eStore_Admin.Application.Requests.Orders.Commands;
 
-        public int OrderId { get; }
-        public OrderDto Order { get; set; }
+public class EditOrderCommand : IRequest<OrderResponse>
+{
+    public EditOrderCommand(int orderId)
+    {
+        OrderId = orderId;
     }
 
-    public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, OrderResponse>
+    public int OrderId { get; }
+    public OrderDto Order { get; set; }
+}
+
+public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, OrderResponse>
+{
+    private readonly ILoggingService _logger;
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public EditOrderCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
     {
-        private readonly ILoggingService _logger;
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _logger = logger;
+    }
 
-        public EditOrderCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
+    public async Task<OrderResponse> Handle(EditOrderCommand request, CancellationToken cancellationToken)
+    {
+        Order order = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId, true, cancellationToken);
+        if (order is null)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _logger = logger;
+            throw new KeyNotFoundException($"The order with the id {request.OrderId} has not been found.");
         }
 
-        public async Task<OrderResponse> Handle(EditOrderCommand request, CancellationToken cancellationToken)
+        cancellationToken.ThrowIfCancellationRequested();
+
+        _mapper.Map(request.Order, order);
+
+        foreach (OrderItemDto item in request.Order.ItemsToAdd)
         {
-            Order order = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId, true, cancellationToken);
-            if (order is null)
+            Goods goods = await _unitOfWork.GoodsRepository.GetByIdAsync(item.GoodsId, false, cancellationToken);
+            if (goods is null)
             {
-                throw new KeyNotFoundException($"The order with the id {request.OrderId} has not been found.");
+                throw new KeyNotFoundException($"The goods with id {item.GoodsId} has not been found.");
             }
 
-            cancellationToken.ThrowIfCancellationRequested();
-
-            _mapper.Map(request.Order, order);
-
-            foreach (OrderItemDto item in request.Order.ItemsToAdd)
+            order.OrderItems.Add(new OrderItem
             {
-                Goods goods = await _unitOfWork.GoodsRepository.GetByIdAsync(item.GoodsId, false, cancellationToken);
-                if (goods is null)
-                {
-                    throw new KeyNotFoundException($"The goods with id {item.GoodsId} has not been found.");
-                }
-
-                order.OrderItems.Add(new OrderItem
-                {
-                    IsDeleted = item.IsDeleted,
-                    Goods = goods,
-                    Quantity = item.Quantity,
-                    UnitPrice = goods.Price
-                });
-            }
-
-            order.Total = order.OrderItems.Where(oi => !oi.IsDeleted).Sum(oi => oi.UnitPrice * oi.Quantity);
-
-            await _unitOfWork.SaveAsync(cancellationToken);
-
-            _logger.LogInformation("The order with id {0} has been edited.", order.Id);
-
-            return _mapper.Map<OrderResponse>(order);
+                IsDeleted = item.IsDeleted,
+                Goods = goods,
+                Quantity = item.Quantity,
+                UnitPrice = goods.Price
+            });
         }
+
+        order.Total = order.OrderItems.Where(oi => !oi.IsDeleted).Sum(oi => oi.UnitPrice * oi.Quantity);
+
+        await _unitOfWork.SaveAsync(cancellationToken);
+
+        _logger.LogInformation("The order with id {0} has been edited.", order.Id);
+
+        return _mapper.Map<OrderResponse>(order);
     }
 }

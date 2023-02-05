@@ -1,15 +1,14 @@
 ﻿using eStore_Admin.Application.Requests.Gamepads.Commands;
 using FluentValidation;
 
-namespace eStore_Admin.Application.Validation.Gamepads
+namespace eStore_Admin.Application.Validation.Gamepads;
+
+public class AddGamepadCommandValidator : AbstractValidator<AddGamepadCommand>
 {
-    public class AddGamepadCommandValidator : AbstractValidator<AddGamepadCommand>
+    public AddGamepadCommandValidator()
     {
-        public AddGamepadCommandValidator()
-        {
-            RuleFor(x => x.Gamepad)
-                .NotNull()
-                .SetValidator(new GamepadRequestValidator());
-        }
+        RuleFor(x => x.Gamepad)
+            .NotNull()
+            .SetValidator(new GamepadRequestValidator());
     }
 }

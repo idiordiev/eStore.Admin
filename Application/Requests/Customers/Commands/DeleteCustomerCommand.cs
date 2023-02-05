@@ -5,47 +5,46 @@ using eStore_Admin.Application.Interfaces.Services;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.Customers.Commands
-{
-    public class DeleteCustomerCommand : IRequest<bool>
-    {
-        public DeleteCustomerCommand(int customerId)
-        {
-            CustomerId = customerId;
-        }
+namespace eStore_Admin.Application.Requests.Customers.Commands;
 
-        public int CustomerId { get; }
+public class DeleteCustomerCommand : IRequest<bool>
+{
+    public DeleteCustomerCommand(int customerId)
+    {
+        CustomerId = customerId;
     }
 
-    public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, bool>
+    public int CustomerId { get; }
+}
+
+public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, bool>
+{
+    private readonly ILoggingService _logger;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public DeleteCustomerCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
     {
-        private readonly ILoggingService _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
 
-        public DeleteCustomerCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
+    public async Task<bool> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+    {
+        Customer customer = await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true,
+            cancellationToken);
+        if (customer is null)
         {
-            _unitOfWork = unitOfWork;
-            _logger = logger;
+            _logger.LogInformation("The customer with id {0} has not been found.", request.CustomerId);
+            return false;
         }
 
-        public async Task<bool> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
-        {
-            Customer customer =
-                await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true, cancellationToken);
-            if (customer is null)
-            {
-                _logger.LogInformation("The customer with id {0} has not been found.", request.CustomerId);
-                return false;
-            }
+        cancellationToken.ThrowIfCancellationRequested();
 
-            cancellationToken.ThrowIfCancellationRequested();
+        _unitOfWork.CustomerRepository.Delete(customer);
+        await _unitOfWork.SaveAsync(cancellationToken);
 
-            _unitOfWork.CustomerRepository.Delete(customer);
-            await _unitOfWork.SaveAsync(cancellationToken);
+        _logger.LogInformation("The customer with id {0} has been deleted.", customer.Id);
 
-            _logger.LogInformation("The customer with id {0} has been deleted.", customer.Id);
-
-            return true;
-        }
+        return true;
     }
 }

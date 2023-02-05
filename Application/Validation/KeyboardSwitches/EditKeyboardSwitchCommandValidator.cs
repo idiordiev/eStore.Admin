@@ -1,15 +1,14 @@
 ﻿using eStore_Admin.Application.Requests.KeyboardSwitches.Commands;
 using FluentValidation;
 
-namespace eStore_Admin.Application.Validation.KeyboardSwitches
+namespace eStore_Admin.Application.Validation.KeyboardSwitches;
+
+public class EditKeyboardSwitchCommandValidator : AbstractValidator<EditKeyboardSwitchCommand>
 {
-    public class EditKeyboardSwitchCommandValidator : AbstractValidator<EditKeyboardSwitchCommand>
+    public EditKeyboardSwitchCommandValidator()
     {
-        public EditKeyboardSwitchCommandValidator()
-        {
-            RuleFor(x => x.KeyboardSwitch)
-                .NotNull()
-                .SetValidator(new KeyboardSwitchRequestValidator());
-        }
+        RuleFor(x => x.KeyboardSwitch)
+            .NotNull()
+            .SetValidator(new KeyboardSwitchRequestValidator());
     }
 }

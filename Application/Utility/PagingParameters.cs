@@ -1,59 +1,58 @@
-﻿namespace eStore_Admin.Application.Utility
+﻿namespace eStore_Admin.Application.Utility;
+
+public class PagingParameters
 {
-    public class PagingParameters
+    private const int MaxPageSize = 100;
+
+    private const int DefaultPageSize = 10;
+    private const int DefaultPageNumber = 1;
+
+    private int _pageNumber;
+    private int _pageSize;
+
+    public PagingParameters()
     {
-        private const int MaxPageSize = 100;
+        PageNumber = 1;
+        PageSize = 10;
+    }
 
-        private const int DefaultPageSize = 10;
-        private const int DefaultPageNumber = 1;
+    public PagingParameters(int pageSize, int pageNumber)
+    {
+        PageSize = pageSize;
+        PageNumber = pageNumber;
+    }
 
-        private int _pageNumber;
-        private int _pageSize;
-
-        public PagingParameters()
+    public int PageNumber
+    {
+        get
         {
-            PageNumber = 1;
-            PageSize = 10;
+            return _pageNumber;
         }
-
-        public PagingParameters(int pageSize, int pageNumber)
+        set
         {
-            PageSize = pageSize;
-            PageNumber = pageNumber;
+            _pageNumber = value < 1 ? DefaultPageNumber : value;
         }
+    }
 
-        public int PageNumber
+    public int PageSize
+    {
+        get
         {
-            get
-            {
-                return _pageNumber;
-            }
-            set
-            {
-                _pageNumber = value < 1 ? DefaultPageNumber : value;
-            }
+            return _pageSize;
         }
-
-        public int PageSize
+        set
         {
-            get
+            if (value < 1)
             {
-                return _pageSize;
+                _pageSize = DefaultPageSize;
             }
-            set
+            else if (value > MaxPageSize)
             {
-                if (value < 1)
-                {
-                    _pageSize = DefaultPageSize;
-                }
-                else if (value > MaxPageSize)
-                {
-                    _pageSize = MaxPageSize;
-                }
-                else
-                {
-                    _pageSize = value;
-                }
+                _pageSize = MaxPageSize;
+            }
+            else
+            {
+                _pageSize = value;
             }
         }
     }

@@ -7,38 +7,36 @@ using eStore_Admin.Application.Responses;
 using eStore_Admin.Application.Utility;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.Orders.Queries
-{
-    public class GetOrdersByCustomerIdPagedQuery : IRequest<IEnumerable<OrderResponse>>
-    {
-        public GetOrdersByCustomerIdPagedQuery(int customerId)
-        {
-            CustomerId = customerId;
-        }
+namespace eStore_Admin.Application.Requests.Orders.Queries;
 
-        public int CustomerId { get; }
-        public PagingParameters PagingParameters { get; set; }
+public class GetOrdersByCustomerIdPagedQuery : IRequest<IEnumerable<OrderResponse>>
+{
+    public GetOrdersByCustomerIdPagedQuery(int customerId)
+    {
+        CustomerId = customerId;
     }
 
-    public class GetOrdersByCustomerIdPagedQueryHandler : IRequestHandler<GetOrdersByCustomerIdPagedQuery,
-            IEnumerable<OrderResponse>>
+    public int CustomerId { get; }
+    public PagingParameters PagingParameters { get; set; }
+}
+
+public class GetOrdersByCustomerIdPagedQueryHandler : IRequestHandler<GetOrdersByCustomerIdPagedQuery,
+    IEnumerable<OrderResponse>>
+{
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public GetOrdersByCustomerIdPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public GetOrdersByCustomerIdPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
-        public async Task<IEnumerable<OrderResponse>> Handle(GetOrdersByCustomerIdPagedQuery request,
-            CancellationToken cancellationToken)
-        {
-            var orders = await _unitOfWork.OrderRepository.GetByConditionPagedAsync(
-                o => o.CustomerId == request.CustomerId,
-                request.PagingParameters, false, cancellationToken);
-            return _mapper.Map<IEnumerable<OrderResponse>>(orders);
-        }
+    public async Task<IEnumerable<OrderResponse>> Handle(GetOrdersByCustomerIdPagedQuery request,
+        CancellationToken cancellationToken)
+    {
+        var orders = await _unitOfWork.OrderRepository.GetByConditionPagedAsync(o => o.CustomerId == request.CustomerId,
+            request.PagingParameters, false, cancellationToken);
+        return _mapper.Map<IEnumerable<OrderResponse>>(orders);
     }
 }

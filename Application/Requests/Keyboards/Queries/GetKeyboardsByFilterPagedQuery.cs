@@ -10,38 +10,35 @@ using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 using MediatR;
 
-namespace eStore_Admin.Application.Requests.Keyboards.Queries
+namespace eStore_Admin.Application.Requests.Keyboards.Queries;
+
+public class GetKeyboardsByFilterPagedQuery : IRequest<IEnumerable<KeyboardResponse>>
 {
-    public class GetKeyboardsByFilterPagedQuery : IRequest<IEnumerable<KeyboardResponse>>
+    public PagingParameters PagingParameters { get; set; }
+    public KeyboardFilterModel FilterModel { get; set; }
+}
+
+public class GetKeyboardsByFilterPagedQueryHandler : IRequestHandler<GetKeyboardsByFilterPagedQuery,
+    IEnumerable<KeyboardResponse>>
+{
+    private readonly IMapper _mapper;
+    private readonly IPredicateFactory<Keyboard, KeyboardFilterModel> _predicateFactory;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public GetKeyboardsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper,
+        IPredicateFactory<Keyboard, KeyboardFilterModel> predicateFactory)
     {
-        public PagingParameters PagingParameters { get; set; }
-        public KeyboardFilterModel FilterModel { get; set; }
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _predicateFactory = predicateFactory;
     }
 
-    public class GetKeyboardsByFilterPagedQueryHandler : IRequestHandler<GetKeyboardsByFilterPagedQuery,
-            IEnumerable<KeyboardResponse>>
+    public async Task<IEnumerable<KeyboardResponse>> Handle(GetKeyboardsByFilterPagedQuery request,
+        CancellationToken cancellationToken)
     {
-        private readonly IMapper _mapper;
-        private readonly IPredicateFactory<Keyboard, KeyboardFilterModel> _predicateFactory;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public GetKeyboardsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper,
-            IPredicateFactory<Keyboard, KeyboardFilterModel> predicateFactory)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _predicateFactory = predicateFactory;
-        }
-
-        public async Task<IEnumerable<KeyboardResponse>> Handle(GetKeyboardsByFilterPagedQuery request,
-            CancellationToken cancellationToken)
-        {
-            var predicate = _predicateFactory.CreateExpression(request.FilterModel);
-            var keyboards =
-                await _unitOfWork.KeyboardRepository.GetByConditionPagedAsync(predicate, request.PagingParameters,
-                    false,
-                    cancellationToken);
-            return _mapper.Map<IEnumerable<KeyboardResponse>>(keyboards);
-        }
+        var predicate = _predicateFactory.CreateExpression(request.FilterModel);
+        var keyboards = await _unitOfWork.KeyboardRepository.GetByConditionPagedAsync(predicate,
+            request.PagingParameters, false, cancellationToken);
+        return _mapper.Map<IEnumerable<KeyboardResponse>>(keyboards);
     }
 }

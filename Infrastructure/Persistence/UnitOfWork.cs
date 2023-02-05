@@ -3,186 +3,185 @@ using System.Threading.Tasks;
 using eStore_Admin.Application.Interfaces.Persistence;
 using eStore_Admin.Infrastructure.Persistence.Repositories;
 
-namespace eStore_Admin.Infrastructure.Persistence
+namespace eStore_Admin.Infrastructure.Persistence;
+
+public class UnitOfWork : IUnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork
+    private readonly ApplicationContext _context;
+
+    private bool _disposed;
+
+    private ICustomerRepository _customerRepository;
+    private IGamepadRepository _gamepadRepository;
+    private IGoodsRepository _goodsRepository;
+    private IKeyboardRepository _keyboardRepository;
+    private IKeyboardSwitchRepository _keyboardSwitchRepository;
+    private IMousepadRepository _mousepadRepository;
+    private IMouseRepository _mouseRepository;
+    private IOrderItemRepository _orderItemRepository;
+    private IOrderRepository _orderRepository;
+    private IShoppingCartRepository _shoppingCartRepository;
+
+    public UnitOfWork(ApplicationContext context)
     {
-        private readonly ApplicationContext _context;
+        _context = context;
+    }
 
-        private bool _disposed;
-
-        private ICustomerRepository _customerRepository;
-        private IGamepadRepository _gamepadRepository;
-        private IGoodsRepository _goodsRepository;
-        private IKeyboardRepository _keyboardRepository;
-        private IKeyboardSwitchRepository _keyboardSwitchRepository;
-        private IMousepadRepository _mousepadRepository;
-        private IMouseRepository _mouseRepository;
-        private IOrderItemRepository _orderItemRepository;
-        private IOrderRepository _orderRepository;
-        private IShoppingCartRepository _shoppingCartRepository;
-
-        public UnitOfWork(ApplicationContext context)
+    public ICustomerRepository CustomerRepository
+    {
+        get
         {
-            _context = context;
-        }
-
-        public ICustomerRepository CustomerRepository
-        {
-            get
+            if (_customerRepository is null)
             {
-                if (_customerRepository is null)
-                {
-                    _customerRepository = new CustomerRepository(_context);
-                }
-
-                return _customerRepository;
+                _customerRepository = new CustomerRepository(_context);
             }
-        }
 
-        public IGamepadRepository GamepadRepository
+            return _customerRepository;
+        }
+    }
+
+    public IGamepadRepository GamepadRepository
+    {
+        get
         {
-            get
+            if (_gamepadRepository is null)
             {
-                if (_gamepadRepository is null)
-                {
-                    _gamepadRepository = new GamepadRepository(_context);
-                }
-
-                return _gamepadRepository;
+                _gamepadRepository = new GamepadRepository(_context);
             }
-        }
 
-        public IGoodsRepository GoodsRepository
+            return _gamepadRepository;
+        }
+    }
+
+    public IGoodsRepository GoodsRepository
+    {
+        get
         {
-            get
+            if (_goodsRepository is null)
             {
-                if (_goodsRepository is null)
-                {
-                    _goodsRepository = new GoodsRepository(_context);
-                }
-
-                return _goodsRepository;
+                _goodsRepository = new GoodsRepository(_context);
             }
-        }
 
-        public IKeyboardRepository KeyboardRepository
+            return _goodsRepository;
+        }
+    }
+
+    public IKeyboardRepository KeyboardRepository
+    {
+        get
         {
-            get
+            if (_keyboardRepository is null)
             {
-                if (_keyboardRepository is null)
-                {
-                    _keyboardRepository = new KeyboardRepository(_context);
-                }
-
-                return _keyboardRepository;
+                _keyboardRepository = new KeyboardRepository(_context);
             }
-        }
 
-        public IKeyboardSwitchRepository KeyboardSwitchRepository
+            return _keyboardRepository;
+        }
+    }
+
+    public IKeyboardSwitchRepository KeyboardSwitchRepository
+    {
+        get
         {
-            get
+            if (_keyboardSwitchRepository is null)
             {
-                if (_keyboardSwitchRepository is null)
-                {
-                    _keyboardSwitchRepository = new KeyboardSwitchRepository(_context);
-                }
-
-                return _keyboardSwitchRepository;
+                _keyboardSwitchRepository = new KeyboardSwitchRepository(_context);
             }
-        }
 
-        public IMousepadRepository MousepadRepository
+            return _keyboardSwitchRepository;
+        }
+    }
+
+    public IMousepadRepository MousepadRepository
+    {
+        get
         {
-            get
+            if (_mousepadRepository is null)
             {
-                if (_mousepadRepository is null)
-                {
-                    _mousepadRepository = new MousepadRepository(_context);
-                }
-
-                return _mousepadRepository;
+                _mousepadRepository = new MousepadRepository(_context);
             }
-        }
 
-        public IMouseRepository MouseRepository
+            return _mousepadRepository;
+        }
+    }
+
+    public IMouseRepository MouseRepository
+    {
+        get
         {
-            get
+            if (_mouseRepository is null)
             {
-                if (_mouseRepository is null)
-                {
-                    _mouseRepository = new MouseRepository(_context);
-                }
-
-                return _mouseRepository;
+                _mouseRepository = new MouseRepository(_context);
             }
-        }
 
-        public IOrderRepository OrderRepository
+            return _mouseRepository;
+        }
+    }
+
+    public IOrderRepository OrderRepository
+    {
+        get
         {
-            get
+            if (_orderRepository is null)
             {
-                if (_orderRepository is null)
-                {
-                    _orderRepository = new OrderRepository(_context);
-                }
-
-                return _orderRepository;
+                _orderRepository = new OrderRepository(_context);
             }
-        }
 
-        public IOrderItemRepository OrderItemRepository
+            return _orderRepository;
+        }
+    }
+
+    public IOrderItemRepository OrderItemRepository
+    {
+        get
         {
-            get
+            if (_orderItemRepository is null)
             {
-                if (_orderItemRepository is null)
-                {
-                    _orderItemRepository = new OrderItemRepository(_context);
-                }
-
-                return _orderItemRepository;
+                _orderItemRepository = new OrderItemRepository(_context);
             }
-        }
 
-        public IShoppingCartRepository ShoppingCartRepository
+            return _orderItemRepository;
+        }
+    }
+
+    public IShoppingCartRepository ShoppingCartRepository
+    {
+        get
         {
-            get
+            if (_shoppingCartRepository is null)
             {
-                if (_shoppingCartRepository is null)
-                {
-                    _shoppingCartRepository = new ShoppingCartRepository(_context);
-                }
-
-                return _shoppingCartRepository;
+                _shoppingCartRepository = new ShoppingCartRepository(_context);
             }
-        }
 
-        public void Save()
-        {
-            _context.SaveChanges();
+            return _shoppingCartRepository;
         }
+    }
 
-        public async Task SaveAsync(CancellationToken cancellationToken)
-        {
-            await _context.SaveChangesAsync(cancellationToken);
-        }
+    public void Save()
+    {
+        _context.SaveChanges();
+    }
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
+    public async Task SaveAsync(CancellationToken cancellationToken)
+    {
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 
-        protected virtual void Dispose(bool disposing)
+    public void Dispose()
+    {
+        Dispose(true);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
         {
-            if (!_disposed)
+            if (disposing)
             {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-
-                _disposed = true;
+                _context.Dispose();
             }
+
+            _disposed = true;
         }
     }
 }

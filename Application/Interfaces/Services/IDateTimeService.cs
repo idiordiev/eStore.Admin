@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace eStore_Admin.Application.Interfaces.Services
+namespace eStore_Admin.Application.Interfaces.Services;
+
+public interface IDateTimeService
 {
-    public interface IDateTimeService
-    {
-        DateTime Now();
-    }
+    DateTime Now();
 }

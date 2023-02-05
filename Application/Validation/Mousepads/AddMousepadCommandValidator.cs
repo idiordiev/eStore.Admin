@@ -1,15 +1,14 @@
 ﻿using eStore_Admin.Application.Requests.Mousepads.Commands;
 using FluentValidation;
 
-namespace eStore_Admin.Application.Validation.Mousepads
+namespace eStore_Admin.Application.Validation.Mousepads;
+
+public class AddMousepadCommandValidator : AbstractValidator<AddMousepadCommand>
 {
-    public class AddMousepadCommandValidator : AbstractValidator<AddMousepadCommand>
+    public AddMousepadCommandValidator()
     {
-        public AddMousepadCommandValidator()
-        {
-            RuleFor(x => x.Mousepad)
-                .NotNull()
-                .SetValidator(new MousepadRequestValidator());
-        }
+        RuleFor(x => x.Mousepad)
+            .NotNull()
+            .SetValidator(new MousepadRequestValidator());
     }
 }

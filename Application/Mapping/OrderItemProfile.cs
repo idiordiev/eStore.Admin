@@ -3,14 +3,13 @@ using eStore_Admin.Application.RequestDTOs;
 using eStore_Admin.Application.Responses;
 using eStore_Admin.Domain.Entities;
 
-namespace eStore_Admin.Application.Mapping
+namespace eStore_Admin.Application.Mapping;
+
+public class OrderItemProfile : Profile
 {
-    public class OrderItemProfile : Profile
+    public OrderItemProfile()
     {
-        public OrderItemProfile()
-        {
-            CreateMap<OrderItem, OrderItemResponse>();
-            CreateMap<OrderItemDto, OrderItem>();
-        }
+        CreateMap<OrderItem, OrderItemResponse>();
+        CreateMap<OrderItemDto, OrderItem>();
     }
 }
