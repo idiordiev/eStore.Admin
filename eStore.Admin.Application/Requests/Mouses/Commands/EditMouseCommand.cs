@@ -1,0 +1,59 @@
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using eStore.Admin.Application.Interfaces.Persistence;
+using eStore.Admin.Application.Interfaces.Services;
+using eStore.Admin.Application.RequestDTOs;
+using eStore.Admin.Application.Responses;
+using eStore.Admin.Domain.Entities;
+using MediatR;
+
+namespace eStore.Admin.Application.Requests.Mouses.Commands;
+
+public class EditMouseCommand : IRequest<MouseResponse>
+{
+    public EditMouseCommand(int mouseId)
+    {
+        MouseId = mouseId;
+    }
+
+    public int MouseId { get; }
+    public MouseDto Mouse { get; set; }
+}
+
+public class EditMouseCommandHandler : IRequestHandler<EditMouseCommand, MouseResponse>
+{
+    private readonly IDateTimeService _dateTimeService;
+    private readonly ILoggingService _logger;
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public EditMouseCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
+        IDateTimeService dateTimeService)
+    {
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _logger = logger;
+        _dateTimeService = dateTimeService;
+    }
+
+    public async Task<MouseResponse> Handle(EditMouseCommand request, CancellationToken cancellationToken)
+    {
+        Mouse mouse = await _unitOfWork.MouseRepository.GetByIdAsync(request.MouseId, true, cancellationToken);
+        if (mouse is null)
+        {
+            throw new KeyNotFoundException($"The mouse with the id {request.MouseId} has not been found.");
+        }
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        _mapper.Map(request.Mouse, mouse);
+        mouse.LastModified = _dateTimeService.Now();
+        await _unitOfWork.SaveAsync(cancellationToken);
+
+        _logger.LogInformation("The mouse with id {0} has been deleted.", mouse.Id);
+
+        return _mapper.Map<MouseResponse>(mouse);
+    }
+}

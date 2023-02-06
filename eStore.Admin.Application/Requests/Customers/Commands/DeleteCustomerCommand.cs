@@ -1,0 +1,50 @@
+﻿using System.Threading;
+using System.Threading.Tasks;
+using eStore.Admin.Application.Interfaces.Persistence;
+using eStore.Admin.Application.Interfaces.Services;
+using eStore.Admin.Domain.Entities;
+using MediatR;
+
+namespace eStore.Admin.Application.Requests.Customers.Commands;
+
+public class DeleteCustomerCommand : IRequest<bool>
+{
+    public DeleteCustomerCommand(int customerId)
+    {
+        CustomerId = customerId;
+    }
+
+    public int CustomerId { get; }
+}
+
+public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, bool>
+{
+    private readonly ILoggingService _logger;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public DeleteCustomerCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
+    {
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
+
+    public async Task<bool> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+    {
+        Customer customer = await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true,
+            cancellationToken);
+        if (customer is null)
+        {
+            _logger.LogInformation("The customer with id {0} has not been found.", request.CustomerId);
+            return false;
+        }
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        _unitOfWork.CustomerRepository.Delete(customer);
+        await _unitOfWork.SaveAsync(cancellationToken);
+
+        _logger.LogInformation("The customer with id {0} has been deleted.", customer.Id);
+
+        return true;
+    }
+}
