@@ -3,6 +3,7 @@ using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 using eStore_Admin.Infrastructure.Persistence;
 using eStore_Admin.Infrastructure.Persistence.Repositories;
+using Infrastructure.Tests.EqualityComparers;
 using NUnit.Framework;
 using Tests.Common;
 
@@ -39,7 +40,8 @@ public class MousepadRepositoryTests
         var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected");
+        Assert.That(actual, Is.EqualTo(expected).Using(new MousepadEqualityComparer()),
+            "The actual collection is not equal to expected");
     }
 
     [Test]
@@ -73,11 +75,12 @@ public class MousepadRepositoryTests
         var pagingParams = new PagingParameters(pageSize, pageNumber);
 
         // Act
-        var actual =
-            await _repository.GetByConditionPagedAsync(c => c.Id > 13, pagingParams, false, CancellationToken.None);
+        var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 13, pagingParams, false,
+            CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new MousepadEqualityComparer()),
+            "The actual collection is not equal to expected.");
     }
 
     [Test]
@@ -88,8 +91,8 @@ public class MousepadRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        var mousepads =
-            await _repository.GetByConditionPagedAsync(c => c.Id == 13, pagingParams, true, CancellationToken.None);
+        var mousepads = await _repository.GetByConditionPagedAsync(c => c.Id == 13, pagingParams, true,
+            CancellationToken.None);
         Mousepad mousepadToChange = mousepads.First(c => c.Id == 13);
         mousepadToChange.Name = changedName;
 
@@ -110,7 +113,8 @@ public class MousepadRepositoryTests
         Mousepad actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
-        Assert.That(actual, Is.EqualTo(expected), "The actual mousepad is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new MousepadEqualityComparer()),
+            "The actual mousepad is not equal to expected.");
     }
 
     [TestCase(0)]

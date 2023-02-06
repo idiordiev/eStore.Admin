@@ -3,6 +3,7 @@ using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 using eStore_Admin.Infrastructure.Persistence;
 using eStore_Admin.Infrastructure.Persistence.Repositories;
+using Infrastructure.Tests.EqualityComparers;
 using NUnit.Framework;
 using Tests.Common;
 
@@ -39,7 +40,8 @@ public class GamepadRepositoryTests
         var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected");
+        Assert.That(actual, Is.EqualTo(expected).Using(new GamepadEqualityComparer()),
+            "The actual collection is not equal to expected");
     }
 
     [Test]
@@ -73,11 +75,12 @@ public class GamepadRepositoryTests
         var pagingParams = new PagingParameters(pageSize, pageNumber);
 
         // Act
-        var actual =
-            await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
+        var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false,
+            CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new GamepadEqualityComparer()),
+            "The actual collection is not equal to expected.");
     }
 
     [Test]
@@ -88,8 +91,8 @@ public class GamepadRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        var gamepads =
-            await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
+        var gamepads = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true,
+            CancellationToken.None);
         Gamepad gamepadToChange = gamepads.First(c => c.Id == 1);
         gamepadToChange.Name = changedName;
 
@@ -111,7 +114,8 @@ public class GamepadRepositoryTests
         Gamepad actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
-        Assert.That(actual, Is.EqualTo(expected), "The actual gamepad is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new GamepadEqualityComparer()),
+            "The actual gamepad is not equal to expected.");
     }
 
     [TestCase(0)]

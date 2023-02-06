@@ -3,6 +3,7 @@ using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 using eStore_Admin.Infrastructure.Persistence;
 using eStore_Admin.Infrastructure.Persistence.Repositories;
+using Infrastructure.Tests.EqualityComparers;
 using NUnit.Framework;
 using Tests.Common;
 
@@ -40,7 +41,8 @@ public class KeyboardSwitchRepositoryTests
         var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected");
+        Assert.That(actual, Is.EqualTo(expected).Using(new KeyboardSwitchEqualityComparer()),
+            "The actual collection is not equal to expected");
     }
 
     [Test]
@@ -75,11 +77,12 @@ public class KeyboardSwitchRepositoryTests
         var pagingParams = new PagingParameters(pageSize, pageNumber);
 
         // Act
-        var actual =
-            await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
+        var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false,
+            CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new KeyboardSwitchEqualityComparer()),
+            "The actual collection is not equal to expected.");
     }
 
     [Test]
@@ -90,8 +93,8 @@ public class KeyboardSwitchRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        var keyboardSwitches =
-            await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
+        var keyboardSwitches = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true,
+            CancellationToken.None);
         KeyboardSwitch keyboardSwitchToChange = keyboardSwitches.First(c => c.Id == 1);
         keyboardSwitchToChange.Name = changedName;
 
@@ -114,7 +117,8 @@ public class KeyboardSwitchRepositoryTests
         KeyboardSwitch actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
-        Assert.That(actual, Is.EqualTo(expected), "The actual keyboard switch is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new KeyboardSwitchEqualityComparer()),
+            "The actual keyboard switch is not equal to expected.");
     }
 
     [TestCase(0)]

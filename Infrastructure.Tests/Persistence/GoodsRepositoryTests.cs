@@ -3,6 +3,7 @@ using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 using eStore_Admin.Infrastructure.Persistence;
 using eStore_Admin.Infrastructure.Persistence.Repositories;
+using Infrastructure.Tests.EqualityComparers;
 using NUnit.Framework;
 using Tests.Common;
 
@@ -39,7 +40,8 @@ public class GoodsRepositoryTests
         var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected");
+        Assert.That(actual, Is.EqualTo(expected).Using(new GoodsEqualityComparer()),
+            "The actual collection is not equal to expected");
     }
 
     [Test]
@@ -73,11 +75,12 @@ public class GoodsRepositoryTests
         var pagingParams = new PagingParameters(pageSize, pageNumber);
 
         // Act
-        var actual =
-            await _repository.GetByConditionPagedAsync(c => c.Id > 13, pagingParams, false, CancellationToken.None);
+        var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 13, pagingParams, false,
+            CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new GoodsEqualityComparer()),
+            "The actual collection is not equal to expected.");
     }
 
     [Test]
@@ -122,7 +125,8 @@ public class GoodsRepositoryTests
         Goods actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
-        Assert.That(actual, Is.EqualTo(expected), "The actual good is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new GoodsEqualityComparer()),
+            "The actual good is not equal to expected.");
     }
 
     [TestCase(0)]

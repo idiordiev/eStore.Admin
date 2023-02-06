@@ -3,6 +3,7 @@ using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 using eStore_Admin.Infrastructure.Persistence;
 using eStore_Admin.Infrastructure.Persistence.Repositories;
+using Infrastructure.Tests.EqualityComparers;
 using NUnit.Framework;
 using Tests.Common;
 
@@ -39,7 +40,8 @@ public class KeyboardRepositoryTests
         var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected");
+        Assert.That(actual, Is.EqualTo(expected).Using(new KeyboardEqualityComparer()),
+            "The actual collection is not equal to expected");
     }
 
     [Test]
@@ -73,11 +75,12 @@ public class KeyboardRepositoryTests
         var pagingParams = new PagingParameters(pageSize, pageNumber);
 
         // Act
-        var actual =
-            await _repository.GetByConditionPagedAsync(c => c.Id > 5, pagingParams, false, CancellationToken.None);
+        var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 5, pagingParams, false,
+            CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new KeyboardEqualityComparer()),
+            "The actual collection is not equal to expected.");
     }
 
     [Test]
@@ -88,8 +91,8 @@ public class KeyboardRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        var keyboards =
-            await _repository.GetByConditionPagedAsync(c => c.Id == 5, pagingParams, true, CancellationToken.None);
+        var keyboards = await _repository.GetByConditionPagedAsync(c => c.Id == 5, pagingParams, true,
+            CancellationToken.None);
         Keyboard keyboardToChange = keyboards.First(c => c.Id == 5);
         keyboardToChange.Name = changedName;
 
@@ -112,7 +115,8 @@ public class KeyboardRepositoryTests
         Keyboard actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
-        Assert.That(actual, Is.EqualTo(expected), "The actual keyboard is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new KeyboardEqualityComparer()),
+            "The actual keyboard is not equal to expected.");
     }
 
     [TestCase(0)]

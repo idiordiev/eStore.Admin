@@ -3,6 +3,7 @@ using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 using eStore_Admin.Infrastructure.Persistence;
 using eStore_Admin.Infrastructure.Persistence.Repositories;
+using Infrastructure.Tests.EqualityComparers;
 using NUnit.Framework;
 using Tests.Common;
 
@@ -39,7 +40,8 @@ public class OrderRepositoryTests
         var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected");
+        Assert.That(actual, Is.EqualTo(expected).Using(new OrderEqualityComparer()),
+            "The actual collection is not equal to expected");
     }
 
     [Test]
@@ -73,11 +75,12 @@ public class OrderRepositoryTests
         var pagingParams = new PagingParameters(pageSize, pageNumber);
 
         // Act
-        var actual =
-            await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
+        var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false,
+            CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new OrderEqualityComparer()),
+            "The actual collection is not equal to expected.");
     }
 
     [Test]
@@ -88,8 +91,8 @@ public class OrderRepositoryTests
         const string changedAddress = "changedAddress";
 
         // Act
-        var orders =
-            await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
+        var orders = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true,
+            CancellationToken.None);
         Order orderToChange = orders.First(c => c.Id == 1);
         orderToChange.ShippingAddress = changedAddress;
 
@@ -113,7 +116,8 @@ public class OrderRepositoryTests
         Order actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
-        Assert.That(actual, Is.EqualTo(expected), "The actual order is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new OrderEqualityComparer()),
+            "The actual order is not equal to expected.");
     }
 
     [TestCase(0)]
@@ -215,9 +219,10 @@ public class OrderRepositoryTests
         var actualList = actual.ToList();
 
         // Assert
-        CollectionAssert.AreEqual(expected, actualList, "The actual collection is not equal to expected");
-        CollectionAssert.AreEquivalent(expectedOrderItems, actualList.Select(o => o.OrderItems),
-            "The actual order items are not equivalent to expected.");
+        Assert.That(actualList, Is.EqualTo(expected).Using(new OrderEqualityComparer()),
+            "The actual collection is not equal to expected");
+        Assert.That(actualList.Select(o => o.OrderItems), Is.EqualTo(expectedOrderItems)
+            .Using(new OrderItemEqualityComparer()), "The actual order items are not equivalent to expected.");
     }
 
     [Test]
@@ -253,15 +258,15 @@ public class OrderRepositoryTests
         var pagingParams = new PagingParameters(pageSize, pageNumber);
 
         // Act
-        var actual =
-            await _repository.GetByConditionWithOrderItemsPagedAsync(c => c.Id > 1, pagingParams, false,
-                CancellationToken.None);
+        var actual = await _repository.GetByConditionWithOrderItemsPagedAsync(c => c.Id > 1, pagingParams, false,
+            CancellationToken.None);
         var actualList = actual.ToList();
 
         // Assert
-        CollectionAssert.AreEqual(expected, actualList, "The actual collection is not equal to expected.");
-        CollectionAssert.AreEquivalent(expectedOrderItems, actualList.Select(o => o.OrderItems),
-            "The actual order items are not equivalent to expected.");
+        Assert.That(actualList, Is.EqualTo(expected).Using(new OrderEqualityComparer()),
+            "The actual collection is not equal to expected");
+        Assert.That(actualList.Select(o => o.OrderItems), Is.EqualTo(expectedOrderItems)
+            .Using(new OrderItemEqualityComparer()), "The actual order items are not equivalent to expected.");
     }
 
     [Test]
@@ -272,9 +277,8 @@ public class OrderRepositoryTests
         const string changedAddress = "changedAddress";
 
         // Act
-        var orders =
-            await _repository.GetByConditionWithOrderItemsPagedAsync(c => c.Id == 1, pagingParams, true,
-                CancellationToken.None);
+        var orders = await _repository.GetByConditionWithOrderItemsPagedAsync(c => c.Id == 1, pagingParams, true,
+            CancellationToken.None);
         Order orderToChange = orders.First(c => c.Id == 1);
         orderToChange.ShippingAddress = changedAddress;
 
@@ -299,9 +303,10 @@ public class OrderRepositoryTests
         Order actual = await _repository.GetByIdWithOrderItemsAsync(id, false, CancellationToken.None);
 
         // Assert
-        Assert.That(actual, Is.EqualTo(expected), "The actual order is not equal to expected.");
-        CollectionAssert.AreEquivalent(expectedOrderItems, actual.OrderItems,
-            "The actual order items are not equivalent to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new OrderEqualityComparer()),
+            "The actual collection is not equal to expected");
+        Assert.That(actual.OrderItems, Is.EqualTo(expectedOrderItems)
+            .Using(new OrderItemEqualityComparer()), "The actual order items are not equivalent to expected.");
     }
 
     [TestCase(0)]

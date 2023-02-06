@@ -3,6 +3,7 @@ using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 using eStore_Admin.Infrastructure.Persistence;
 using eStore_Admin.Infrastructure.Persistence.Repositories;
+using Infrastructure.Tests.EqualityComparers;
 using NUnit.Framework;
 using Tests.Common;
 
@@ -39,7 +40,8 @@ public class ShoppingCartRepositoryTests
         var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected");
+        Assert.That(actual, Is.EqualTo(expected).Using(new ShoppingCartEqualityComparer()),
+            "The actual collection is not equal to expected");
     }
 
     [Test]
@@ -71,11 +73,12 @@ public class ShoppingCartRepositoryTests
         var pagingParams = new PagingParameters(pageSize, pageNumber);
 
         // Act
-        var actual =
-            await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false, CancellationToken.None);
+        var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 1, pagingParams, false,
+            CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new ShoppingCartEqualityComparer()),
+            "The actual collection is not equal to expected.");
     }
 
     [Test]
@@ -85,8 +88,8 @@ public class ShoppingCartRepositoryTests
         var pagingParams = new PagingParameters();
 
         // Act
-        var shoppingCarts =
-            await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true, CancellationToken.None);
+        var shoppingCarts = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true,
+            CancellationToken.None);
         ShoppingCart shoppingCartToChange = shoppingCarts.First(c => c.Id == 1);
         shoppingCartToChange.IsDeleted = true;
 
@@ -105,7 +108,8 @@ public class ShoppingCartRepositoryTests
         ShoppingCart actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
-        Assert.That(actual, Is.EqualTo(expected), "The actual shopping cart is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new ShoppingCartEqualityComparer()),
+            "The actual shopping cart is not equal to expected.");
     }
 
     [TestCase(0)]

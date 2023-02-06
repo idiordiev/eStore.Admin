@@ -3,6 +3,7 @@ using eStore_Admin.Application.Utility;
 using eStore_Admin.Domain.Entities;
 using eStore_Admin.Infrastructure.Persistence;
 using eStore_Admin.Infrastructure.Persistence.Repositories;
+using Infrastructure.Tests.EqualityComparers;
 using NUnit.Framework;
 using Tests.Common;
 
@@ -39,7 +40,8 @@ public class MouseRepositoryTests
         var actual = await _repository.GetAllPagedAsync(pagingParams, false, CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected");
+        Assert.That(actual, Is.EqualTo(expected).Using(new MouseEqualityComparer()),
+            "The actual collection is not equal to expected");
     }
 
     [Test]
@@ -73,11 +75,12 @@ public class MouseRepositoryTests
         var pagingParams = new PagingParameters(pageSize, pageNumber);
 
         // Act
-        var actual =
-            await _repository.GetByConditionPagedAsync(c => c.Id > 10, pagingParams, false, CancellationToken.None);
+        var actual = await _repository.GetByConditionPagedAsync(c => c.Id > 10, pagingParams, false,
+            CancellationToken.None);
 
         // Assert
-        CollectionAssert.AreEqual(expected, actual, "The actual collection is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new MouseEqualityComparer()),
+            "The actual collection is not equal to expected.");
     }
 
     [Test]
@@ -88,8 +91,8 @@ public class MouseRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        var mouses =
-            await _repository.GetByConditionPagedAsync(c => c.Id == 10, pagingParams, true, CancellationToken.None);
+        var mouses = await _repository.GetByConditionPagedAsync(c => c.Id == 10, pagingParams, true,
+            CancellationToken.None);
         Mouse mouseToChange = mouses.First(c => c.Id == 10);
         mouseToChange.Name = changedName;
 
@@ -110,7 +113,8 @@ public class MouseRepositoryTests
         Mouse actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
-        Assert.That(actual, Is.EqualTo(expected), "The actual mouse is not equal to expected.");
+        Assert.That(actual, Is.EqualTo(expected).Using(new MouseEqualityComparer()),
+            "The actual mouse is not equal to expected.");
     }
 
     [TestCase(0)]
