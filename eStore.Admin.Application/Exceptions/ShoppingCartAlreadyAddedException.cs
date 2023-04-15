@@ -18,7 +18,7 @@ public class ShoppingCartAlreadyAddedException : ApplicationException
     {
     }
 
-    public ShoppingCartAlreadyAddedException(SerializationInfo info, StreamingContext context) : base(info, context)
+    protected ShoppingCartAlreadyAddedException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
 }

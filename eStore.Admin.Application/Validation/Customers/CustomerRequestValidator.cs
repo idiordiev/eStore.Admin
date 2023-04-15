@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using eStore.Admin.Application.RequestDTOs;
 using FluentValidation;
 
@@ -32,9 +33,11 @@ public class CustomerRequestValidator : AbstractValidator<CustomerDto>
             .MaximumLength(10);
     }
 
-    private bool BeAValidPhoneNumber(string arg)
+    private static bool BeAValidPhoneNumber(string arg)
     {
-        var regex = new Regex(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$");
+        var regex = new Regex(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$", RegexOptions.Compiled,
+            TimeSpan.FromSeconds(5));
+        
         return regex.IsMatch(arg);
     }
 }

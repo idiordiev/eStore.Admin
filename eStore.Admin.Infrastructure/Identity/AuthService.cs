@@ -32,20 +32,20 @@ public class AuthService : IAuthService
 
     public async Task<string> CreateTokenAsync(LoginCredentials credentials, CancellationToken cancellationToken)
     {
-        IdentityUser user = await _userManager.FindByNameAsync(credentials.UserName);
+        var user = await _userManager.FindByNameAsync(credentials.UserName);
         if (user is null)
         {
             throw new InvalidCredentialException($"The user with name {credentials.UserName} has not been found.");
         }
 
-        bool isPasswordValid = await _userManager.CheckPasswordAsync(user, credentials.Password);
+        var isPasswordValid = await _userManager.CheckPasswordAsync(user, credentials.Password);
         if (!isPasswordValid)
         {
             throw new InvalidCredentialException($"Wrong password for user {credentials.UserName}.");
         }
 
         var claims = await GetClaimsAsync(user);
-        SigningCredentials signingCredentials = GetSigningCredentials();
+        var signingCredentials = GetSigningCredentials();
 
         var tokenOptions = new JwtSecurityToken(_jwtSettings.ValidIssuer,
             _jwtSettings.ValidAudience,
@@ -56,9 +56,9 @@ public class AuthService : IAuthService
         return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
     }
 
-    private SigningCredentials GetSigningCredentials()
+    private static SigningCredentials GetSigningCredentials()
     {
-        byte[] key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"));
+        var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"));
         var secret = new SymmetricSecurityKey(key);
         var signingCredentials = new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         return signingCredentials;
@@ -70,7 +70,7 @@ public class AuthService : IAuthService
         var roles = await _userManager.GetRolesAsync(user);
 
         claims.Add(new Claim(ClaimTypes.Name, user.UserName));
-        foreach (string role in roles)
+        foreach (var role in roles)
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
@@ -103,7 +103,7 @@ public class AuthService : IAuthService
     public async Task<bool> AddRoleToUserAsync(string userName, string roleName,
         CancellationToken cancellationToken)
     {
-        IdentityUser user = await _userManager.FindByNameAsync(userName);
+        var user = await _userManager.FindByNameAsync(userName);
         if (user is null)
         {
             return false;
@@ -120,7 +120,7 @@ public class AuthService : IAuthService
     public async Task<bool> RemoveRoleFromUserAsync(string userName, string roleName,
         CancellationToken cancellationToken)
     {
-        IdentityUser user = await _userManager.FindByNameAsync(userName);
+        var user = await _userManager.FindByNameAsync(userName);
         if (user is null)
         {
             return false;
@@ -135,7 +135,7 @@ public class AuthService : IAuthService
 
     public async Task<bool> DeleteUserAsync(string userName, CancellationToken cancellationToken)
     {
-        IdentityUser user = await _userManager.FindByNameAsync(userName);
+        var user = await _userManager.FindByNameAsync(userName);
         if (user is null)
         {
             return false;

@@ -31,7 +31,7 @@ public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterM
         return expression;
     }
 
-    private void AddIsDeletedConstraint(ref Expression<Func<Gamepad, bool>> expression, ICollection<bool> values)
+    private static void AddIsDeletedConstraint(ref Expression<Func<Gamepad, bool>> expression, ICollection<bool> values)
     {
         if (values is not null && values.Any())
         {
@@ -39,18 +39,18 @@ public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterM
         }
     }
 
-    private void AddNameConstraint(ref Expression<Func<Gamepad, bool>> expression, string name)
+    private static void AddNameConstraint(ref Expression<Func<Gamepad, bool>> expression, string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             return;
         }
 
-        string value = name.Trim();
+        var value = name.Trim();
         expression = expression.And(g => g.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private void AddManufacturerConstraint(ref Expression<Func<Gamepad, bool>> expression,
+    private static void AddManufacturerConstraint(ref Expression<Func<Gamepad, bool>> expression,
         ICollection<string> manufacturers)
     {
         if (manufacturers is not null && manufacturers.Any())
@@ -60,7 +60,7 @@ public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterM
         }
     }
 
-    private void AddFeedbackConstraint(ref Expression<Func<Gamepad, bool>> expression,
+    private static void AddFeedbackConstraint(ref Expression<Func<Gamepad, bool>> expression,
         ICollection<string> feedbacks)
     {
         if (feedbacks is not null && feedbacks.Any())
@@ -70,7 +70,7 @@ public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterM
         }
     }
 
-    private void AddMinPriceConstraint(ref Expression<Func<Gamepad, bool>> expression, decimal? price)
+    private static void AddMinPriceConstraint(ref Expression<Func<Gamepad, bool>> expression, decimal? price)
     {
         if (price is not null)
         {
@@ -78,7 +78,7 @@ public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterM
         }
     }
 
-    private void AddMaxPriceConstraint(ref Expression<Func<Gamepad, bool>> expression, decimal? price)
+    private static void AddMaxPriceConstraint(ref Expression<Func<Gamepad, bool>> expression, decimal? price)
     {
         if (price is not null)
         {
@@ -86,7 +86,7 @@ public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterM
         }
     }
 
-    private void AddCreatedDateStartConstraint(ref Expression<Func<Gamepad, bool>> expression, DateTime? date)
+    private static void AddCreatedDateStartConstraint(ref Expression<Func<Gamepad, bool>> expression, DateTime? date)
     {
         if (date is not null)
         {
@@ -94,7 +94,7 @@ public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterM
         }
     }
 
-    private void AddCreatedDateEndConstraint(ref Expression<Func<Gamepad, bool>> expression, DateTime? date)
+    private static void AddCreatedDateEndConstraint(ref Expression<Func<Gamepad, bool>> expression, DateTime? date)
     {
         if (date is not null)
         {
@@ -102,7 +102,7 @@ public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterM
         }
     }
 
-    private void AddConnectionTypeConstraint(ref Expression<Func<Gamepad, bool>> expression,
+    private static void AddConnectionTypeConstraint(ref Expression<Func<Gamepad, bool>> expression,
         ICollection<string> connectionTypes)
     {
         if (connectionTypes is not null && connectionTypes.Any())
@@ -113,7 +113,7 @@ public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterM
         }
     }
 
-    private void AddCompatibleDeviceConstraint(ref Expression<Func<Gamepad, bool>> expression,
+    private static void AddCompatibleDeviceConstraint(ref Expression<Func<Gamepad, bool>> expression,
         ICollection<string> compatibleDevices)
     {
         if (compatibleDevices is not null && compatibleDevices.Any())
@@ -124,7 +124,7 @@ public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterM
         }
     }
 
-    private void AddMinWeightConstraint(ref Expression<Func<Gamepad, bool>> expression, float? weight)
+    private static void AddMinWeightConstraint(ref Expression<Func<Gamepad, bool>> expression, float? weight)
     {
         if (weight is not null)
         {
@@ -132,7 +132,7 @@ public class GamepadPredicateFactory : IPredicateFactory<Gamepad, GamepadFilterM
         }
     }
 
-    private void AddMaxWeightConstraint(ref Expression<Func<Gamepad, bool>> expression, float? weight)
+    private static void AddMaxWeightConstraint(ref Expression<Func<Gamepad, bool>> expression, float? weight)
     {
         if (weight is not null)
         {

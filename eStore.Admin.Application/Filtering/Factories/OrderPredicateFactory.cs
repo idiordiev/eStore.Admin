@@ -30,7 +30,7 @@ public class OrderPredicateFactory : IPredicateFactory<Order, OrderFilterModel>
         return expression;
     }
 
-    private void AddIsDeletedConstraint(ref Expression<Func<Order, bool>> expression, ICollection<bool> values)
+    private static void AddIsDeletedConstraint(ref Expression<Func<Order, bool>> expression, ICollection<bool> values)
     {
         if (values is not null && values.Any())
         {
@@ -38,7 +38,7 @@ public class OrderPredicateFactory : IPredicateFactory<Order, OrderFilterModel>
         }
     }
 
-    private void AddCustomerConstraint(ref Expression<Func<Order, bool>> expression, ICollection<int> customerIds)
+    private static void AddCustomerConstraint(ref Expression<Func<Order, bool>> expression, ICollection<int> customerIds)
     {
         if (customerIds is not null && customerIds.Any())
         {
@@ -46,7 +46,7 @@ public class OrderPredicateFactory : IPredicateFactory<Order, OrderFilterModel>
         }
     }
 
-    private void AddStatusConstraint(ref Expression<Func<Order, bool>> expression, ICollection<int> statusValues)
+    private static void AddStatusConstraint(ref Expression<Func<Order, bool>> expression, ICollection<int> statusValues)
     {
         if (statusValues is not null && statusValues.Any())
         {
@@ -54,7 +54,7 @@ public class OrderPredicateFactory : IPredicateFactory<Order, OrderFilterModel>
         }
     }
 
-    private void AddMinTotalConstraint(ref Expression<Func<Order, bool>> expression, decimal? total)
+    private static void AddMinTotalConstraint(ref Expression<Func<Order, bool>> expression, decimal? total)
     {
         if (total is not null)
         {
@@ -62,7 +62,7 @@ public class OrderPredicateFactory : IPredicateFactory<Order, OrderFilterModel>
         }
     }
 
-    private void AddMaxTotalConstraint(ref Expression<Func<Order, bool>> expression, decimal? total)
+    private static void AddMaxTotalConstraint(ref Expression<Func<Order, bool>> expression, decimal? total)
     {
         if (total is not null)
         {
@@ -70,7 +70,7 @@ public class OrderPredicateFactory : IPredicateFactory<Order, OrderFilterModel>
         }
     }
 
-    private void AddDateFromConstraint(ref Expression<Func<Order, bool>> expression, DateTime? date)
+    private static void AddDateFromConstraint(ref Expression<Func<Order, bool>> expression, DateTime? date)
     {
         if (date is not null)
         {
@@ -78,7 +78,7 @@ public class OrderPredicateFactory : IPredicateFactory<Order, OrderFilterModel>
         }
     }
 
-    private void AddDateToConstraint(ref Expression<Func<Order, bool>> expression, DateTime? date)
+    private static void AddDateToConstraint(ref Expression<Func<Order, bool>> expression, DateTime? date)
     {
         if (date is not null)
         {
@@ -86,7 +86,7 @@ public class OrderPredicateFactory : IPredicateFactory<Order, OrderFilterModel>
         }
     }
 
-    private void AddCountryConstraint(ref Expression<Func<Order, bool>> expression, string country)
+    private static void AddCountryConstraint(ref Expression<Func<Order, bool>> expression, string country)
     {
         if (string.IsNullOrWhiteSpace(country))
         {
@@ -96,7 +96,7 @@ public class OrderPredicateFactory : IPredicateFactory<Order, OrderFilterModel>
         expression = expression.And(c => c.ShippingCountry.Contains(country.Trim()));
     }
 
-    private void AddCityConstraint(ref Expression<Func<Order, bool>> expression, string city)
+    private static void AddCityConstraint(ref Expression<Func<Order, bool>> expression, string city)
     {
         if (string.IsNullOrWhiteSpace(city))
         {
@@ -106,7 +106,7 @@ public class OrderPredicateFactory : IPredicateFactory<Order, OrderFilterModel>
         expression = expression.And(c => c.ShippingCity.Contains(city.Trim()));
     }
 
-    private void AddAddressConstraint(ref Expression<Func<Order, bool>> expression, string address)
+    private static void AddAddressConstraint(ref Expression<Func<Order, bool>> expression, string address)
     {
         if (string.IsNullOrWhiteSpace(address))
         {
@@ -116,7 +116,7 @@ public class OrderPredicateFactory : IPredicateFactory<Order, OrderFilterModel>
         expression = expression.And(c => c.ShippingAddress.Contains(address.Trim()));
     }
 
-    private void AddPostalCodeConstraint(ref Expression<Func<Order, bool>> expression, string postalCode)
+    private static void AddPostalCodeConstraint(ref Expression<Func<Order, bool>> expression, string postalCode)
     {
         if (string.IsNullOrWhiteSpace(postalCode))
         {

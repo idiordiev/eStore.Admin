@@ -28,7 +28,7 @@ public class MousePredicateFactory : IPredicateFactory<Mouse, MouseFilterModel>
         return expression;
     }
 
-    private void AddIsDeletedConstraint(ref Expression<Func<Mouse, bool>> expression, ICollection<bool> values)
+    private static void AddIsDeletedConstraint(ref Expression<Func<Mouse, bool>> expression, ICollection<bool> values)
     {
         if (values is not null && values.Any())
         {
@@ -36,18 +36,18 @@ public class MousePredicateFactory : IPredicateFactory<Mouse, MouseFilterModel>
         }
     }
 
-    private void AddNameConstraint(ref Expression<Func<Mouse, bool>> expression, string name)
+    private static void AddNameConstraint(ref Expression<Func<Mouse, bool>> expression, string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             return;
         }
 
-        string value = name.Trim();
+        var value = name.Trim();
         expression = expression.And(m => m.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private void AddManufacturerConstraint(ref Expression<Func<Mouse, bool>> expression,
+    private static void AddManufacturerConstraint(ref Expression<Func<Mouse, bool>> expression,
         ICollection<string> manufacturers)
     {
         if (manufacturers is not null && manufacturers.Any())
@@ -57,7 +57,7 @@ public class MousePredicateFactory : IPredicateFactory<Mouse, MouseFilterModel>
         }
     }
 
-    private void AddMinPriceConstraint(ref Expression<Func<Mouse, bool>> expression, decimal? price)
+    private static void AddMinPriceConstraint(ref Expression<Func<Mouse, bool>> expression, decimal? price)
     {
         if (price is not null)
         {
@@ -65,7 +65,7 @@ public class MousePredicateFactory : IPredicateFactory<Mouse, MouseFilterModel>
         }
     }
 
-    private void AddMaxPriceConstraint(ref Expression<Func<Mouse, bool>> expression, decimal? price)
+    private static void AddMaxPriceConstraint(ref Expression<Func<Mouse, bool>> expression, decimal? price)
     {
         if (price is not null)
         {
@@ -73,7 +73,7 @@ public class MousePredicateFactory : IPredicateFactory<Mouse, MouseFilterModel>
         }
     }
 
-    private void AddCreatedDateStartConstraint(ref Expression<Func<Mouse, bool>> expression, DateTime? date)
+    private static void AddCreatedDateStartConstraint(ref Expression<Func<Mouse, bool>> expression, DateTime? date)
     {
         if (date is not null)
         {
@@ -81,7 +81,7 @@ public class MousePredicateFactory : IPredicateFactory<Mouse, MouseFilterModel>
         }
     }
 
-    private void AddCreatedDateEndConstraint(ref Expression<Func<Mouse, bool>> expression, DateTime? date)
+    private static void AddCreatedDateEndConstraint(ref Expression<Func<Mouse, bool>> expression, DateTime? date)
     {
         if (date is not null)
         {
@@ -89,7 +89,7 @@ public class MousePredicateFactory : IPredicateFactory<Mouse, MouseFilterModel>
         }
     }
 
-    private void AddConnectionTypeConstraint(ref Expression<Func<Mouse, bool>> expression,
+    private static void AddConnectionTypeConstraint(ref Expression<Func<Mouse, bool>> expression,
         ICollection<string> connectionTypes)
     {
         if (connectionTypes is not null && connectionTypes.Any())
@@ -98,7 +98,7 @@ public class MousePredicateFactory : IPredicateFactory<Mouse, MouseFilterModel>
         }
     }
 
-    private void AddBacklightConstraint(ref Expression<Func<Mouse, bool>> expression,
+    private static void AddBacklightConstraint(ref Expression<Func<Mouse, bool>> expression,
         ICollection<string> backlights)
     {
         if (backlights is not null && backlights.Any())

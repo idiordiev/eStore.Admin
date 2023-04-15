@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using eStore.Admin.Application.Interfaces.Persistence;
 using eStore.Admin.Infrastructure.Persistence.Repositories;
@@ -170,6 +171,7 @@ public class UnitOfWork : IUnitOfWork
     public void Dispose()
     {
         Dispose(true);
+        GC.SuppressFinalize(this);
     }
 
     protected virtual void Dispose(bool disposing)

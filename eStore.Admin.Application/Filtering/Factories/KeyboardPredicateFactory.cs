@@ -32,7 +32,7 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         return expression;
     }
 
-    private void AddIsDeletedConstraint(ref Expression<Func<Keyboard, bool>> expression, ICollection<bool> values)
+    private static void AddIsDeletedConstraint(ref Expression<Func<Keyboard, bool>> expression, ICollection<bool> values)
     {
         if (values is not null && values.Any())
         {
@@ -40,18 +40,18 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         }
     }
 
-    private void AddNameConstraint(ref Expression<Func<Keyboard, bool>> expression, string name)
+    private static void AddNameConstraint(ref Expression<Func<Keyboard, bool>> expression, string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             return;
         }
 
-        string value = name.Trim();
+        var value = name.Trim();
         expression = expression.And(k => k.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private void AddManufacturerConstraint(ref Expression<Func<Keyboard, bool>> expression,
+    private static void AddManufacturerConstraint(ref Expression<Func<Keyboard, bool>> expression,
         ICollection<string> manufacturers)
     {
         if (manufacturers is not null && manufacturers.Any())
@@ -61,7 +61,7 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         }
     }
 
-    private void AddMinPriceConstraint(ref Expression<Func<Keyboard, bool>> expression, decimal? price)
+    private static void AddMinPriceConstraint(ref Expression<Func<Keyboard, bool>> expression, decimal? price)
     {
         if (price is not null)
         {
@@ -69,7 +69,7 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         }
     }
 
-    private void AddMaxPriceConstraint(ref Expression<Func<Keyboard, bool>> expression, decimal? price)
+    private static void AddMaxPriceConstraint(ref Expression<Func<Keyboard, bool>> expression, decimal? price)
     {
         if (price is not null)
         {
@@ -77,7 +77,7 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         }
     }
 
-    private void AddCreatedDateStartConstraint(ref Expression<Func<Keyboard, bool>> expression, DateTime? date)
+    private static void AddCreatedDateStartConstraint(ref Expression<Func<Keyboard, bool>> expression, DateTime? date)
     {
         if (date is not null)
         {
@@ -85,7 +85,7 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         }
     }
 
-    private void AddCreatedDateEndConstraint(ref Expression<Func<Keyboard, bool>> expression, DateTime? date)
+    private static void AddCreatedDateEndConstraint(ref Expression<Func<Keyboard, bool>> expression, DateTime? date)
     {
         if (date is not null)
         {
@@ -93,7 +93,7 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         }
     }
 
-    private void AddConnectionTypeConstraint(ref Expression<Func<Keyboard, bool>> expression,
+    private static void AddConnectionTypeConstraint(ref Expression<Func<Keyboard, bool>> expression,
         ICollection<string> connectionTypes)
     {
         if (connectionTypes is not null && connectionTypes.Any())
@@ -104,7 +104,7 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         }
     }
 
-    private void AddTypeConstraint(ref Expression<Func<Keyboard, bool>> expression, ICollection<string> types)
+    private static void AddTypeConstraint(ref Expression<Func<Keyboard, bool>> expression, ICollection<string> types)
     {
         if (types is not null && types.Any())
         {
@@ -113,7 +113,7 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         }
     }
 
-    private void AddSizeConstraint(ref Expression<Func<Keyboard, bool>> expression, ICollection<string> sizes)
+    private static void AddSizeConstraint(ref Expression<Func<Keyboard, bool>> expression, ICollection<string> sizes)
     {
         if (sizes is not null && sizes.Any())
         {
@@ -122,7 +122,7 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         }
     }
 
-    private void AddSwitchConstraint(ref Expression<Func<Keyboard, bool>> expression, ICollection<int?> switchIds)
+    private static void AddSwitchConstraint(ref Expression<Func<Keyboard, bool>> expression, ICollection<int?> switchIds)
     {
         if (switchIds is not null && switchIds.Any())
         {
@@ -130,7 +130,7 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         }
     }
 
-    private void AddKeyRolloverConstraint(ref Expression<Func<Keyboard, bool>> expression,
+    private static void AddKeyRolloverConstraint(ref Expression<Func<Keyboard, bool>> expression,
         ICollection<string> keyRollovers)
     {
         if (keyRollovers is not null && keyRollovers.Any())
@@ -140,7 +140,7 @@ public class KeyboardPredicateFactory : IPredicateFactory<Keyboard, KeyboardFilt
         }
     }
 
-    private void AddBacklightConstraint(ref Expression<Func<Keyboard, bool>> expression,
+    private static void AddBacklightConstraint(ref Expression<Func<Keyboard, bool>> expression,
         ICollection<string> backlights)
     {
         if (backlights is not null && backlights.Any())

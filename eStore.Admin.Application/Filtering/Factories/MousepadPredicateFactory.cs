@@ -30,7 +30,7 @@ public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilt
         return expression;
     }
 
-    private void AddIsDeletedConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<bool> values)
+    private static void AddIsDeletedConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<bool> values)
     {
         if (values is not null && values.Any())
         {
@@ -38,18 +38,18 @@ public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilt
         }
     }
 
-    private void AddNameConstraint(ref Expression<Func<Mousepad, bool>> expression, string name)
+    private static void AddNameConstraint(ref Expression<Func<Mousepad, bool>> expression, string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             return;
         }
 
-        string value = name.Trim();
+        var value = name.Trim();
         expression = expression.And(m => m.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private void AddManufacturerConstraint(ref Expression<Func<Mousepad, bool>> expression,
+    private static void AddManufacturerConstraint(ref Expression<Func<Mousepad, bool>> expression,
         ICollection<string> manufacturers)
     {
         if (manufacturers is not null && manufacturers.Any())
@@ -59,7 +59,7 @@ public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilt
         }
     }
 
-    private void AddMinPriceConstraint(ref Expression<Func<Mousepad, bool>> expression, decimal? price)
+    private static void AddMinPriceConstraint(ref Expression<Func<Mousepad, bool>> expression, decimal? price)
     {
         if (price is not null)
         {
@@ -67,7 +67,7 @@ public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilt
         }
     }
 
-    private void AddMaxPriceConstraint(ref Expression<Func<Mousepad, bool>> expression, decimal? price)
+    private static void AddMaxPriceConstraint(ref Expression<Func<Mousepad, bool>> expression, decimal? price)
     {
         if (price is not null)
         {
@@ -75,7 +75,7 @@ public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilt
         }
     }
 
-    private void AddCreatedDateStartConstraint(ref Expression<Func<Mousepad, bool>> expression, DateTime? date)
+    private static void AddCreatedDateStartConstraint(ref Expression<Func<Mousepad, bool>> expression, DateTime? date)
     {
         if (date is not null)
         {
@@ -83,7 +83,7 @@ public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilt
         }
     }
 
-    private void AddCreatedDateEndConstraint(ref Expression<Func<Mousepad, bool>> expression, DateTime? date)
+    private static void AddCreatedDateEndConstraint(ref Expression<Func<Mousepad, bool>> expression, DateTime? date)
     {
         if (date is not null)
         {
@@ -91,7 +91,7 @@ public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilt
         }
     }
 
-    private void AddIsStitchedConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<bool> values)
+    private static void AddIsStitchedConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<bool> values)
     {
         if (values is not null && values.Any())
         {
@@ -99,7 +99,7 @@ public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilt
         }
     }
 
-    private void AddBottomMaterialConstraint(ref Expression<Func<Mousepad, bool>> expression,
+    private static void AddBottomMaterialConstraint(ref Expression<Func<Mousepad, bool>> expression,
         ICollection<string> bottomMaterials)
     {
         if (bottomMaterials is not null && bottomMaterials.Any())
@@ -108,7 +108,7 @@ public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilt
         }
     }
 
-    private void AddTopMaterialConstraint(ref Expression<Func<Mousepad, bool>> expression,
+    private static void AddTopMaterialConstraint(ref Expression<Func<Mousepad, bool>> expression,
         ICollection<string> topMaterials)
     {
         if (topMaterials is not null && topMaterials.Any())
@@ -117,7 +117,7 @@ public class MousepadPredicateFactory : IPredicateFactory<Mousepad, MousepadFilt
         }
     }
 
-    private void AddBacklightConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<string> backlights)
+    private static void AddBacklightConstraint(ref Expression<Func<Mousepad, bool>> expression, ICollection<string> backlights)
     {
         if (backlights is not null && backlights.Any())
         {
