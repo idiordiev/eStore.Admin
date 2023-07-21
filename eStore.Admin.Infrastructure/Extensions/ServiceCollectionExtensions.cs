@@ -17,9 +17,9 @@ using NLog;
 
 namespace eStore.Admin.Infrastructure.Extensions;
 
-public static class ConfigureServicesExtensions
+public static class ServiceCollectionExtensions
 {
-    public static void AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddApplicationDbContext(configuration);
         services.AddUnitOfWork();
@@ -66,7 +66,7 @@ public static class ConfigureServicesExtensions
         {
             options.UseSqlServer(configuration.GetConnectionString("IdentityContext"));
         });
-        IdentityBuilder builder = services.AddIdentityCore<IdentityUser>(options =>
+        var builder = services.AddIdentityCore<IdentityUser>(options =>
         {
             options.Password.RequireDigit = true;
             options.Password.RequireLowercase = false;

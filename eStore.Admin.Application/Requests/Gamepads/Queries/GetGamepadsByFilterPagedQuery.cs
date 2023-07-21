@@ -3,11 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using eStore.Admin.Application.Filtering.Models;
-using eStore.Admin.Application.Interfaces.Filtering;
 using eStore.Admin.Application.Interfaces.Persistence;
 using eStore.Admin.Application.Responses;
 using eStore.Admin.Application.Utility;
-using eStore.Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore.Admin.Application.Requests.Gamepads.Queries;
@@ -22,23 +20,21 @@ public class GetGamepadsByFilterPagedQueryHandler : IRequestHandler<GetGamepadsB
     IEnumerable<GamepadResponse>>
 {
     private readonly IMapper _mapper;
-    private readonly IPredicateFactory<Gamepad, GamepadFilterModel> _predicateFactory;
     private readonly IUnitOfWork _unitOfWork;
 
-    public GetGamepadsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper,
-        IPredicateFactory<Gamepad, GamepadFilterModel> predicateFactory)
+    public GetGamepadsByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _predicateFactory = predicateFactory;
     }
 
     public async Task<IEnumerable<GamepadResponse>> Handle(GetGamepadsByFilterPagedQuery request,
         CancellationToken cancellationToken)
     {
-        var predicate = _predicateFactory.CreateExpression(request.FilterModel);
+        var predicate = request.FilterModel.CreateExpression();
         var gamepads = await _unitOfWork.GamepadRepository.GetByConditionPagedAsync(predicate, request.PagingParameters,
             false, cancellationToken);
+        
         return _mapper.Map<IEnumerable<GamepadResponse>>(gamepads);
     }
 }

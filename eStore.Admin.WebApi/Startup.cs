@@ -23,8 +23,8 @@ public class Startup
     {
         services.AddControllers();
 
-        services.AddApplicationLayer();
-        services.AddInfrastructureLayer(Configuration);
+        services.AddApplication();
+        services.AddInfrastructure(Configuration);
 
         services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
     }

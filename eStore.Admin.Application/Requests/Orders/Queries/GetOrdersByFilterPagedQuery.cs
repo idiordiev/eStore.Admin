@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using eStore.Admin.Application.Filtering.Models;
-using eStore.Admin.Application.Interfaces.Filtering;
 using eStore.Admin.Application.Interfaces.Persistence;
 using eStore.Admin.Application.Responses;
 using eStore.Admin.Application.Utility;
@@ -22,23 +21,21 @@ public class GetOrdersByFilterPagedQueryHandler : IRequestHandler<GetOrdersByFil
     IEnumerable<OrderResponse>>
 {
     private readonly IMapper _mapper;
-    private readonly IPredicateFactory<Order, OrderFilterModel> _predicateFactory;
     private readonly IUnitOfWork _unitOfWork;
 
-    public GetOrdersByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper,
-        IPredicateFactory<Order, OrderFilterModel> predicateFactory)
+    public GetOrdersByFilterPagedQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _predicateFactory = predicateFactory;
     }
 
     public async Task<IEnumerable<OrderResponse>> Handle(GetOrdersByFilterPagedQuery request,
         CancellationToken cancellationToken)
     {
-        var predicate = _predicateFactory.CreateExpression(request.FilterModel);
+        var predicate = request.FilterModel.CreateExpression();
         var orders = await _unitOfWork.OrderRepository.GetByConditionPagedAsync(predicate, request.PagingParameters,
             false, cancellationToken);
+        
         return _mapper.Map<IEnumerable<OrderResponse>>(orders);
     }
 }

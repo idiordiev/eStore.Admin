@@ -56,7 +56,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPut]
-    [Route("{username}/removerole")]
+    [Route("{username}/remove-role")]
     [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> RemoveRoleFromUser(string username, [FromBody] string role,
         CancellationToken cancellationToken)
@@ -71,7 +71,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPut]
-    [Route("{username}/addrole")]
+    [Route("{username}/add-role")]
     [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> AddRoleToUser(string username, [FromBody] string role,
         CancellationToken cancellationToken)
