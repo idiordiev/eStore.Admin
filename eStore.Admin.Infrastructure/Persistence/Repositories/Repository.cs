@@ -4,19 +4,19 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using eStore.Admin.Application.Interfaces.Persistence.Shared;
+using eStore.Admin.Application.Interfaces.Persistence;
 using eStore.Admin.Application.Utility;
 using eStore.Admin.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace eStore.Admin.Infrastructure.Persistence.Repositories;
 
-public class RepositoryBase<T> : IRepositoryBase<T> where T : Entity
+public class Repository<T> : IRepository<T> where T : Entity
 {
     protected readonly ApplicationContext Context;
     protected readonly DbSet<T> DbSet;
 
-    public RepositoryBase(ApplicationContext context)
+    public Repository(ApplicationContext context)
     {
         Context = context;
         DbSet = context.Set<T>();

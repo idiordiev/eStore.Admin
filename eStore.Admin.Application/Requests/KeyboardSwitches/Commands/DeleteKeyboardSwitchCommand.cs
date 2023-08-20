@@ -1,9 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using eStore.Admin.Application.Interfaces.Persistence;
-using eStore.Admin.Application.Interfaces.Services;
-using eStore.Admin.Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace eStore.Admin.Application.Requests.KeyboardSwitches.Commands;
 
@@ -19,10 +18,10 @@ public class DeleteKeyboardSwitchCommand : IRequest<bool>
 
 public class DeleteKeyboardSwitchCommandHandler : IRequestHandler<DeleteKeyboardSwitchCommand, bool>
 {
-    private readonly ILoggingService _logger;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<DeleteKeyboardSwitchCommandHandler> _logger;
 
-    public DeleteKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
+    public DeleteKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, ILogger<DeleteKeyboardSwitchCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -30,20 +29,18 @@ public class DeleteKeyboardSwitchCommandHandler : IRequestHandler<DeleteKeyboard
 
     public async Task<bool> Handle(DeleteKeyboardSwitchCommand request, CancellationToken cancellationToken)
     {
-        KeyboardSwitch keyboardSwitch = await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, true,
+        var keyboardSwitch = await _unitOfWork.KeyboardSwitchRepository.GetByIdAsync(request.SwitchId, true,
             cancellationToken);
         if (keyboardSwitch is null)
         {
-            _logger.LogInformation("The keyboard switch with id {0} has not been found.", request.SwitchId);
+            _logger.LogInformation("The keyboard switch with id {KeyboardSwitchId} has not been found", request.SwitchId);
             return false;
         }
-
-        cancellationToken.ThrowIfCancellationRequested();
 
         _unitOfWork.KeyboardSwitchRepository.Delete(keyboardSwitch);
         await _unitOfWork.SaveAsync(cancellationToken);
 
-        _logger.LogInformation("The keyboard switch with id {0} has been deleted.", keyboardSwitch.Id);
+        _logger.LogInformation("The keyboard switch with id {KeyboardSwitchId} has been deleted", keyboardSwitch.Id);
 
         return true;
     }

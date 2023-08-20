@@ -53,7 +53,7 @@ public class KeyboardRepositoryTests
 
         // Act
         var keyboards = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-        Keyboard keyboardToChange = keyboards.First(c => c.Id == 5);
+        var keyboardToChange = keyboards.First(c => c.Id == 5);
         keyboardToChange.Name = changedName;
 
         // Assert
@@ -93,7 +93,7 @@ public class KeyboardRepositoryTests
         // Act
         var keyboards = await _repository.GetByConditionPagedAsync(c => c.Id == 5, pagingParams, true,
             CancellationToken.None);
-        Keyboard keyboardToChange = keyboards.First(c => c.Id == 5);
+        var keyboardToChange = keyboards.First(c => c.Id == 5);
         keyboardToChange.Name = changedName;
 
         // Assert
@@ -109,10 +109,10 @@ public class KeyboardRepositoryTests
     public async Task GetByIdAsync_ExistingKeyboard_ReturnsKeyboard(int id)
     {
         // Arrange
-        Keyboard expected = _helper.Keyboards.First(c => c.Id == id);
+        var expected = _helper.Keyboards.First(c => c.Id == id);
 
         // Act
-        Keyboard actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.EqualTo(expected).Using(new KeyboardEqualityComparer()),
@@ -126,7 +126,7 @@ public class KeyboardRepositoryTests
         // Arrange
 
         // Act
-        Keyboard actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -143,7 +143,7 @@ public class KeyboardRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        Keyboard keyboard = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+        var keyboard = await _repository.GetByIdAsync(id, true, CancellationToken.None);
         keyboard.Name = changedName;
 
         // Assert
@@ -170,7 +170,7 @@ public class KeyboardRepositoryTests
     public Task Update_ExistingKeyboard_UpdatedKeyboard()
     {
         // Arrange
-        Keyboard keyboardToUpdate = _helper.Keyboards.First(c => c.Id == 5);
+        var keyboardToUpdate = _helper.Keyboards.First(c => c.Id == 5);
         const string changedName = "changedName";
         keyboardToUpdate.Name = changedName;
 
@@ -187,7 +187,7 @@ public class KeyboardRepositoryTests
     public async Task Delete_ExistingKeyboard_DeletedKeyboardFromContext()
     {
         // Arrange
-        Keyboard keyboardToDelete = _helper.Keyboards.First(c => c.Id == 5);
+        var keyboardToDelete = _helper.Keyboards.First(c => c.Id == 5);
 
         // Act
         _repository.Delete(keyboardToDelete);

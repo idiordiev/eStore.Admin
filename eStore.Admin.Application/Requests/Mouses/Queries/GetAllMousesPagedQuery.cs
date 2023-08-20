@@ -30,6 +30,7 @@ public class GetAllMousesPagedQueryHandler : IRequestHandler<GetAllMousesPagedQu
     {
         var mouses = await _unitOfWork.MouseRepository.GetAllPagedAsync(request.PagingParameters, false,
             cancellationToken);
+        
         return _mapper.Map<IEnumerable<MouseResponse>>(mouses);
     }
 }

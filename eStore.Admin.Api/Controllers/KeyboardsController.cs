@@ -4,7 +4,6 @@ using eStore.Admin.Application.Filtering.Models;
 using eStore.Admin.Application.RequestDTOs;
 using eStore.Admin.Application.Requests.Keyboards.Commands;
 using eStore.Admin.Application.Requests.Keyboards.Queries;
-using eStore.Admin.Application.Responses;
 using eStore.Admin.Application.Utility;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,17 +29,20 @@ public class KeyboardsController : ControllerBase
         CancellationToken cancellationToken)
     {
         var request = new GetKeyboardsByFilterPagedQuery
-            { FilterModel = filterModel, PagingParameters = pagingParameters };
+        {
+            FilterModel = filterModel,
+            PagingParameters = pagingParameters
+        };
         var response = await _mediator.Send(request, cancellationToken);
         return Ok(response);
     }
 
     [HttpGet]
-    [Route("{id}", Name = "GetKeyboardById")]
+    [Route("{id:int}", Name = "GetKeyboardById")]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var request = new GetKeyboardByIdQuery(id);
-        KeyboardResponse response = await _mediator.Send(request, cancellationToken);
+        var response = await _mediator.Send(request, cancellationToken);
 
         if (response is null)
         {
@@ -54,29 +56,38 @@ public class KeyboardsController : ControllerBase
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Add([FromBody] KeyboardDto keyboard, CancellationToken cancellationToken)
     {
-        var request = new AddKeyboardCommand { Keyboard = keyboard };
-        KeyboardResponse response = await _mediator.Send(request, cancellationToken);
+        var request = new AddKeyboardCommand
+        {
+            Keyboard = keyboard
+        };
+        var response = await _mediator.Send(request, cancellationToken);
+        
         return CreatedAtRoute("GetKeyboardById", new { response.Id }, response);
     }
 
     [HttpPut]
-    [Route("{id}")]
+    [Route("{id:int}")]
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Update(int id, [FromBody] KeyboardDto keyboard,
         CancellationToken cancellationToken)
     {
-        var request = new EditKeyboardCommand(id) { Keyboard = keyboard };
-        KeyboardResponse response = await _mediator.Send(request, cancellationToken);
+        var request = new EditKeyboardCommand(id)
+        {
+            Keyboard = keyboard
+        };
+        var response = await _mediator.Send(request, cancellationToken);
+        
         return CreatedAtRoute("GetKeyboardById", new { response.Id }, response);
     }
 
     [HttpDelete]
-    [Route("{id}")]
+    [Route("{id:int}")]
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         var request = new DeleteKeyboardCommand(id);
-        bool isSuccess = await _mediator.Send(request, cancellationToken);
+        var isSuccess = await _mediator.Send(request, cancellationToken);
+        
         if (!isSuccess)
         {
             return NotFound();

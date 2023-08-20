@@ -53,7 +53,7 @@ public class OrderItemRepositoryTests
 
         // Act
         var orderItems = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-        OrderItem orderItemToChange = orderItems.First(c => c.Id == 1);
+        var orderItemToChange = orderItems.First(c => c.Id == 1);
         orderItemToChange.Quantity = changedQuantity;
 
         // Assert
@@ -93,7 +93,7 @@ public class OrderItemRepositoryTests
         // Act
         var orderItems = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true,
             CancellationToken.None);
-        OrderItem orderItemToChange = orderItems.First(c => c.Id == 1);
+        var orderItemToChange = orderItems.First(c => c.Id == 1);
         orderItemToChange.Quantity = changedQuantity;
 
         // Assert
@@ -122,10 +122,10 @@ public class OrderItemRepositoryTests
     public async Task GetByIdAsync_ExistingOrderItem_ReturnsOrderItem(int id)
     {
         // Arrange
-        OrderItem expected = _helper.OrderItems.First(c => c.Id == id);
+        var expected = _helper.OrderItems.First(c => c.Id == id);
 
         // Act
-        OrderItem actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.EqualTo(expected).Using(new OrderItemEqualityComparer()),
@@ -139,7 +139,7 @@ public class OrderItemRepositoryTests
         // Arrange
 
         // Act
-        OrderItem actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -169,7 +169,7 @@ public class OrderItemRepositoryTests
         const int changedQuantity = 69;
 
         // Act
-        OrderItem orderItem = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+        var orderItem = await _repository.GetByIdAsync(id, true, CancellationToken.None);
         orderItem.Quantity = changedQuantity;
 
         // Assert
@@ -196,7 +196,7 @@ public class OrderItemRepositoryTests
     public Task Update_ExistingOrderItem_UpdatedOrderItem()
     {
         // Arrange
-        OrderItem orderItemToUpdate = _helper.OrderItems.First(c => c.Id == 1);
+        var orderItemToUpdate = _helper.OrderItems.First(c => c.Id == 1);
         const int changedQuantity = 69;
         orderItemToUpdate.Quantity = changedQuantity;
 
@@ -213,7 +213,7 @@ public class OrderItemRepositoryTests
     public async Task Delete_ExistingOrderItem_DeletedOrderItemFromContext()
     {
         // Arrange
-        OrderItem orderItemToDelete = _helper.OrderItems.First(c => c.Id == 1);
+        var orderItemToDelete = _helper.OrderItems.First(c => c.Id == 1);
 
         // Act
         _repository.Delete(orderItemToDelete);

@@ -3,7 +3,7 @@ using eStore.Admin.Domain.Entities;
 
 namespace eStore.Admin.Infrastructure.Persistence.Repositories;
 
-public class OrderItemRepository : RepositoryBase<OrderItem>, IOrderItemRepository
+public class OrderItemRepository : Repository<OrderItem>, IOrderItemRepository
 {
     public OrderItemRepository(ApplicationContext context) : base(context)
     {

@@ -13,10 +13,4 @@
         <ProjectReference Include="..\eStore.Admin.Infrastructure\eStore.Admin.Infrastructure.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <None Include="nlog.config">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
-
 </Project>

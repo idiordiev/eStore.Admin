@@ -4,11 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using eStore.Admin.Application.Interfaces.Persistence;
-using eStore.Admin.Application.Interfaces.Services;
 using eStore.Admin.Application.RequestDTOs;
 using eStore.Admin.Application.Responses;
 using eStore.Admin.Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace eStore.Admin.Application.Requests.Orders.Commands;
 
@@ -25,11 +25,11 @@ public class EditOrderCommand : IRequest<OrderResponse>
 
 public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, OrderResponse>
 {
-    private readonly ILoggingService _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<EditOrderCommandHandler> _logger;
 
-    public EditOrderCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
+    public EditOrderCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<EditOrderCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -38,19 +38,17 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, OrderRe
 
     public async Task<OrderResponse> Handle(EditOrderCommand request, CancellationToken cancellationToken)
     {
-        Order order = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId, true, cancellationToken);
+        var order = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId, true, cancellationToken);
         if (order is null)
         {
             throw new KeyNotFoundException($"The order with the id {request.OrderId} has not been found.");
         }
 
-        cancellationToken.ThrowIfCancellationRequested();
-
         _mapper.Map(request.Order, order);
 
-        foreach (OrderItemDto item in request.Order.ItemsToAdd)
+        foreach (var item in request.Order.ItemsToAdd)
         {
-            Goods goods = await _unitOfWork.GoodsRepository.GetByIdAsync(item.GoodsId, false, cancellationToken);
+            var goods = await _unitOfWork.GoodsRepository.GetByIdAsync(item.GoodsId, false, cancellationToken);
             if (goods is null)
             {
                 throw new KeyNotFoundException($"The goods with id {item.GoodsId} has not been found.");
@@ -69,7 +67,7 @@ public class EditOrderCommandHandler : IRequestHandler<EditOrderCommand, OrderRe
 
         await _unitOfWork.SaveAsync(cancellationToken);
 
-        _logger.LogInformation("The order with id {0} has been edited.", order.Id);
+        _logger.LogInformation("The order with id {OrderId} has been edited", order.Id);
 
         return _mapper.Map<OrderResponse>(order);
     }

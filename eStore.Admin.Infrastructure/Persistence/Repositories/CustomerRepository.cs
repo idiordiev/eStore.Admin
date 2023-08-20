@@ -3,7 +3,7 @@ using eStore.Admin.Domain.Entities;
 
 namespace eStore.Admin.Infrastructure.Persistence.Repositories;
 
-public class CustomerRepository : RepositoryBase<Customer>, ICustomerRepository
+public class CustomerRepository : Repository<Customer>, ICustomerRepository
 {
     public CustomerRepository(ApplicationContext context) : base(context)
     {

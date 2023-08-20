@@ -1,19 +1,20 @@
 ﻿using System;
-using System.IO;
 using System.Text;
+using eStore.Admin.Application;
+using eStore.Admin.Application.Interfaces;
 using eStore.Admin.Application.Interfaces.Persistence;
 using eStore.Admin.Application.Interfaces.Services;
 using eStore.Admin.Infrastructure.Identity;
-using eStore.Admin.Infrastructure.Logging;
 using eStore.Admin.Infrastructure.Persistence;
-using eStore.Admin.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
+using NLog.Extensions.Logging;
 
 namespace eStore.Admin.Infrastructure.Extensions;
 
@@ -23,8 +24,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddApplicationDbContext(configuration);
         services.AddUnitOfWork();
-        services.AddLoggingService();
-        services.AddDateTimeService();
+        services.AddCustomLogging(configuration);
+        services.AddClock();
         services.AddAuthService();
         services.AddIdentity(configuration);
         services.AddJwt(configuration);
@@ -43,16 +44,21 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
-    private static void AddLoggingService(this IServiceCollection services)
+    private static void AddCustomLogging(this IServiceCollection services, IConfiguration configuration)
     {
-        LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
-        services.AddSingleton<ILogger>(_ => LogManager.GetCurrentClassLogger());
-        services.AddSingleton<ILoggingService, LoggingService>();
+        services.AddLogging(builder =>
+        {
+            LogManager.Setup()
+                .LoadConfigurationFromSection(configuration);
+
+            builder.ClearProviders();
+            builder.AddNLog();
+        });
     }
 
-    private static void AddDateTimeService(this IServiceCollection services)
+    private static void AddClock(this IServiceCollection services)
     {
-        services.AddScoped<IDateTimeService, DateTimeService>();
+        services.AddScoped<IClock, Clock>();
     }
 
     private static void AddAuthService(this IServiceCollection services)
@@ -85,8 +91,8 @@ public static class ServiceCollectionExtensions
     {
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.JwtSetting));
 
-        IConfigurationSection jwtSettings = configuration.GetSection(JwtSettings.JwtSetting);
-        string secretKey = Environment.GetEnvironmentVariable("SECRET");
+        var jwtSettings = configuration.GetSection(JwtSettings.JwtSetting);
+        var secretKey = Environment.GetEnvironmentVariable("SECRET");
 
         services.AddAuthentication(options =>
             {

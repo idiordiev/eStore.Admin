@@ -7,8 +7,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using eStore.Admin.Application.AuthDTOs;
+using eStore.Admin.Application.Interfaces;
 using eStore.Admin.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -17,17 +19,16 @@ namespace eStore.Admin.Infrastructure.Identity;
 public class AuthService : IAuthService
 {
     private readonly UserManager<IdentityUser> _userManager;
-    private readonly ILoggingService _logger;
     private readonly JwtSettings _jwtSettings;
-    private readonly IDateTimeService _dateTimeService;
+    private readonly IClock _clock;
+    private readonly ILogger<AuthService> _logger;
 
-    public AuthService(UserManager<IdentityUser> userManager, ILoggingService logger,
-        IOptions<JwtSettings> jwtSettings, IDateTimeService dateTimeService)
+    public AuthService(UserManager<IdentityUser> userManager, IOptions<JwtSettings> jwtSettings, IClock clock, ILogger<AuthService> logger)
     {
         _userManager = userManager;
-        _logger = logger;
         _jwtSettings = jwtSettings.Value;
-        _dateTimeService = dateTimeService;
+        _clock = clock;
+        _logger = logger;
     }
 
     public async Task<string> CreateTokenAsync(LoginCredentials credentials, CancellationToken cancellationToken)
@@ -50,7 +51,7 @@ public class AuthService : IAuthService
         var tokenOptions = new JwtSecurityToken(_jwtSettings.ValidIssuer,
             _jwtSettings.ValidAudience,
             claims,
-            expires: _dateTimeService.Now().AddHours(3),
+            expires: _clock.UtcNow().AddHours(3),
             signingCredentials: signingCredentials);
 
         return new JwtSecurityTokenHandler().WriteToken(tokenOptions);

@@ -29,7 +29,7 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        ICustomerRepository instance = _unitOfWork.CustomerRepository;
+        var instance = _unitOfWork.CustomerRepository;
 
         // Assert
         Assert.That(instance, Is.InstanceOf<CustomerRepository>(), "UnitOfWork returned wrong implementation.");
@@ -41,8 +41,8 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        ICustomerRepository first = _unitOfWork.CustomerRepository;
-        ICustomerRepository second = _unitOfWork.CustomerRepository;
+        var first = _unitOfWork.CustomerRepository;
+        var second = _unitOfWork.CustomerRepository;
 
         // Assert
         Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
@@ -54,7 +54,7 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IGamepadRepository instance = _unitOfWork.GamepadRepository;
+        var instance = _unitOfWork.GamepadRepository;
 
         // Assert
         Assert.That(instance, Is.InstanceOf<GamepadRepository>(), "UnitOfWork returned wrong implementation.");
@@ -66,8 +66,8 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IGamepadRepository first = _unitOfWork.GamepadRepository;
-        IGamepadRepository second = _unitOfWork.GamepadRepository;
+        var first = _unitOfWork.GamepadRepository;
+        var second = _unitOfWork.GamepadRepository;
 
         // Assert
         Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
@@ -79,7 +79,7 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IGoodsRepository instance = _unitOfWork.GoodsRepository;
+        var instance = _unitOfWork.GoodsRepository;
 
         // Assert
         Assert.That(instance, Is.InstanceOf<GoodsRepository>(), "UnitOfWork returned wrong implementation.");
@@ -91,8 +91,8 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IGoodsRepository first = _unitOfWork.GoodsRepository;
-        IGoodsRepository second = _unitOfWork.GoodsRepository;
+        var first = _unitOfWork.GoodsRepository;
+        var second = _unitOfWork.GoodsRepository;
 
         // Assert
         Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
@@ -104,7 +104,7 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IKeyboardRepository instance = _unitOfWork.KeyboardRepository;
+        var instance = _unitOfWork.KeyboardRepository;
 
         // Assert
         Assert.That(instance, Is.InstanceOf<KeyboardRepository>(), "UnitOfWork returned wrong implementation.");
@@ -116,8 +116,8 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IKeyboardRepository first = _unitOfWork.KeyboardRepository;
-        IKeyboardRepository second = _unitOfWork.KeyboardRepository;
+        var first = _unitOfWork.KeyboardRepository;
+        var second = _unitOfWork.KeyboardRepository;
 
         // Assert
         Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
@@ -129,7 +129,7 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IKeyboardSwitchRepository instance = _unitOfWork.KeyboardSwitchRepository;
+        var instance = _unitOfWork.KeyboardSwitchRepository;
 
         // Assert
         Assert.That(instance, Is.InstanceOf<KeyboardSwitchRepository>(),
@@ -142,8 +142,8 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IKeyboardSwitchRepository first = _unitOfWork.KeyboardSwitchRepository;
-        IKeyboardSwitchRepository second = _unitOfWork.KeyboardSwitchRepository;
+        var first = _unitOfWork.KeyboardSwitchRepository;
+        var second = _unitOfWork.KeyboardSwitchRepository;
 
         // Assert
         Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
@@ -155,7 +155,7 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IMousepadRepository instance = _unitOfWork.MousepadRepository;
+        var instance = _unitOfWork.MousepadRepository;
 
         // Assert
         Assert.That(instance, Is.InstanceOf<MousepadRepository>(), "UnitOfWork returned wrong implementation.");
@@ -167,8 +167,8 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IMousepadRepository first = _unitOfWork.MousepadRepository;
-        IMousepadRepository second = _unitOfWork.MousepadRepository;
+        var first = _unitOfWork.MousepadRepository;
+        var second = _unitOfWork.MousepadRepository;
 
         // Assert
         Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
@@ -180,7 +180,7 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IMouseRepository instance = _unitOfWork.MouseRepository;
+        var instance = _unitOfWork.MouseRepository;
 
         // Assert
         Assert.That(instance, Is.InstanceOf<MouseRepository>(), "UnitOfWork returned wrong implementation.");
@@ -192,8 +192,8 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IMouseRepository first = _unitOfWork.MouseRepository;
-        IMouseRepository second = _unitOfWork.MouseRepository;
+        var first = _unitOfWork.MouseRepository;
+        var second = _unitOfWork.MouseRepository;
 
         // Assert
         Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
@@ -205,7 +205,7 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IOrderItemRepository instance = _unitOfWork.OrderItemRepository;
+        var instance = _unitOfWork.OrderItemRepository;
 
         // Assert
         Assert.That(instance, Is.InstanceOf<OrderItemRepository>(), "UnitOfWork returned wrong implementation.");
@@ -217,8 +217,8 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IOrderItemRepository first = _unitOfWork.OrderItemRepository;
-        IOrderItemRepository second = _unitOfWork.OrderItemRepository;
+        var first = _unitOfWork.OrderItemRepository;
+        var second = _unitOfWork.OrderItemRepository;
 
         // Assert
         Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
@@ -230,7 +230,7 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IOrderRepository instance = _unitOfWork.OrderRepository;
+        var instance = _unitOfWork.OrderRepository;
 
         // Assert
         Assert.That(instance, Is.InstanceOf<OrderRepository>(), "UnitOfWork returned wrong implementation.");
@@ -242,8 +242,8 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IOrderRepository first = _unitOfWork.OrderRepository;
-        IOrderRepository second = _unitOfWork.OrderRepository;
+        var first = _unitOfWork.OrderRepository;
+        var second = _unitOfWork.OrderRepository;
 
         // Assert
         Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");
@@ -256,7 +256,7 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IShoppingCartRepository instance = _unitOfWork.ShoppingCartRepository;
+        var instance = _unitOfWork.ShoppingCartRepository;
 
         // Assert
         Assert.That(instance, Is.InstanceOf<ShoppingCartRepository>(), "UnitOfWork returned wrong implementation.");
@@ -268,8 +268,8 @@ public class UnitOfWorkTests
         // Arrange
 
         // Act
-        IShoppingCartRepository first = _unitOfWork.ShoppingCartRepository;
-        IShoppingCartRepository second = _unitOfWork.ShoppingCartRepository;
+        var first = _unitOfWork.ShoppingCartRepository;
+        var second = _unitOfWork.ShoppingCartRepository;
 
         // Assert
         Assert.That(second, Is.SameAs(first), "UnitOfWork returned different instances.");

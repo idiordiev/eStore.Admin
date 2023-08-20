@@ -53,7 +53,7 @@ public class MousepadRepositoryTests
 
         // Act
         var mousepads = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-        Mousepad mousepadToChange = mousepads.First(c => c.Id == 13);
+        var mousepadToChange = mousepads.First(c => c.Id == 13);
         mousepadToChange.Name = changedName;
 
         // Assert
@@ -93,7 +93,7 @@ public class MousepadRepositoryTests
         // Act
         var mousepads = await _repository.GetByConditionPagedAsync(c => c.Id == 13, pagingParams, true,
             CancellationToken.None);
-        Mousepad mousepadToChange = mousepads.First(c => c.Id == 13);
+        var mousepadToChange = mousepads.First(c => c.Id == 13);
         mousepadToChange.Name = changedName;
 
         // Assert
@@ -107,10 +107,10 @@ public class MousepadRepositoryTests
     public async Task GetByIdAsync_ExistingMousepad_ReturnsMousepad(int id)
     {
         // Arrange
-        Mousepad expected = _helper.Mousepads.First(c => c.Id == id);
+        var expected = _helper.Mousepads.First(c => c.Id == id);
 
         // Act
-        Mousepad actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.EqualTo(expected).Using(new MousepadEqualityComparer()),
@@ -124,7 +124,7 @@ public class MousepadRepositoryTests
         // Arrange
 
         // Act
-        Mousepad actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -139,7 +139,7 @@ public class MousepadRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        Mousepad mousepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+        var mousepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
         mousepad.Name = changedName;
 
         // Assert
@@ -166,7 +166,7 @@ public class MousepadRepositoryTests
     public Task Update_ExistingMousepad_UpdatedMousepad()
     {
         // Arrange
-        Mousepad mousepadToUpdate = _helper.Mousepads.First(c => c.Id == 13);
+        var mousepadToUpdate = _helper.Mousepads.First(c => c.Id == 13);
         const string changedName = "changedName";
         mousepadToUpdate.Name = changedName;
 
@@ -183,7 +183,7 @@ public class MousepadRepositoryTests
     public async Task Delete_ExistingMousepad_DeletedMousepadFromContext()
     {
         // Arrange
-        Mousepad mousepadToDelete = _helper.Mousepads.First(c => c.Id == 13);
+        var mousepadToDelete = _helper.Mousepads.First(c => c.Id == 13);
 
         // Act
         _repository.Delete(mousepadToDelete);

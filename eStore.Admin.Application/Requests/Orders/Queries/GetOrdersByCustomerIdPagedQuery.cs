@@ -37,6 +37,7 @@ public class GetOrdersByCustomerIdPagedQueryHandler : IRequestHandler<GetOrdersB
     {
         var orders = await _unitOfWork.OrderRepository.GetByConditionPagedAsync(o => o.CustomerId == request.CustomerId,
             request.PagingParameters, false, cancellationToken);
+        
         return _mapper.Map<IEnumerable<OrderResponse>>(orders);
     }
 }

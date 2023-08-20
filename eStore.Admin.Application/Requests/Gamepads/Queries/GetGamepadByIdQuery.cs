@@ -31,7 +31,8 @@ public class GetGamepadByIdQueryHandler : IRequestHandler<GetGamepadByIdQuery, G
 
     public async Task<GamepadResponse> Handle(GetGamepadByIdQuery request, CancellationToken cancellationToken)
     {
-        Gamepad gamepad = await _unitOfWork.GamepadRepository.GetByIdAsync(request.GamepadId, false, cancellationToken);
+        var gamepad = await _unitOfWork.GamepadRepository.GetByIdAsync(request.GamepadId, false, cancellationToken);
+        
         return _mapper.Map<GamepadResponse>(gamepad);
     }
 }

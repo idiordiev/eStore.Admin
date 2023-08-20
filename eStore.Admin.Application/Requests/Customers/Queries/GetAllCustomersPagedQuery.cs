@@ -31,6 +31,7 @@ public class GetAllCustomersPagedQueryHandler : IRequestHandler<GetAllCustomersP
     {
         var customers = await _unitOfWork.CustomerRepository.GetAllPagedAsync(request.PagingParameters, false,
             cancellationToken);
+        
         return _mapper.Map<IEnumerable<CustomerResponse>>(customers);
     }
 }

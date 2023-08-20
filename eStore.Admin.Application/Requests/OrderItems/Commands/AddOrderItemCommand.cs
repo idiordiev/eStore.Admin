@@ -4,11 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using eStore.Admin.Application.Interfaces.Persistence;
-using eStore.Admin.Application.Interfaces.Services;
 using eStore.Admin.Application.RequestDTOs;
 using eStore.Admin.Application.Responses;
 using eStore.Admin.Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace eStore.Admin.Application.Requests.OrderItems.Commands;
 
@@ -25,11 +25,11 @@ public class AddOrderItemCommand : IRequest<OrderResponse>
 
 public class AddOrderItemCommandHandler : IRequestHandler<AddOrderItemCommand, OrderResponse>
 {
-    private readonly ILoggingService _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AddOrderItemCommandHandler> _logger;
 
-    public AddOrderItemCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
+    public AddOrderItemCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<AddOrderItemCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -38,14 +38,14 @@ public class AddOrderItemCommandHandler : IRequestHandler<AddOrderItemCommand, O
 
     public async Task<OrderResponse> Handle(AddOrderItemCommand request, CancellationToken cancellationToken)
     {
-        Order order = await _unitOfWork.OrderRepository.GetByIdWithOrderItemsAsync(request.OrderId, true,
+        var order = await _unitOfWork.OrderRepository.GetByIdWithOrderItemsAsync(request.OrderId, true,
             cancellationToken);
         if (order is null)
         {
             throw new KeyNotFoundException($"The order with the id {request.OrderId} has not been found.");
         }
 
-        Goods goods = await _unitOfWork.GoodsRepository.GetByIdAsync(request.OrderItem.GoodsId, false,
+        var goods = await _unitOfWork.GoodsRepository.GetByIdAsync(request.OrderItem.GoodsId, false,
             cancellationToken);
         if (goods is null)
         {
@@ -61,14 +61,13 @@ public class AddOrderItemCommandHandler : IRequestHandler<AddOrderItemCommand, O
             UnitPrice = goods.Price
         };
 
-        cancellationToken.ThrowIfCancellationRequested();
-
         order.OrderItems.Add(orderItem);
-        order.Total = order.OrderItems.Where(oi => !oi.IsDeleted).Sum(oi => oi.UnitPrice * oi.Quantity);
+        order.Total = order.OrderItems.Where(oi => !oi.IsDeleted)
+            .Sum(oi => oi.UnitPrice * oi.Quantity);
         await _unitOfWork.SaveAsync(cancellationToken);
 
-        _logger.LogInformation("The order with id {0} has been updated, new item added. New total is {1}.",
-            order.Id, order.Total);
+        _logger.LogInformation("The order with id {OrderId} has been updated, new item with Id {OrderItemId} added",
+            order.Id, orderItem.Id);
 
         return _mapper.Map<OrderResponse>(order);
     }

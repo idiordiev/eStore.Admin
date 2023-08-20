@@ -53,7 +53,7 @@ public class MouseRepositoryTests
 
         // Act
         var mouses = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-        Mouse mouseToChange = mouses.First(c => c.Id == 10);
+        var mouseToChange = mouses.First(c => c.Id == 10);
         mouseToChange.Name = changedName;
 
         // Assert
@@ -93,7 +93,7 @@ public class MouseRepositoryTests
         // Act
         var mouses = await _repository.GetByConditionPagedAsync(c => c.Id == 10, pagingParams, true,
             CancellationToken.None);
-        Mouse mouseToChange = mouses.First(c => c.Id == 10);
+        var mouseToChange = mouses.First(c => c.Id == 10);
         mouseToChange.Name = changedName;
 
         // Assert
@@ -107,10 +107,10 @@ public class MouseRepositoryTests
     public async Task GetByIdAsync_ExistingMouse_ReturnsMouse(int id)
     {
         // Arrange
-        Mouse expected = _helper.Mouses.First(c => c.Id == id);
+        var expected = _helper.Mouses.First(c => c.Id == id);
 
         // Act
-        Mouse actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.EqualTo(expected).Using(new MouseEqualityComparer()),
@@ -124,7 +124,7 @@ public class MouseRepositoryTests
         // Arrange
 
         // Act
-        Mouse actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -139,7 +139,7 @@ public class MouseRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        Mouse mouse = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+        var mouse = await _repository.GetByIdAsync(id, true, CancellationToken.None);
         mouse.Name = changedName;
 
         // Assert
@@ -166,7 +166,7 @@ public class MouseRepositoryTests
     public Task Update_ExistingMouse_UpdatedMouse()
     {
         // Arrange
-        Mouse mouseToUpdate = _helper.Mouses.First(c => c.Id == 10);
+        var mouseToUpdate = _helper.Mouses.First(c => c.Id == 10);
         const string changedName = "changedName";
         mouseToUpdate.Name = changedName;
 
@@ -182,7 +182,7 @@ public class MouseRepositoryTests
     public async Task Delete_ExistingMouse_DeletedMouseFromContext()
     {
         // Arrange
-        Mouse mouseToDelete = _helper.Mouses.First(c => c.Id == 10);
+        var mouseToDelete = _helper.Mouses.First(c => c.Id == 10);
 
         // Act
         _repository.Delete(mouseToDelete);

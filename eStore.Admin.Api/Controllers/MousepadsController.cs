@@ -4,7 +4,6 @@ using eStore.Admin.Application.Filtering.Models;
 using eStore.Admin.Application.RequestDTOs;
 using eStore.Admin.Application.Requests.Mousepads.Commands;
 using eStore.Admin.Application.Requests.Mousepads.Queries;
-using eStore.Admin.Application.Responses;
 using eStore.Admin.Application.Utility;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,17 +29,21 @@ public class MousepadsController : ControllerBase
         CancellationToken cancellationToken)
     {
         var request = new GetMousepadsByFilterPagedQuery
-            { FilterModel = filterModel, PagingParameters = pagingParameters };
+        {
+            FilterModel = filterModel,
+            PagingParameters = pagingParameters
+        };
         var response = await _mediator.Send(request, cancellationToken);
+        
         return Ok(response);
     }
 
     [HttpGet]
-    [Route("{id}", Name = "GetMousepadById")]
+    [Route("{id:int}", Name = "GetMousepadById")]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var request = new GetMousepadByIdQuery(id);
-        MousepadResponse response = await _mediator.Send(request, cancellationToken);
+        var response = await _mediator.Send(request, cancellationToken);
 
         if (response is null)
         {
@@ -55,28 +58,34 @@ public class MousepadsController : ControllerBase
     public async Task<IActionResult> Add([FromBody] MousepadDto mousepad, CancellationToken cancellationToken)
     {
         var request = new AddMousepadCommand { Mousepad = mousepad };
-        MousepadResponse response = await _mediator.Send(request, cancellationToken);
+        var response = await _mediator.Send(request, cancellationToken);
+        
         return CreatedAtRoute("GetMousepadById", new { response.Id }, response);
     }
 
     [HttpPut]
-    [Route("{id}")]
+    [Route("{id:int}")]
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Update(int id, [FromBody] MousepadDto mousepad,
         CancellationToken cancellationToken)
     {
-        var request = new EditMousepadCommand(id) { Mousepad = mousepad };
-        MousepadResponse response = await _mediator.Send(request, cancellationToken);
+        var request = new EditMousepadCommand(id)
+        {
+            Mousepad = mousepad
+        };
+        var response = await _mediator.Send(request, cancellationToken);
+        
         return CreatedAtRoute("GetMousepadById", new { response.Id }, response);
     }
 
     [HttpDelete]
-    [Route("{id}")]
+    [Route("{id:int}")]
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         var request = new DeleteMousepadCommand(id);
-        bool isSuccess = await _mediator.Send(request, cancellationToken);
+        var isSuccess = await _mediator.Send(request, cancellationToken);
+        
         if (!isSuccess)
         {
             return NotFound();

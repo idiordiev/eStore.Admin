@@ -4,7 +4,6 @@ using eStore.Admin.Application.Filtering.Models;
 using eStore.Admin.Application.RequestDTOs;
 using eStore.Admin.Application.Requests.Mouses.Commands;
 using eStore.Admin.Application.Requests.Mouses.Queries;
-using eStore.Admin.Application.Responses;
 using eStore.Admin.Application.Utility;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,17 +29,20 @@ public class MousesController : ControllerBase
         CancellationToken cancellationToken)
     {
         var request = new GetMousesByFilterPagedQuery
-            { FilterModel = filterModel, PagingParameters = pagingParameters };
+        {
+            FilterModel = filterModel,
+            PagingParameters = pagingParameters
+        };
         var response = await _mediator.Send(request, cancellationToken);
         return Ok(response);
     }
 
     [HttpGet]
-    [Route("{id}", Name = "GetMouseById")]
+    [Route("{id:int}", Name = "GetMouseById")]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var request = new GetMouseByIdQuery(id);
-        MouseResponse response = await _mediator.Send(request, cancellationToken);
+        var response = await _mediator.Send(request, cancellationToken);
 
         if (response is null)
         {
@@ -54,28 +56,37 @@ public class MousesController : ControllerBase
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Add([FromBody] MouseDto mouse, CancellationToken cancellationToken)
     {
-        var request = new AddMouseCommand { Mouse = mouse };
-        MouseResponse response = await _mediator.Send(request, cancellationToken);
+        var request = new AddMouseCommand
+        {
+            Mouse = mouse
+        };
+        var response = await _mediator.Send(request, cancellationToken);
+        
         return CreatedAtRoute("GetMouseById", new { response.Id }, response);
     }
 
     [HttpPut]
-    [Route("{id}")]
+    [Route("{id:int}")]
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Update(int id, [FromBody] MouseDto mouse, CancellationToken cancellationToken)
     {
-        var request = new EditMouseCommand(id) { Mouse = mouse };
-        MouseResponse response = await _mediator.Send(request, cancellationToken);
+        var request = new EditMouseCommand(id)
+        {
+            Mouse = mouse
+        };
+        var response = await _mediator.Send(request, cancellationToken);
+        
         return CreatedAtRoute("GetMouseById", new { response.Id }, response);
     }
 
     [HttpDelete]
-    [Route("{id}")]
+    [Route("{id:int}")]
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         var request = new DeleteMouseCommand(id);
-        bool isSuccess = await _mediator.Send(request, cancellationToken);
+        var isSuccess = await _mediator.Send(request, cancellationToken);
+        
         if (!isSuccess)
         {
             return NotFound();

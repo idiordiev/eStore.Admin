@@ -4,7 +4,6 @@ using eStore.Admin.Application.Filtering.Models;
 using eStore.Admin.Application.RequestDTOs;
 using eStore.Admin.Application.Requests.Gamepads.Commands;
 using eStore.Admin.Application.Requests.Gamepads.Queries;
-using eStore.Admin.Application.Responses;
 using eStore.Admin.Application.Utility;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,17 +29,20 @@ public class GamepadsController : ControllerBase
         CancellationToken cancellationToken)
     {
         var request = new GetGamepadsByFilterPagedQuery
-            { FilterModel = filterModel, PagingParameters = pagingParameters };
+        {
+            FilterModel = filterModel,
+            PagingParameters = pagingParameters
+        };
         var response = await _mediator.Send(request, cancellationToken);
         return Ok(response);
     }
 
     [HttpGet]
-    [Route("{id}", Name = "GetGamepadById")]
+    [Route("{id:int}", Name = "GetGamepadById")]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var request = new GetGamepadByIdQuery(id);
-        GamepadResponse response = await _mediator.Send(request, cancellationToken);
+        var response = await _mediator.Send(request, cancellationToken);
 
         if (response is null)
         {
@@ -54,29 +56,38 @@ public class GamepadsController : ControllerBase
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Add([FromBody] GamepadDto gamepad, CancellationToken cancellationToken)
     {
-        var request = new AddGamepadCommand { Gamepad = gamepad };
-        GamepadResponse response = await _mediator.Send(request, cancellationToken);
+        var request = new AddGamepadCommand
+        {
+            Gamepad = gamepad
+        };
+        var response = await _mediator.Send(request, cancellationToken);
+        
         return CreatedAtRoute("GetGamepadById", new { response.Id }, response);
     }
 
     [HttpPut]
-    [Route("{id}")]
+    [Route("{id:int}")]
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Update(int id, [FromBody] GamepadDto gamepad,
         CancellationToken cancellationToken)
     {
-        var request = new EditGamepadCommand(id) { Gamepad = gamepad };
-        GamepadResponse response = await _mediator.Send(request, cancellationToken);
+        var request = new EditGamepadCommand(id)
+        {
+            Gamepad = gamepad
+        };
+        var response = await _mediator.Send(request, cancellationToken);
+        
         return CreatedAtRoute("GetGamepadById", new { response.Id }, response);
     }
 
     [HttpDelete]
-    [Route("{id}")]
+    [Route("{id:int}")]
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         var request = new DeleteGamepadCommand(id);
-        bool isSuccess = await _mediator.Send(request, cancellationToken);
+        var isSuccess = await _mediator.Send(request, cancellationToken);
+        
         if (!isSuccess)
         {
             return NotFound();

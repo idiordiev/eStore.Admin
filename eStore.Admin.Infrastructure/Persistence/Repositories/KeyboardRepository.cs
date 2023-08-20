@@ -3,7 +3,7 @@ using eStore.Admin.Domain.Entities;
 
 namespace eStore.Admin.Infrastructure.Persistence.Repositories;
 
-public class KeyboardRepository : RepositoryBase<Keyboard>, IKeyboardRepository
+public class KeyboardRepository : Repository<Keyboard>, IKeyboardRepository
 {
     public KeyboardRepository(ApplicationContext context) : base(context)
     {

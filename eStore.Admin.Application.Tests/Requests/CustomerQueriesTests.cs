@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,7 +30,7 @@ public class CustomerQueriesTests
                 source =>
                 {
                     var responseList = new List<CustomerResponse>();
-                    foreach (Customer customer in source)
+                    foreach (var customer in source)
                     {
                         var response = new CustomerResponse
                         {
@@ -210,7 +209,7 @@ public class CustomerQueriesTests
             .ReturnsAsync((int id, bool _, CancellationToken _) => _helper.Customers.First(c => c.Id == id));
         var query = new GetCustomerByIdQuery(customerId);
         var handler = new GetCustomerByIdQueryHandler(_unitOfWorkMock.Object, _mapperMock.Object);
-        Customer expectedCustomer = _helper.Customers.First(c => c.Id == customerId);
+        var expectedCustomer = _helper.Customers.First(c => c.Id == customerId);
         var expectedResponse = new CustomerResponse
         {
             Id = expectedCustomer.Id,
@@ -226,7 +225,7 @@ public class CustomerQueriesTests
         };
 
         // Act
-        CustomerResponse actual = await handler.Handle(query, CancellationToken.None);
+        var actual = await handler.Handle(query, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.EqualTo(expectedResponse).Using(new CustomerResponseEqualityComparer()),
@@ -244,7 +243,7 @@ public class CustomerQueriesTests
         var handler = new GetCustomerByIdQueryHandler(_unitOfWorkMock.Object, _mapperMock.Object);
 
         // Act
-        CustomerResponse result = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
         Assert.IsNull(result, "Method returned not-null object.");

@@ -6,7 +6,6 @@ using eStore.Admin.Application.Filtering.Models;
 using eStore.Admin.Application.Interfaces.Persistence;
 using eStore.Admin.Application.Responses;
 using eStore.Admin.Application.Utility;
-using eStore.Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore.Admin.Application.Requests.Orders.Queries;

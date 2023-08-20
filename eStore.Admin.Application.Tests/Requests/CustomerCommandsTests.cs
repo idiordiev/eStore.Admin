@@ -9,6 +9,7 @@ using eStore.Admin.Application.Requests.Customers.Commands;
 using eStore.Admin.Application.Responses;
 using eStore.Admin.Application.Tests.EqualityComparers;
 using eStore.Admin.Domain.Entities;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 
@@ -18,51 +19,20 @@ namespace eStore.Admin.Application.Tests.Requests;
 public class CustomerCommandsTests
 {
     private Mock<IUnitOfWork> _unitOfWorkMock;
-    private Mock<ILoggingService> _loggerMock;
-    private Mock<IMapper> _mapperMock;
+    private IMapper _mapper;
 
     public CustomerCommandsTests()
     {
-        _mapperMock = new Mock<IMapper>();
-        _mapperMock.Setup(x => x.Map(It.IsAny<CustomerDto>(), It.IsAny<Customer>()))
-            .Callback<CustomerDto, Customer>(
-                (source, destination) =>
-                {
-                    destination.IsDeleted = source.IsDeleted;
-                    destination.FirstName = source.FirstName;
-                    destination.LastName = source.LastName;
-                    destination.Email = source.Email;
-                    destination.PhoneNumber = source.PhoneNumber;
-                    destination.Country = source.Country;
-                    destination.City = source.City;
-                    destination.Address = source.Address;
-                    destination.PostalCode = source.PostalCode;
-                });
-        _mapperMock.Setup(x => x.Map<CustomerResponse>(It.IsAny<Customer>())).Returns<Customer>(source =>
+        _mapper = new Mapper(new MapperConfiguration(x =>
         {
-            var destination = new CustomerResponse
-            {
-                Id = source.Id,
-                IsDeleted = source.IsDeleted,
-                FirstName = source.FirstName,
-                LastName = source.LastName,
-                Email = source.Email,
-                PhoneNumber = source.PhoneNumber,
-                Country = source.Country,
-                City = source.City,
-                Address = source.Address,
-                PostalCode = source.PostalCode
-            };
-
-            return destination;
-        });
+            x.AddMaps(typeof(CustomerCommandsTests));
+        }));
     }
 
     [SetUp]
     public void Setup()
     {
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _loggerMock = new Mock<ILoggingService>();
     }
 
     [Test]
@@ -73,10 +43,11 @@ public class CustomerCommandsTests
                 x.CustomerRepository.GetByIdAsync(1, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new Customer { Id = 1 });
         var command = new DeleteCustomerCommand(1);
-        var handler = new DeleteCustomerCommandHandler(_unitOfWorkMock.Object, _loggerMock.Object);
+        var handler = new DeleteCustomerCommandHandler(_unitOfWorkMock.Object,
+            new Mock<ILogger<DeleteCustomerCommandHandler>>().Object);
 
         // Act
-        bool result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.That(result, Is.True, "The handler returned wrong value.");
@@ -92,10 +63,11 @@ public class CustomerCommandsTests
                 x.CustomerRepository.GetByIdAsync(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Customer)null);
         var command = new DeleteCustomerCommand(1);
-        var handler = new DeleteCustomerCommandHandler(_unitOfWorkMock.Object, _loggerMock.Object);
+        var handler = new DeleteCustomerCommandHandler(_unitOfWorkMock.Object,
+            new Mock<ILogger<DeleteCustomerCommandHandler>>().Object);
 
         // Act
-        bool result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.That(result, Is.False, "The handler returned wring value.");
@@ -110,9 +82,15 @@ public class CustomerCommandsTests
             .ReturnsAsync(new Customer { Id = 1 });
 
         const string newName = "newName";
-        var command = new EditCustomerCommand(1) { Customer = new CustomerDto { FirstName = newName } };
-        var handler =
-            new EditCustomerCommandHandler(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object);
+        var command = new EditCustomerCommand(1)
+        {
+            Customer = new CustomerDto
+            {
+                FirstName = newName
+            }
+        };
+        var handler = new EditCustomerCommandHandler(_mapper, _unitOfWorkMock.Object,
+            new Mock<ILogger<EditCustomerCommandHandler>>().Object);
         var expected = new CustomerResponse
         {
             Id = 1,
@@ -120,7 +98,7 @@ public class CustomerCommandsTests
         };
 
         // Act
-        CustomerResponse result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.That(result, Is.EqualTo(expected).Using(new CustomerResponseEqualityComparer()),
@@ -136,9 +114,15 @@ public class CustomerCommandsTests
                 x.CustomerRepository.GetByIdAsync(1, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Customer)null);
         const string newName = "newName";
-        var command = new EditCustomerCommand(1) { Customer = new CustomerDto { FirstName = newName } };
-        var handler =
-            new EditCustomerCommandHandler(_mapperMock.Object, _unitOfWorkMock.Object, _loggerMock.Object);
+        var command = new EditCustomerCommand(1)
+        {
+            Customer = new CustomerDto
+            {
+                FirstName = newName
+            }
+        };
+        var handler = new EditCustomerCommandHandler(_mapper, _unitOfWorkMock.Object,
+            new Mock<ILogger<EditCustomerCommandHandler>>().Object);
 
         // Act
 

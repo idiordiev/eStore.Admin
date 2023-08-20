@@ -2,12 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using eStore.Admin.Application.Interfaces;
 using eStore.Admin.Application.Interfaces.Persistence;
-using eStore.Admin.Application.Interfaces.Services;
 using eStore.Admin.Application.RequestDTOs;
 using eStore.Admin.Application.Responses;
-using eStore.Admin.Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace eStore.Admin.Application.Requests.Keyboards.Commands;
 
@@ -24,36 +24,33 @@ public class EditKeyboardCommand : IRequest<KeyboardResponse>
 
 public class EditKeyboardCommandHandler : IRequestHandler<EditKeyboardCommand, KeyboardResponse>
 {
-    private readonly IDateTimeService _dateTimeService;
-    private readonly ILoggingService _logger;
+    private readonly IClock _clock;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<EditKeyboardCommandHandler> _logger;
 
-    public EditKeyboardCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ILoggingService logger,
-        IDateTimeService dateTimeService)
+    public EditKeyboardCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IClock clock, ILogger<EditKeyboardCommandHandler> logger)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _clock = clock;
         _logger = logger;
-        _dateTimeService = dateTimeService;
     }
 
     public async Task<KeyboardResponse> Handle(EditKeyboardCommand request, CancellationToken cancellationToken)
     {
-        Keyboard keyboard = await _unitOfWork.KeyboardRepository.GetByIdAsync(request.KeyboardId, true,
+        var keyboard = await _unitOfWork.KeyboardRepository.GetByIdAsync(request.KeyboardId, true,
             cancellationToken);
         if (keyboard is null)
         {
             throw new KeyNotFoundException($"The keyboard with the id {request.KeyboardId} has not been found.");
         }
 
-        cancellationToken.ThrowIfCancellationRequested();
-
         _mapper.Map(request.Keyboard, keyboard);
-        keyboard.LastModified = _dateTimeService.Now();
+        keyboard.LastModified = _clock.UtcNow();
         await _unitOfWork.SaveAsync(cancellationToken);
 
-        _logger.LogInformation("The keyboard with id {0} has been deleted.", keyboard.Id);
+        _logger.LogInformation("The keyboard with id {KeyboardId} has been deleted", keyboard.Id);
 
         return _mapper.Map<KeyboardResponse>(keyboard);
     }

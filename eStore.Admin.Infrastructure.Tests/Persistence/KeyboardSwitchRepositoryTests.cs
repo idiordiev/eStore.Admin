@@ -54,7 +54,7 @@ public class KeyboardSwitchRepositoryTests
 
         // Act
         var keyboardSwitches = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-        KeyboardSwitch keyboardSwitchToChange = keyboardSwitches.First(c => c.Id == 1);
+        var keyboardSwitchToChange = keyboardSwitches.First(c => c.Id == 1);
         keyboardSwitchToChange.Name = changedName;
 
         // Assert
@@ -95,7 +95,7 @@ public class KeyboardSwitchRepositoryTests
         // Act
         var keyboardSwitches = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true,
             CancellationToken.None);
-        KeyboardSwitch keyboardSwitchToChange = keyboardSwitches.First(c => c.Id == 1);
+        var keyboardSwitchToChange = keyboardSwitches.First(c => c.Id == 1);
         keyboardSwitchToChange.Name = changedName;
 
         // Assert
@@ -111,10 +111,10 @@ public class KeyboardSwitchRepositoryTests
     public async Task GetByIdAsync_ExistingKeyboardSwitch_ReturnsKeyboardSwitch(int id)
     {
         // Arrange
-        KeyboardSwitch expected = _helper.KeyboardSwitches.First(c => c.Id == id);
+        var expected = _helper.KeyboardSwitches.First(c => c.Id == id);
 
         // Act
-        KeyboardSwitch actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.EqualTo(expected).Using(new KeyboardSwitchEqualityComparer()),
@@ -128,7 +128,7 @@ public class KeyboardSwitchRepositoryTests
         // Arrange
 
         // Act
-        KeyboardSwitch actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -145,7 +145,7 @@ public class KeyboardSwitchRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        KeyboardSwitch keyboardSwitch = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+        var keyboardSwitch = await _repository.GetByIdAsync(id, true, CancellationToken.None);
         keyboardSwitch.Name = changedName;
 
         // Assert
@@ -173,7 +173,7 @@ public class KeyboardSwitchRepositoryTests
     public Task Update_ExistingKeyboardSwitch_UpdatedKeyboardSwitch()
     {
         // Arrange
-        KeyboardSwitch keyboardSwitchToUpdate = _helper.KeyboardSwitches.First(c => c.Id == 1);
+        var keyboardSwitchToUpdate = _helper.KeyboardSwitches.First(c => c.Id == 1);
         const string changedName = "changedName";
         keyboardSwitchToUpdate.Name = changedName;
 
@@ -190,7 +190,7 @@ public class KeyboardSwitchRepositoryTests
     public async Task Delete_ExistingKeyboardSwitch_DeletedKeyboardSwitchFromContext()
     {
         // Arrange
-        KeyboardSwitch keyboardSwitchToDelete = _helper.KeyboardSwitches.First(c => c.Id == 1);
+        var keyboardSwitchToDelete = _helper.KeyboardSwitches.First(c => c.Id == 1);
 
         // Act
         _repository.Delete(keyboardSwitchToDelete);

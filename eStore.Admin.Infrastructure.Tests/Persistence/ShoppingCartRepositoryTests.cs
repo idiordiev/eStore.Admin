@@ -52,7 +52,7 @@ public class ShoppingCartRepositoryTests
 
         // Act
         var shoppingCarts = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-        ShoppingCart shoppingCartToChange = shoppingCarts.First(c => c.Id == 1);
+        var shoppingCartToChange = shoppingCarts.First(c => c.Id == 1);
         shoppingCartToChange.IsDeleted = true;
 
         // Assert
@@ -90,7 +90,7 @@ public class ShoppingCartRepositoryTests
         // Act
         var shoppingCarts = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true,
             CancellationToken.None);
-        ShoppingCart shoppingCartToChange = shoppingCarts.First(c => c.Id == 1);
+        var shoppingCartToChange = shoppingCarts.First(c => c.Id == 1);
         shoppingCartToChange.IsDeleted = true;
 
         // Assert
@@ -102,10 +102,10 @@ public class ShoppingCartRepositoryTests
     public async Task GetByIdAsync_ExistingShoppingCart_ReturnsShoppingCart(int id)
     {
         // Arrange
-        ShoppingCart expected = _helper.ShoppingCarts.First(c => c.Id == id);
+        var expected = _helper.ShoppingCarts.First(c => c.Id == id);
 
         // Act
-        ShoppingCart actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.EqualTo(expected).Using(new ShoppingCartEqualityComparer()),
@@ -119,7 +119,7 @@ public class ShoppingCartRepositoryTests
         // Arrange
 
         // Act
-        ShoppingCart actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -132,7 +132,7 @@ public class ShoppingCartRepositoryTests
         // Arrange
 
         // Act
-        ShoppingCart shoppingCart = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+        var shoppingCart = await _repository.GetByIdAsync(id, true, CancellationToken.None);
         shoppingCart.IsDeleted = true;
 
         // Assert
@@ -160,7 +160,7 @@ public class ShoppingCartRepositoryTests
     public Task Update_ExistingShoppingCart_UpdatedShoppingCart()
     {
         // Arrange
-        ShoppingCart shoppingCartToUpdate = _helper.ShoppingCarts.First(c => c.Id == 1);
+        var shoppingCartToUpdate = _helper.ShoppingCarts.First(c => c.Id == 1);
         shoppingCartToUpdate.IsDeleted = true;
 
         // Act
@@ -175,7 +175,7 @@ public class ShoppingCartRepositoryTests
     public async Task Delete_ExistingShoppingCart_DeletedShoppingCartFromContext()
     {
         // Arrange
-        ShoppingCart shoppingCartToDelete = _helper.ShoppingCarts.First(c => c.Id == 1);
+        var shoppingCartToDelete = _helper.ShoppingCarts.First(c => c.Id == 1);
 
         // Act
         _repository.Delete(shoppingCartToDelete);

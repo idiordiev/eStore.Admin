@@ -2,12 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using eStore.Admin.Application.Interfaces;
 using eStore.Admin.Application.Interfaces.Persistence;
-using eStore.Admin.Application.Interfaces.Services;
 using eStore.Admin.Application.RequestDTOs;
 using eStore.Admin.Application.Responses;
-using eStore.Admin.Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace eStore.Admin.Application.Requests.Mousepads.Commands;
 
@@ -24,36 +24,33 @@ public class EditMousepadCommand : IRequest<MousepadResponse>
 
 public class EditMousepadCommandHandler : IRequestHandler<EditMousepadCommand, MousepadResponse>
 {
-    private readonly IDateTimeService _dateTimeService;
-    private readonly ILoggingService _logger;
+    private readonly IClock _clock;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<EditMousepadCommandHandler> _logger;
 
-    public EditMousepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger,
-        IDateTimeService dateTimeService)
+    public EditMousepadCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IClock clock, ILogger<EditMousepadCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _clock = clock;
         _logger = logger;
-        _dateTimeService = dateTimeService;
     }
 
     public async Task<MousepadResponse> Handle(EditMousepadCommand request, CancellationToken cancellationToken)
     {
-        Mousepad mousepad = await _unitOfWork.MousepadRepository.GetByIdAsync(request.MousepadId, true,
+        var mousepad = await _unitOfWork.MousepadRepository.GetByIdAsync(request.MousepadId, true,
             cancellationToken);
         if (mousepad is null)
         {
             throw new KeyNotFoundException($"The mousepad with the id {request.MousepadId} has not been found.");
         }
 
-        cancellationToken.ThrowIfCancellationRequested();
-
         _mapper.Map(request.Mousepad, mousepad);
-        mousepad.LastModified = _dateTimeService.Now();
+        mousepad.LastModified = _clock.UtcNow();
         await _unitOfWork.SaveAsync(cancellationToken);
 
-        _logger.LogInformation("The mousepad with id {0} has been deleted.", mousepad.Id);
+        _logger.LogInformation("The mousepad with id {MousepadId} has been deleted", mousepad.Id);
 
         return _mapper.Map<MousepadResponse>(mousepad);
     }

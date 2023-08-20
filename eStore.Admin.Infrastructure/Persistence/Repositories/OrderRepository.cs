@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eStore.Admin.Infrastructure.Persistence.Repositories;
 
-public class OrderRepository : RepositoryBase<Order>, IOrderRepository
+public class OrderRepository : Repository<Order>, IOrderRepository
 {
     public OrderRepository(ApplicationContext context) : base(context)
     {

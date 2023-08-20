@@ -31,6 +31,7 @@ public class GetAllGamepadsPagedQueryHandler : IRequestHandler<GetAllGamepadsPag
     {
         var gamepads = await _unitOfWork.GamepadRepository.GetAllPagedAsync(request.PagingParameters, false,
             cancellationToken);
+        
         return _mapper.Map<IEnumerable<GamepadResponse>>(gamepads);
     }
 }

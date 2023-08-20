@@ -53,7 +53,7 @@ public class CustomerRepositoryTests
 
         // Act
         var customers = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-        Customer customerToChange = customers.First(c => c.Id == 1);
+        var customerToChange = customers.First(c => c.Id == 1);
         customerToChange.FirstName = changedName;
 
         // Assert
@@ -93,7 +93,7 @@ public class CustomerRepositoryTests
         // Act
         var customers = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true,
             CancellationToken.None);
-        Customer customerToChange = customers.First(c => c.Id == 1);
+        var customerToChange = customers.First(c => c.Id == 1);
         customerToChange.FirstName = changedName;
 
         // Assert
@@ -106,10 +106,10 @@ public class CustomerRepositoryTests
     public async Task GetByIdAsync_ExistingCustomer_ReturnsCustomer(int id)
     {
         // Arrange
-        Customer expected = _helper.Customers.First(c => c.Id == id);
+        var expected = _helper.Customers.First(c => c.Id == id);
 
         // Act
-        Customer actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.EqualTo(expected).Using(new CustomerEqualityComparer()),
@@ -123,7 +123,7 @@ public class CustomerRepositoryTests
         // Arrange
 
         // Act
-        Customer actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -137,7 +137,7 @@ public class CustomerRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        Customer customer = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+        var customer = await _repository.GetByIdAsync(id, true, CancellationToken.None);
         customer.FirstName = changedName;
 
         // Assert
@@ -164,7 +164,7 @@ public class CustomerRepositoryTests
     public Task Update_ExistingCustomer_UpdatedCustomer()
     {
         // Arrange
-        Customer customerToUpdate = _helper.Customers.First(c => c.Id == 1);
+        var customerToUpdate = _helper.Customers.First(c => c.Id == 1);
         const string changedName = "changedName";
         customerToUpdate.FirstName = changedName;
 
@@ -181,7 +181,7 @@ public class CustomerRepositoryTests
     public async Task Delete_ExistingCustomer_DeletedCustomerFromContext()
     {
         // Arrange
-        Customer customerToDelete = _helper.Customers.First(c => c.Id == 1);
+        var customerToDelete = _helper.Customers.First(c => c.Id == 1);
 
         // Act
         _repository.Delete(customerToDelete);

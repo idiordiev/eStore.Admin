@@ -1,9 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using eStore.Admin.Application.Interfaces.Persistence;
-using eStore.Admin.Application.Interfaces.Services;
-using eStore.Admin.Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace eStore.Admin.Application.Requests.Orders.Commands;
 
@@ -19,10 +18,10 @@ public class DeleteOrderCommand : IRequest<bool>
 
 public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, bool>
 {
-    private readonly ILoggingService _logger;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<DeleteOrderCommandHandler> _logger;
 
-    public DeleteOrderCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
+    public DeleteOrderCommandHandler(IUnitOfWork unitOfWork, ILogger<DeleteOrderCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -30,19 +29,17 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, boo
 
     public async Task<bool> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
     {
-        Order order = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId, true, cancellationToken);
+        var order = await _unitOfWork.OrderRepository.GetByIdAsync(request.OrderId, true, cancellationToken);
         if (order is null)
         {
-            _logger.LogInformation("The order with id {0} has not been found.", request.OrderId);
+            _logger.LogInformation("The order with id {OrderId} has not been found", request.OrderId);
             return false;
         }
-
-        cancellationToken.ThrowIfCancellationRequested();
 
         _unitOfWork.OrderRepository.Delete(order);
         await _unitOfWork.SaveAsync(cancellationToken);
 
-        _logger.LogInformation("The order with id {0} has been deleted.", order.Id);
+        _logger.LogInformation("The order with id {OrderId} has been deleted", order.Id);
 
         return true;
     }

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore.Admin.Application.Interfaces.Persistence;
 using eStore.Admin.Application.Responses;
-using eStore.Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore.Admin.Application.Requests.ShoppingCarts.Queries;
@@ -32,9 +31,9 @@ public class GetShoppingCartByIdQueryHandler : IRequestHandler<GetShoppingCartBy
     public async Task<ShoppingCartResponse> Handle(GetShoppingCartByIdQuery request,
         CancellationToken cancellationToken)
     {
-        ShoppingCart shoppingCart = await _unitOfWork.ShoppingCartRepository.GetByIdWithItemsAsync(
-            request.ShoppingCartId,
+        var shoppingCart = await _unitOfWork.ShoppingCartRepository.GetByIdWithItemsAsync(request.ShoppingCartId,
             false, cancellationToken);
+        
         return _mapper.Map<ShoppingCartResponse>(shoppingCart);
     }
 }

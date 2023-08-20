@@ -3,7 +3,7 @@ using eStore.Admin.Domain.Entities;
 
 namespace eStore.Admin.Infrastructure.Persistence.Repositories;
 
-public class GamepadRepository : RepositoryBase<Gamepad>, IGamepadRepository
+public class GamepadRepository : Repository<Gamepad>, IGamepadRepository
 {
     public GamepadRepository(ApplicationContext context) : base(context)
     {

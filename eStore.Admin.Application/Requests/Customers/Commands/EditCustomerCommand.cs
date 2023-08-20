@@ -3,11 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using eStore.Admin.Application.Interfaces.Persistence;
-using eStore.Admin.Application.Interfaces.Services;
 using eStore.Admin.Application.RequestDTOs;
 using eStore.Admin.Application.Responses;
-using eStore.Admin.Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace eStore.Admin.Application.Requests.Customers.Commands;
 
@@ -24,11 +23,11 @@ public class EditCustomerCommand : IRequest<CustomerResponse>
 
 public class EditCustomerCommandHandler : IRequestHandler<EditCustomerCommand, CustomerResponse>
 {
-    private readonly ILoggingService _logger;
+    private readonly ILogger<EditCustomerCommandHandler> _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public EditCustomerCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ILoggingService logger)
+    public EditCustomerCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ILogger<EditCustomerCommandHandler> logger)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -37,19 +36,17 @@ public class EditCustomerCommandHandler : IRequestHandler<EditCustomerCommand, C
 
     public async Task<CustomerResponse> Handle(EditCustomerCommand request, CancellationToken cancellationToken)
     {
-        Customer customer = await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true,
+        var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true,
             cancellationToken);
         if (customer is null)
         {
             throw new KeyNotFoundException($"The customer with id {request.CustomerId} has not been found.");
         }
 
-        cancellationToken.ThrowIfCancellationRequested();
-
         _mapper.Map(request.Customer, customer);
         await _unitOfWork.SaveAsync(cancellationToken);
 
-        _logger.LogInformation("The customer with id {0} has been updated.", customer.Id);
+        _logger.LogInformation("The customer with id {CustomerId} has been updated", customer.Id);
 
         return _mapper.Map<CustomerResponse>(customer);
     }

@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using eStore.Admin.Application.Interfaces.Persistence;
-using eStore.Admin.Application.Interfaces.Services;
 using eStore.Admin.Application.RequestDTOs;
 using eStore.Admin.Application.Responses;
 using eStore.Admin.Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace eStore.Admin.Application.Requests.KeyboardSwitches.Commands;
 
@@ -17,11 +17,11 @@ public class AddKeyboardSwitchCommand : IRequest<KeyboardSwitchResponse>
 
 public class AddKeyboardSwitchCommandHandler : IRequestHandler<AddKeyboardSwitchCommand, KeyboardSwitchResponse>
 {
-    private readonly ILoggingService _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-
-    public AddKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILoggingService logger)
+    private readonly ILogger<AddKeyboardSwitchCommandHandler> _logger;
+ 
+    public AddKeyboardSwitchCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<AddKeyboardSwitchCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -33,12 +33,10 @@ public class AddKeyboardSwitchCommandHandler : IRequestHandler<AddKeyboardSwitch
     {
         var keyboardSwitch = _mapper.Map<KeyboardSwitch>(request.KeyboardSwitch);
 
-        cancellationToken.ThrowIfCancellationRequested();
-
         _unitOfWork.KeyboardSwitchRepository.Add(keyboardSwitch);
         await _unitOfWork.SaveAsync(cancellationToken);
 
-        _logger.LogInformation("The keyboard switch with id {0} has been added.", keyboardSwitch.Id);
+        _logger.LogInformation("The keyboard switch with id {KeyboardSwitchId} has been added", keyboardSwitch.Id);
 
         return _mapper.Map<KeyboardSwitchResponse>(keyboardSwitch);
     }

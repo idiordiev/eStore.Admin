@@ -53,7 +53,7 @@ public class GamepadRepositoryTests
 
         // Act
         var gamepads = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-        Gamepad gamepadToChange = gamepads.First(c => c.Id == 1);
+        var gamepadToChange = gamepads.First(c => c.Id == 1);
         gamepadToChange.Name = changedName;
 
         // Assert
@@ -93,7 +93,7 @@ public class GamepadRepositoryTests
         // Act
         var gamepads = await _repository.GetByConditionPagedAsync(c => c.Id == 1, pagingParams, true,
             CancellationToken.None);
-        Gamepad gamepadToChange = gamepads.First(c => c.Id == 1);
+        var gamepadToChange = gamepads.First(c => c.Id == 1);
         gamepadToChange.Name = changedName;
 
         // Assert
@@ -108,10 +108,10 @@ public class GamepadRepositoryTests
     public async Task GetByIdAsync_ExistingGamepad_ReturnsGamepad(int id)
     {
         // Arrange
-        Gamepad expected = _helper.Gamepads.First(c => c.Id == id);
+        var expected = _helper.Gamepads.First(c => c.Id == id);
 
         // Act
-        Gamepad actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.EqualTo(expected).Using(new GamepadEqualityComparer()),
@@ -125,7 +125,7 @@ public class GamepadRepositoryTests
         // Arrange
 
         // Act
-        Gamepad actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -141,7 +141,7 @@ public class GamepadRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        Gamepad gamepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+        var gamepad = await _repository.GetByIdAsync(id, true, CancellationToken.None);
         gamepad.Name = changedName;
 
         // Assert
@@ -168,7 +168,7 @@ public class GamepadRepositoryTests
     public Task Update_ExistingGamepad_UpdatedGamepad()
     {
         // Arrange
-        Gamepad gamepadToUpdate = _helper.Gamepads.First(c => c.Id == 1);
+        var gamepadToUpdate = _helper.Gamepads.First(c => c.Id == 1);
         const string changedName = "changedName";
         gamepadToUpdate.Name = changedName;
 
@@ -184,7 +184,7 @@ public class GamepadRepositoryTests
     public async Task Delete_ExistingGamepad_DeletedGamepadFromContext()
     {
         // Arrange
-        Gamepad gamepadToDelete = _helper.Gamepads.First(c => c.Id == 1);
+        var gamepadToDelete = _helper.Gamepads.First(c => c.Id == 1);
 
         // Act
         _repository.Delete(gamepadToDelete);

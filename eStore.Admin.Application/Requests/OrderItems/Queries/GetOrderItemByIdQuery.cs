@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using eStore.Admin.Application.Interfaces.Persistence;
 using eStore.Admin.Application.Responses;
-using eStore.Admin.Domain.Entities;
 using MediatR;
 
 namespace eStore.Admin.Application.Requests.OrderItems.Queries;
@@ -31,7 +30,7 @@ public class GetOrderItemByIdQueryHandler : IRequestHandler<GetOrderItemByIdQuer
 
     public async Task<OrderItemResponse> Handle(GetOrderItemByIdQuery request, CancellationToken cancellationToken)
     {
-        OrderItem orderItem = await _unitOfWork.OrderItemRepository.GetByIdAsync(request.OrderItemId, false,
+        var orderItem = await _unitOfWork.OrderItemRepository.GetByIdAsync(request.OrderItemId, false,
             cancellationToken);
         return _mapper.Map<OrderItemResponse>(orderItem);
     }

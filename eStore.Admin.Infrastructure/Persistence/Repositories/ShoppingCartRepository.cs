@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eStore.Admin.Infrastructure.Persistence.Repositories;
 
-public class ShoppingCartRepository : RepositoryBase<ShoppingCart>, IShoppingCartRepository
+public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRepository
 {
     public ShoppingCartRepository(ApplicationContext context) : base(context)
     {

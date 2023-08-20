@@ -1,9 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using eStore.Admin.Application.Interfaces.Persistence;
-using eStore.Admin.Application.Interfaces.Services;
-using eStore.Admin.Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace eStore.Admin.Application.Requests.Customers.Commands;
 
@@ -19,10 +18,10 @@ public class DeleteCustomerCommand : IRequest<bool>
 
 public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, bool>
 {
-    private readonly ILoggingService _logger;
+    private readonly ILogger<DeleteCustomerCommandHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteCustomerCommandHandler(IUnitOfWork unitOfWork, ILoggingService logger)
+    public DeleteCustomerCommandHandler(IUnitOfWork unitOfWork, ILogger<DeleteCustomerCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -30,20 +29,18 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
 
     public async Task<bool> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
-        Customer customer = await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true,
+        var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(request.CustomerId, true,
             cancellationToken);
         if (customer is null)
         {
-            _logger.LogInformation("The customer with id {0} has not been found.", request.CustomerId);
+            _logger.LogInformation("The customer with id {CustomerId} has not been found", request.CustomerId);
             return false;
         }
-
-        cancellationToken.ThrowIfCancellationRequested();
 
         _unitOfWork.CustomerRepository.Delete(customer);
         await _unitOfWork.SaveAsync(cancellationToken);
 
-        _logger.LogInformation("The customer with id {0} has been deleted.", customer.Id);
+        _logger.LogInformation("The customer with id {CustomerId} has been deleted", customer.Id);
 
         return true;
     }

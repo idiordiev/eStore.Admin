@@ -24,7 +24,8 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginCredentials loginCredentials,
         CancellationToken cancellationToken)
     {
-        string token = await _authService.CreateTokenAsync(loginCredentials, cancellationToken);
+        var token = await _authService.CreateTokenAsync(loginCredentials, cancellationToken);
+        
         return Ok(token);
     }
 
@@ -32,7 +33,8 @@ public class AuthController : ControllerBase
     [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> AddUser([FromBody] UserDto user, CancellationToken cancellationToken)
     {
-        bool isSuccess = await _authService.AddUserWithRolesAsync(user, cancellationToken);
+        var isSuccess = await _authService.AddUserWithRolesAsync(user, cancellationToken);
+        
         if (isSuccess)
         {
             return Ok();
@@ -46,7 +48,8 @@ public class AuthController : ControllerBase
     [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteUser(string username, CancellationToken cancellationToken)
     {
-        bool isSuccess = await _authService.DeleteUserAsync(username, cancellationToken);
+        var isSuccess = await _authService.DeleteUserAsync(username, cancellationToken);
+        
         if (isSuccess)
         {
             return Ok();
@@ -61,7 +64,8 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> RemoveRoleFromUser(string username, [FromBody] string role,
         CancellationToken cancellationToken)
     {
-        bool isSuccess = await _authService.RemoveRoleFromUserAsync(username, role, cancellationToken);
+        var isSuccess = await _authService.RemoveRoleFromUserAsync(username, role, cancellationToken);
+        
         if (isSuccess)
         {
             return Ok();
@@ -76,7 +80,8 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> AddRoleToUser(string username, [FromBody] string role,
         CancellationToken cancellationToken)
     {
-        bool isSuccess = await _authService.AddRoleToUserAsync(username, role, cancellationToken);
+        var isSuccess = await _authService.AddRoleToUserAsync(username, role, cancellationToken);
+        
         if (isSuccess)
         {
             return Ok();

@@ -31,6 +31,7 @@ public class GetAllKeyboardsPagedQueryHandler : IRequestHandler<GetAllKeyboardsP
     {
         var keyboards = await _unitOfWork.KeyboardRepository.GetAllPagedAsync(request.PagingParameters, false,
             cancellationToken);
+        
         return _mapper.Map<IEnumerable<KeyboardResponse>>(keyboards);
     }
 }

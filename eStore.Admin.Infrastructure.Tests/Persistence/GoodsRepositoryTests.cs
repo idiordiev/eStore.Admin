@@ -53,7 +53,7 @@ public class GoodsRepositoryTests
 
         // Act
         var goods = await _repository.GetAllPagedAsync(pagingParams, true, CancellationToken.None);
-        Goods goodToChange = goods.First(c => c.Id == 5);
+        var goodToChange = goods.First(c => c.Id == 5);
         goodToChange.Name = changedName;
 
         // Assert
@@ -93,7 +93,7 @@ public class GoodsRepositoryTests
         // Act
         var goods = await _repository.GetByConditionPagedAsync(c => c.Id == 13, pagingParams, true,
             CancellationToken.None);
-        Goods goodToChange = goods.First(c => c.Id == 13);
+        var goodToChange = goods.First(c => c.Id == 13);
         goodToChange.Name = changedName;
 
         // Assert
@@ -119,10 +119,10 @@ public class GoodsRepositoryTests
     public async Task GetByIdAsync_ExistingGood_ReturnsGood(int id)
     {
         // Arrange
-        Goods expected = _helper.Goods.First(c => c.Id == id);
+        var expected = _helper.Goods.First(c => c.Id == id);
 
         // Act
-        Goods actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.EqualTo(expected).Using(new GoodsEqualityComparer()),
@@ -136,7 +136,7 @@ public class GoodsRepositoryTests
         // Arrange
 
         // Act
-        Goods actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
+        var actual = await _repository.GetByIdAsync(id, false, CancellationToken.None);
 
         // Assert
         Assert.That(actual, Is.Null, "The method returned not-null object.");
@@ -163,7 +163,7 @@ public class GoodsRepositoryTests
         const string changedName = "changedName";
 
         // Act
-        Goods good = await _repository.GetByIdAsync(id, true, CancellationToken.None);
+        var good = await _repository.GetByIdAsync(id, true, CancellationToken.None);
         good.Name = changedName;
 
         // Assert
@@ -190,7 +190,7 @@ public class GoodsRepositoryTests
     public Task Update_ExistingGood_UpdatedGood()
     {
         // Arrange
-        Goods goodToUpdate = _helper.Goods.First(c => c.Id == 13);
+        var goodToUpdate = _helper.Goods.First(c => c.Id == 13);
         const string changedName = "changedName";
         goodToUpdate.Name = changedName;
 
@@ -206,7 +206,7 @@ public class GoodsRepositoryTests
     public async Task Delete_ExistingGood_DeletedGoodFromContext()
     {
         // Arrange
-        Goods goodToDelete = _helper.Goods.First(c => c.Id == 13);
+        var goodToDelete = _helper.Goods.First(c => c.Id == 13);
 
         // Act
         _repository.Delete(goodToDelete);

@@ -31,6 +31,7 @@ public class GetAllMousepadsPagedQueryHandler : IRequestHandler<GetAllMousepadsP
     {
         var mousepads = await _unitOfWork.MousepadRepository.GetAllPagedAsync(request.PagingParameters, false,
             cancellationToken);
+        
         return _mapper.Map<IEnumerable<MousepadResponse>>(mousepads);
     }
 }

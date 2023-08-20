@@ -30,6 +30,7 @@ public class GetAllOrdersPagedQueryHandler : IRequestHandler<GetAllOrdersPagedQu
     {
         var orders = await _unitOfWork.OrderRepository.GetAllPagedAsync(request.PagingParameters, false,
             cancellationToken);
+        
         return _mapper.Map<IEnumerable<OrderResponse>>(orders);
     }
 }

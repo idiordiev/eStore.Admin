@@ -31,6 +31,7 @@ public class GetAllKeyboardSwitchesPagedQueryHandler : IRequestHandler<GetAllKey
     {
         var switches = await _unitOfWork.KeyboardSwitchRepository.GetAllPagedAsync(request.PagingParameters, false,
             cancellationToken);
+        
         return _mapper.Map<IEnumerable<KeyboardSwitchResponse>>(switches);
     }
 }
