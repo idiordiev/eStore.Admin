@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.Admin.WebApi", "eStore.Admin.WebApi\eStore.Admin.WebApi.csproj", "{9F05A3BC-0C58-4276-AFCA-F31D207584D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.Admin.Api", "eStore.Admin.Api\eStore.Admin.Api.csproj", "{9F05A3BC-0C58-4276-AFCA-F31D207584D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{795DB178-9960-473C-ABFA-82C8351B8CBE}"
 EndProject

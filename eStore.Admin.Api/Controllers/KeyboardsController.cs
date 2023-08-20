@@ -2,45 +2,45 @@ using System.Threading;
 using System.Threading.Tasks;
 using eStore.Admin.Application.Filtering.Models;
 using eStore.Admin.Application.RequestDTOs;
-using eStore.Admin.Application.Requests.Gamepads.Commands;
-using eStore.Admin.Application.Requests.Gamepads.Queries;
+using eStore.Admin.Application.Requests.Keyboards.Commands;
+using eStore.Admin.Application.Requests.Keyboards.Queries;
 using eStore.Admin.Application.Responses;
 using eStore.Admin.Application.Utility;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eStore.Admin.WebApi.Controllers;
+namespace eStore.Admin.Api.Controllers;
 
-[Route("api/gamepads")]
+[Route("api/keyboards")]
 [ApiController]
 [Authorize]
-public class GamepadsController : ControllerBase
+public class KeyboardsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public GamepadsController(IMediator mediator)
+    public KeyboardsController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] GamepadFilterModel filterModel,
+    public async Task<IActionResult> GetAll([FromQuery] KeyboardFilterModel filterModel,
         [FromQuery] PagingParameters pagingParameters,
         CancellationToken cancellationToken)
     {
-        var request = new GetGamepadsByFilterPagedQuery
+        var request = new GetKeyboardsByFilterPagedQuery
             { FilterModel = filterModel, PagingParameters = pagingParameters };
         var response = await _mediator.Send(request, cancellationToken);
         return Ok(response);
     }
 
     [HttpGet]
-    [Route("{id}", Name = "GetGamepadById")]
+    [Route("{id}", Name = "GetKeyboardById")]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var request = new GetGamepadByIdQuery(id);
-        GamepadResponse response = await _mediator.Send(request, cancellationToken);
+        var request = new GetKeyboardByIdQuery(id);
+        KeyboardResponse response = await _mediator.Send(request, cancellationToken);
 
         if (response is null)
         {
@@ -52,22 +52,22 @@ public class GamepadsController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "Administrator, Storage Manager")]
-    public async Task<IActionResult> Add([FromBody] GamepadDto gamepad, CancellationToken cancellationToken)
+    public async Task<IActionResult> Add([FromBody] KeyboardDto keyboard, CancellationToken cancellationToken)
     {
-        var request = new AddGamepadCommand { Gamepad = gamepad };
-        GamepadResponse response = await _mediator.Send(request, cancellationToken);
-        return CreatedAtRoute("GetGamepadById", new { response.Id }, response);
+        var request = new AddKeyboardCommand { Keyboard = keyboard };
+        KeyboardResponse response = await _mediator.Send(request, cancellationToken);
+        return CreatedAtRoute("GetKeyboardById", new { response.Id }, response);
     }
 
     [HttpPut]
     [Route("{id}")]
     [Authorize(Roles = "Administrator, Storage Manager")]
-    public async Task<IActionResult> Update(int id, [FromBody] GamepadDto gamepad,
+    public async Task<IActionResult> Update(int id, [FromBody] KeyboardDto keyboard,
         CancellationToken cancellationToken)
     {
-        var request = new EditGamepadCommand(id) { Gamepad = gamepad };
-        GamepadResponse response = await _mediator.Send(request, cancellationToken);
-        return CreatedAtRoute("GetGamepadById", new { response.Id }, response);
+        var request = new EditKeyboardCommand(id) { Keyboard = keyboard };
+        KeyboardResponse response = await _mediator.Send(request, cancellationToken);
+        return CreatedAtRoute("GetKeyboardById", new { response.Id }, response);
     }
 
     [HttpDelete]
@@ -75,7 +75,7 @@ public class GamepadsController : ControllerBase
     [Authorize(Roles = "Administrator, Storage Manager")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        var request = new DeleteGamepadCommand(id);
+        var request = new DeleteKeyboardCommand(id);
         bool isSuccess = await _mediator.Send(request, cancellationToken);
         if (!isSuccess)
         {

@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace eStore.Admin.WebApi;
+namespace eStore.Admin.Api;
 
 public class Startup
 {

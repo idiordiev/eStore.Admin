@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace eStore.Admin.WebApi;
+namespace eStore.Admin.Api;
 
 public class Program
 {

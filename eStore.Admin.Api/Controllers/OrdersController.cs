@@ -10,7 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eStore.Admin.WebApi.Controllers;
+namespace eStore.Admin.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

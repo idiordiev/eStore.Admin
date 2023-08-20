@@ -5,7 +5,7 @@ using eStore.Admin.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eStore.Admin.WebApi.Controllers;
+namespace eStore.Admin.Api.Controllers;
 
 [Route("api/auth")]
 [ApiController]
